@@ -3,10 +3,11 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import * as CustomPropTypes from '../../constants/customPropTypes';
+import CustomPropTypes from '../../constants/customPropTypes';
 import * as actions from './cardActions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Link } from 'react-router-dom';
 
 import Card from './Card';
 
@@ -25,6 +26,7 @@ export class CardPage extends React.Component {
     return (
       <div>
         <h1>Cards</h1>
+        <Link to="/cards/new">New Card</Link>
         {this.props.cards.map(card =>
           <Card key={card.id} card={card}/>
         )}

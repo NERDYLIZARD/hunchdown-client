@@ -3,6 +3,7 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
+import CustomPropTypes from '../../constants/customPropTypes';
 
 const Card = ({ card }) => {
   return (
@@ -13,7 +14,7 @@ const Card = ({ card }) => {
 };
 
 Card.propTypes = {
-  card: PropTypes.object.isRequired,
+  card: PropTypes.objectOf(CustomPropTypes.card).isRequired,
 };
 
 export default Card;

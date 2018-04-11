@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Switch, NavLink, Route } from 'react-router-dom';
 import HomePage from '../home/HomePage';
 import CardPage from '../card/CardPage';
+import CardEditor from '../card/CardEditor';
 import NotFoundPage from '../common/NotFoundPage';
 
 // This is a class-based component because the current
@@ -22,6 +23,7 @@ class App extends React.Component {
         </div>
         <Switch>
           <Route exact path="/" component={HomePage} />
+          <Route path="/cards/new" component={CardEditor} />
           <Route path="/cards" component={CardPage} />
           <Route component={NotFoundPage} />
         </Switch>

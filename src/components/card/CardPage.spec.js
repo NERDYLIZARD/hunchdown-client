@@ -7,6 +7,8 @@ import { shallow } from 'enzyme';
 import ConnectedCardPage, { CardPage } from './CardPage';
 import initialState from '../../constants/initialState';
 import configureMockStore from 'redux-mock-store';
+import { ConnectedRouter } from 'react-router-redux';
+import {history} from "../app/configureStore";
 import { create } from 'react-test-renderer';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
@@ -43,8 +45,11 @@ describe("<CardPage />", () => {
     const store = configureMockStore(middlewares)(initialState);
     const component = create(
       <Provider store={store}>
-        <ConnectedCardPage/>
+        <ConnectedRouter history={history}>
+          <ConnectedCardPage/>
+        </ConnectedRouter>
       </Provider>
+
     );
     const tree = component.toJSON();
 

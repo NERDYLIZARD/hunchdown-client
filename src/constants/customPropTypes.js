@@ -4,7 +4,10 @@
 
 import PropTypes from 'prop-types';
 
-export const card = PropTypes.shape({
-  wisdom: PropTypes.string,
-  attribute: PropTypes.string,
-});
+export default {
+  card : PropTypes.shape({
+    id: PropTypes.string,
+    wisdom: PropTypes.string,
+    attribute: PropTypes.string,
+  }),
+};
