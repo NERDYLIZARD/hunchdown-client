@@ -8,6 +8,8 @@ import * as actions from './cardActions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import Card from './Card';
+
 
 export class CardPage extends React.Component {
 
@@ -23,8 +25,8 @@ export class CardPage extends React.Component {
     return (
       <div>
         <h1>Cards</h1>
-        {this.props.cards.map((card, index) =>
-          <p key={index}><i>{card.wisdom}</i> - {card.attribute}</p>
+        {this.props.cards.map(card =>
+          <Card key={card.id} card={card}/>
         )}
       </div>
     );

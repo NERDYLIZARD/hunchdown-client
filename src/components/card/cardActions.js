@@ -9,8 +9,10 @@ export const loadCardsSuccess = cards => ({type: types.LOAD_CARDS_SUCCESS, cards
 export const loadCards = () =>
   dispatch => {
     return CardApi.getAllCards()
+    // return agents.Cards.requests.get()
       .then(cards => dispatch(loadCardsSuccess(cards)))
       .catch(err => {
+        // dispatch LOAD_CARDS_FAILURE
         throw(err);
       });
   };

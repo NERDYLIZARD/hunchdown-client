@@ -5,14 +5,17 @@ import delay from './delay';
 // All calls return promises.
 const cards = [
   {
+    id: 1,
     wisdom: 'Dead people receive more flowers than the living because regret is stronger than gratitude',
     attribute: 'Anne Frank'
   },
   {
+    id: 2,
     wisdom: 'You may delay, but time will not',
     attribute: 'Benjamin Franklin'
   },
   {
+    id: 3,
     wisdom: 'The cave you fear to enter holds the treasure you seek.',
     attribute: 'Joseph Campbel'
   },
