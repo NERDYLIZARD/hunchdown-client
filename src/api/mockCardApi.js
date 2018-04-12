@@ -45,9 +45,9 @@ class CardApi {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         // Simulate server-side validation
-        const minCourseTitleLength = 1;
-        if (card.wisdom.length < minCourseTitleLength) {
-          return reject(`Wisdom must be at least ${minCourseTitleLength} characters.`);
+        const minCardWisdomLength = 1;
+        if (card.wisdom.length < minCardWisdomLength) {
+          return reject(`Wisdom must be at least ${minCardWisdomLength} characters.`);
         }
 
         if (card.id) {
@@ -67,16 +67,5 @@ class CardApi {
   }
 
 }
-
-// // test
-// CardApi.saveCard({
-//   wisdom: 'abc Xyz.',
-//   attribute: 'def',
-// })
-//   .then(res => {
-//     console.log(res);
-//     console.log(cards);
-//   })
-//   .catch(error => console.log(error));
 
 export default CardApi;

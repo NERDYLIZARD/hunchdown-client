@@ -49,7 +49,6 @@ describe("<CardPage />", () => {
           <ConnectedCardPage/>
         </ConnectedRouter>
       </Provider>
-
     );
     const tree = component.toJSON();
 

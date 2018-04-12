@@ -1,5 +1,5 @@
 export default {
-  cards: [],
+  cards: {},  // associative array
   card: {
     wisdom: '',
     attribute: '',

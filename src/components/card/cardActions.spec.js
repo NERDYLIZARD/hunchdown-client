@@ -10,23 +10,43 @@ import initialState from "../../constants/initialState";
 
 describe('Card Actions', () => {
 
-  describe('loadCardSuccess', () => {
+  describe('loadCardsSuccess', () => {
     it('should creates an action typed LOAD_CARDS_SUCCESS and having cards[] as a payload', () => {
       const cards = [
         {
+          id: 'abc',
           wisdom: 'abc',
           attribute: '123'
         },
         {
+          id: 'def',
           wisdom: 'def',
           attribute: '456'
         }
       ];
       const expectedAction = {
         type: actionTypes.LOAD_CARDS_SUCCESS,
-        cards
+        payload: {
+          cards
+        }
       };
       expect(cardActions.loadCardsSuccess(cards)).toEqual(expectedAction);
+    });
+  });
+
+  describe('createCardSuccess', () => {
+    it('should creates an action typed CREATE_CARD_SUCCESS and having card as a payload', () => {
+      const card = {
+        wisdom: 'abc',
+        attribute: 'def'
+      };
+      const expectedAction = {
+        type: actionTypes.CREATE_CARD_SUCCESS,
+        payload: {
+          card
+        }
+      };
+      expect(cardActions.createCardSuccess(card)).toEqual(expectedAction);
     });
   });
 
@@ -35,7 +55,7 @@ describe('Card Actions', () => {
   const mockStore = configureMockStore(middleware);
 
   describe('loadCard', () => {
-    it('should dispatch action type LOAD_CARDS_SUCCESS after resolving a promise and the promise has array as its resolve', done => {
+    it('should dispatch action type LOAD_CARDS_SUCCESS after resolving a promise', done => {
       const expectedActions = [{
         type: actionTypes.LOAD_CARDS_SUCCESS,
       }];
@@ -50,6 +70,28 @@ describe('Card Actions', () => {
         });
 
     });
+  });
+
+  describe('saveCard', () => {
+    it('should dispatch action type CREATE_CARD_SUCCESS after resolving a promise', done => {
+      const expectedActions = [{
+        type: actionTypes.CREATE_CARD_SUCCESS,
+      }];
+      const store = mockStore(initialState, expectedActions, done);
+
+      const card = {
+        wisdom: 'abc',
+        attribute: 'def'
+      };
+      store.dispatch(cardActions.saveCard(card))
+        .then(() => {
+          const actions = store.getActions();
+          expect(actions.length).toEqual(expectedActions.length);
+          expect(actions[0].type).toEqual(expectedActions[0].type);
+          done();
+        });
+    });
+
   });
 
 

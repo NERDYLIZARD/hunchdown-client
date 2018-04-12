@@ -4,15 +4,26 @@
 import CardApi from '../../api/mockCardApi';
 import * as types from '../../constants/actionTypes';
 
-export const loadCardsSuccess = cards => ({type: types.LOAD_CARDS_SUCCESS, cards});
+export const loadCardsSuccess = cards => ({ type: types.LOAD_CARDS_SUCCESS, payload: { cards } });
+export const createCardSuccess = card => ({ type: types.CREATE_CARD_SUCCESS, payload: { card } });
 
 export const loadCards = () =>
   dispatch => {
     return CardApi.getAllCards()
     // return agents.Cards.requests.get()
       .then(cards => dispatch(loadCardsSuccess(cards)))
-      .catch(err => {
-        // dispatch LOAD_CARDS_FAILURE
-        throw(err);
-      });
+      .catch(error => {
+        throw(error)
+      })
   };
+
+export const saveCard = (card) =>
+  dispatch => {
+    return CardApi.saveCard(card)
+    // return agents.Cards.requests.post()
+      .then(card => dispatch(createCardSuccess(card)))
+      .catch(error => {
+        throw(error)
+      })
+  };
+
