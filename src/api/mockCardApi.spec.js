@@ -1,23 +1,25 @@
 /**
  * Created on 11-Apr-18.
  */
-import CardApi, { cards as _cards } from "./mockCardApi";
+import CardApi from "./mockCardApi";
+import MOCK_CARDS from './mockCards';
 
 describe('mock card api', () => {
 
+  let cards = [];
+
+  // re-declare cards every time before running a test
+  beforeEach(() => {
+    cards = Object.assign([], MOCK_CARDS);
+  });
+
   describe('loadAllCards()', () => {
     it('should return all cards', () => {
-      const cards = Object.assign([], _cards); // to avoid manipulating object passed in.
-
-      return CardApi.getAllCards()
-        .then(response => {
-          expect(response).toEqual(cards);
-        })
+      return expect(CardApi.getAllCards()).resolves.toEqual(cards);
     });
   });
 
   describe('saveCard()', () => {
-
     it('should return saved card with id as wisdom space to - e.g "a b" to "a-b"', () => {
       const newCard = {
         wisdom: 'abc Xyz.',
@@ -28,10 +30,7 @@ describe('mock card api', () => {
         wisdom: 'abc Xyz.',
         attribute: 'def',
       };
-      return CardApi.saveCard(newCard)
-        .then(response => {
-          expect(response).toEqual(expectedSavedCard);
-        })
+      return expect(CardApi.saveCard(newCard, cards)).resolves.toEqual(expectedSavedCard);
     });
 
     it('should reject a card containing no wisdom', () => {
@@ -39,10 +38,7 @@ describe('mock card api', () => {
         wisdom: '',
         attribute: 'def',
       };
-      return CardApi.saveCard(newCard)
-        .catch(error => {
-          expect(error).toBeDefined();
-        })
+      return expect(CardApi.saveCard(newCard)).rejects.toBeDefined();
     });
 
   });
