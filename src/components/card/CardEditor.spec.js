@@ -5,6 +5,8 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { CardEditor } from "./CardEditor";
 import CardForm from './CardForm';
+import { history } from '../app/configureStore';
+import { ConnectedRouter } from 'react-router-redux';
 
 
 describe("<CardEdior />", () => {
@@ -14,11 +16,20 @@ describe("<CardEdior />", () => {
 
   it('contains CardForm', () => {
     const wrapper = shallow(
-      <CardEditor
-        actions={actions}
-      />
+      <ConnectedRouter history={history}>
+        <CardEditor
+          actions={actions}
+        />
+      </ConnectedRouter>
     );
     expect(wrapper.find(CardForm).length).toBe(1);
   });
 
 });
+
+
+// describe("<CardEdior />", () => {
+//   it('placeholder', () => {
+//
+//   });
+// });

@@ -26,6 +26,11 @@ export class CardEditor extends Component {
     };
   }
 
+  componentDidMount() {
+    if (this.props.match.params.id)
+      console.log(this.props.match.params.id);
+  }
+
   updateCardState(e) {
     const field = e.target.name;
     const card = this.state.card;
@@ -37,13 +42,13 @@ export class CardEditor extends Component {
     e.preventDefault();
     this.setState({ isSaving: true });
     this.props.actions.saveCard(this.state.card)
-      .then(response => {
+      .then(() => {
         toastr.success('Card Saved');
         this.setState({ isSaving: false });
         this.props.history.push('/cards');
       })
       .catch(error => {
-        this.setState({errors: {wisdom: error }})
+        this.setState({errors: {wisdom: error }});
         this.setState({ isSaving: false });
     });
   }
@@ -67,6 +72,7 @@ CardEditor.propTypes = {
   // card: PropTypes.objectOf(CustomPropTypes.card).isRequired
   actions: PropTypes.object.isRequired,
   history: PropTypes.object,
+  match: PropTypes.object,
 };
 
 const mapStateToProps = ({}) => ({});
