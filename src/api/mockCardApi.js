@@ -29,6 +29,14 @@ class CardApi {
     });
   }
 
+  static getCard(id, cards = _cards) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(Object.assign({}, (cards.filter(card => card.id == id))[0]));
+      }, delay);
+    });
+  }
+
   static saveCard(card, cards = _cards) {
     card = Object.assign({}, card); // to avoid manipulating object passed in.
     return new Promise((resolve, reject) => {

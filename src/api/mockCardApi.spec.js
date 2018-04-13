@@ -13,9 +13,16 @@ describe('mock card api', () => {
     cards = Object.assign([], MOCK_CARDS);
   });
 
-  describe('loadAllCards()', () => {
+  describe('getAllCards()', () => {
     it('should return all cards', () => {
       return expect(CardApi.getAllCards()).resolves.toEqual(cards);
+    });
+  });
+
+  describe('getCard(id)', () => {
+    it('should return a card of passing id', () => {
+      const card = cards[0];
+      return expect(CardApi.getCard(card.id)).resolves.toEqual(card);
     });
   });
 
