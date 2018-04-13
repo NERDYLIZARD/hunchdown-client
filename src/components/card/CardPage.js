@@ -25,8 +25,21 @@ export class CardPage extends React.Component {
   }
 
   renderCards() {
-    return _.map(this.props.cards, card =>
-      <Card key={card.id} card={card}/>);
+    return (
+      <table className="table">
+        <thead>
+        <tr>
+          <th>Wisdom</th>
+          <th>Attribute</th>
+          <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        {_.map(this.props.cards, card =>
+          <Card key={card.id} card={card}/>)}
+        </tbody>
+      </table>
+    )
   }
 
   render() {

@@ -11,5 +11,23 @@ exports[`<CardPage /> should match snapshot 1`] = `
   >
     New Card
   </a>
+  <table
+    className="table"
+  >
+    <thead>
+      <tr>
+        <th>
+          Wisdom
+        </th>
+        <th>
+          Attribute
+        </th>
+        <th>
+           
+        </th>
+      </tr>
+    </thead>
+    <tbody />
+  </table>
 </div>
 `;

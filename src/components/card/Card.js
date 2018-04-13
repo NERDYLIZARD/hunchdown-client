@@ -6,7 +6,10 @@ import CustomPropTypes from '../../constants/customPropTypes';
 
 const Card = ({ card }) => {
   return (
-      <p><i>{card.wisdom}</i> - {card.attribute}</p>
+    <tr>
+      <td><i>{card.wisdom}</i></td>
+      <td>{card.attribute}</td>
+    </tr>
   );
 };
 
