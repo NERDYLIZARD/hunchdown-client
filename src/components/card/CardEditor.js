@@ -7,8 +7,8 @@ import { connect } from 'react-redux';
 import initialState from '../../constants/initialState';
 import * as actions from './cardActions';
 import { bindActionCreators } from 'redux';
+import CustomPropTypes from '../../constants/customPropTypes';
 import toastr from 'toastr';
-// import CustomPropTypes from '../../constants/customPropTypes';
 
 import CardForm from './CardForm';
 
@@ -27,8 +27,14 @@ export class CardEditor extends Component {
   }
 
   componentDidMount() {
+    // determine whether is creating card or editing card by :id
     if (this.props.match.params.id)
-      console.log(this.props.match.params.id);
+      this.props.actions.loadCard(this.props.match.params.id);
+  }
+
+  // nextProps call after updating activeCard state
+  componentWillReceiveProps(nextProps) {
+    this.setState({ card: Object.assign({}, nextProps.card) });
   }
 
   updateCardState(e) {
@@ -48,9 +54,9 @@ export class CardEditor extends Component {
         this.props.history.push('/cards');
       })
       .catch(error => {
-        this.setState({errors: {wisdom: error }});
+        this.setState({ errors: { wisdom: error } });
         this.setState({ isSaving: false });
-    });
+      });
   }
 
   render() {
@@ -69,13 +75,18 @@ export class CardEditor extends Component {
 }
 
 CardEditor.propTypes = {
-  // card: PropTypes.objectOf(CustomPropTypes.card).isRequired
+  card: CustomPropTypes.card,
   actions: PropTypes.object.isRequired,
   history: PropTypes.object,
   match: PropTypes.object,
 };
 
-const mapStateToProps = ({}) => ({});
+
+const mapStateToProps = (state, ownProps) => {
+  // determine whether is creating card or editing card by :id
+  const card = ownProps.match.params.id ? state.activeCard : initialState.card;
+  return { card };
+};
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(actions, dispatch)

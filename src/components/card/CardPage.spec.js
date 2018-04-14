@@ -41,8 +41,8 @@ describe("<CardPage />", () => {
 
   it("should match snapshot", () => {
     const middlewares = [thunk];
-
     const store = configureMockStore(middlewares)(initialState);
+
     const component = create(
       <Provider store={store}>
         <ConnectedRouter history={history}>
