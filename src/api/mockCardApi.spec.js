@@ -50,4 +50,21 @@ describe('mock card api', () => {
 
   });
 
+  describe('deleteCard()', () => {
+    it('should delete card with specified id', () => {
+      const id = cards[0].id;
+      const cardsAfterDeletion = [ cards[1], cards[2] ];
+
+      return CardApi.deleteCard(id, cards)
+        .then(() => {
+          expect(cards).toEqual(cardsAfterDeletion);
+        });
+    });
+    it('should return nothing', () => {
+      const id = cards[0].id;
+      return expect(CardApi.deleteCard(id, cards)).resolves.toBeUndefined();
+    });
+  });
+
+
 });

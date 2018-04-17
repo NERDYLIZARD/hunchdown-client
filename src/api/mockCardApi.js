@@ -63,6 +63,16 @@ class CardApi {
     });
   }
 
+  static deleteCard(cardId, cards = _cards) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const indexOfCardToDelete = cards.findIndex(card => card.id == cardId);
+        cards.splice(indexOfCardToDelete, 1);
+        resolve();
+      }, delay);
+    });
+  }
+
 }
 
 export default CardApi;
