@@ -50,6 +50,22 @@ describe('Card Actions', () => {
       expect(cardActions.loadCardSuccess(card)).toEqual(expectedAction);
     });
   });
+  describe('loadCardSuccess', () => {
+    it('should creates an action typed LOAD_CARD_SUCCESS and having card as a payload', () => {
+      const card = {
+        id: 'abc',
+        wisdom: 'abc',
+        attribute: '123'
+      };
+      const expectedAction = {
+        type: actionTypes.LOAD_CARD_SUCCESS,
+        payload: {
+          card
+        }
+      };
+      expect(cardActions.loadCardSuccess(card)).toEqual(expectedAction);
+    });
+  });
 
   describe('createCardSuccess', () => {
     it('should creates an action typed CREATE_CARD_SUCCESS and having card as a payload', () => {
@@ -84,6 +100,22 @@ describe('Card Actions', () => {
     });
   });
 
+  describe('deleteCardSuccess', () => {
+    it('should creates an action typed DELETE_CARD_SUCCESS and having card as a payload', () => {
+      const card = {
+        id: 'abc',
+        wisdom: 'abc',
+        attribute: 'def'
+      };
+      const expectedAction = {
+        type: actionTypes.DELETE_CARD_SUCCESS,
+        payload: {
+          card
+        }
+      };
+      expect(cardActions.deleteCardSuccess(card)).toEqual(expectedAction);
+    });
+  });
 
 
   /**********
@@ -167,5 +199,29 @@ describe('Card Actions', () => {
         });
     });
   });
+
+  describe('deleteCard', () => {
+    it('should dispatch action type DELETE_CARD_SUCCESS after resolving a promise', done => {
+      const expectedActions = [{
+        type: actionTypes.DELETE_CARD_SUCCESS,
+      }];
+      const card = {
+        id: 'abc',
+        wisdom: 'abc',
+        attribute: 'def'
+      };
+
+      const store = mockStore(initialState, expectedActions, done);
+
+      store.dispatch(cardActions.deleteCard(card))
+        .then(() => {
+          const actions = store.getActions();
+          expect(actions.length).toEqual(expectedActions.length);
+          expect(actions[0].type).toEqual(expectedActions[0].type);
+          done();
+        });
+    });
+  });
+
 
 });

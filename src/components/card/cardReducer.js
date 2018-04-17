@@ -2,7 +2,12 @@
  * Created on 27-Mar-18.
  */
 import initialState from "../../constants/initialState";
-import { CREATE_CARD_SUCCESS, LOAD_CARDS_SUCCESS, UPDATE_CARD_SUCCESS } from "../../constants/actionTypes";
+import {
+  CREATE_CARD_SUCCESS,
+  DELETE_CARD_SUCCESS,
+  LOAD_CARDS_SUCCESS,
+  UPDATE_CARD_SUCCESS
+} from "../../constants/actionTypes";
 import _ from 'lodash';
 
 export default function cardReducer(state = initialState.cards, action) {
@@ -16,6 +21,9 @@ export default function cardReducer(state = initialState.cards, action) {
 
     case UPDATE_CARD_SUCCESS:
       return { ...state, [action.payload.card.id]: action.payload.card };
+
+    case DELETE_CARD_SUCCESS:
+      return _.omit(state, action.payload.card.id);
 
     default:
       return state;

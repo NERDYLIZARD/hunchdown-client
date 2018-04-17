@@ -18,10 +18,16 @@ export class CardPage extends React.Component {
 
   constructor(props, context) {
     super(props, context);
+
+    this.deleteCard = this.deleteCard.bind(this);
   }
 
   componentDidMount() {
     this.props.actions.loadCards();
+  }
+
+  deleteCard(card) {
+    this.props.actions.deleteCard(card);
   }
 
   renderCards() {
@@ -32,11 +38,16 @@ export class CardPage extends React.Component {
           <th>Wisdom</th>
           <th>Attribute</th>
           <th>&nbsp;</th>
+          <th>&nbsp;</th>
         </tr>
         </thead>
         <tbody>
         {_.map(this.props.cards, card =>
-          <Card key={card.id} card={card}/>)}
+          <Card
+            key={card.id}
+            card={card}
+            onDelete={this.deleteCard}
+          />)}
         </tbody>
       </table>
     )

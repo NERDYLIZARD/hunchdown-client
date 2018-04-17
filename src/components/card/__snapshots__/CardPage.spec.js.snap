@@ -25,6 +25,9 @@ exports[`<CardPage /> should match snapshot 1`] = `
         <th>
            
         </th>
+        <th>
+           
+        </th>
       </tr>
     </thead>
     <tbody />

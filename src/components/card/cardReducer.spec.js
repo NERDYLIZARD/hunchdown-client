@@ -92,5 +92,36 @@ describe('Card Reducer', () => {
     expect(newState).toEqual(expectedState);
   });
 
+  it('should update state on UPDATE_CARD_SUCCESS action', () => {
+    const currentState = {
+      abc: {
+        id: 'abc',
+        wisdom: 'abc',
+        attribute: '123'
+      },
+      def: {
+        id: 'def',
+        wisdom: 'def',
+        attribute: '456'
+      },
+    };
+    const deletingCard = {
+      id: 'def',
+      wisdom: 'def',
+      attribute: '456'
+    };
+    const expectedState = {
+      abc: {
+        id: 'abc',
+        wisdom: 'abc',
+        attribute: '123'
+      },
+    };
+    const action = actions.deleteCardSuccess(deletingCard);
+    const newState = reducer(currentState, action);
+
+    expect(newState).toEqual(expectedState);
+  });
+
 
 });

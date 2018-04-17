@@ -8,6 +8,7 @@ export const loadCardsSuccess = cards => ({ type: types.LOAD_CARDS_SUCCESS, payl
 export const loadCardSuccess = card => ({ type: types.LOAD_CARD_SUCCESS, payload: { card } });
 export const createCardSuccess = card => ({ type: types.CREATE_CARD_SUCCESS, payload: { card } });
 export const updateCardSuccess = card => ({ type: types.UPDATE_CARD_SUCCESS, payload: { card } });
+export const deleteCardSuccess = card => ({ type: types.DELETE_CARD_SUCCESS, payload: { card } });
 
 export const loadCards = () =>
   dispatch => {
@@ -40,3 +41,11 @@ export const saveCard = (card) =>
       });
   };
 
+export const deleteCard = (card) =>
+  dispatch => {
+    return CardApi.deleteCard(card.id)
+      .then(() => dispatch(deleteCardSuccess(card)))
+      .catch(error => {
+        throw(error)
+      });
+  };
