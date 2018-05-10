@@ -30,6 +30,10 @@ const Cards = {
     requests.get(`/cards/${id}`),
   delete: id =>
     requests.delete(`/cards/${id}`),
+  create: card =>
+    requests.post('/cards', card),
+  update: card =>
+    requests.patch(`/cards/${card.id}`, card),
 };
 
 export default {

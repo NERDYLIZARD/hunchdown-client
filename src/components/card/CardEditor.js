@@ -47,7 +47,12 @@ export class CardEditor extends Component {
   saveCard(e) {
     e.preventDefault();
     this.setState({ isSaving: true });
-    this.props.actions.saveCard(this.state.card)
+
+    const saveCard = this.props.match.params.id ?
+      this.props.actions.updateCard(this.state.card) :
+      this.props.actions.createCard(this.state.card);
+
+    saveCard
       .then(() => {
         toastr.success('Card Saved');
         this.setState({ isSaving: false });

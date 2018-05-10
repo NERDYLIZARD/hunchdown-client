@@ -1,7 +1,6 @@
 /**
  * Created on 27-Mar-18.
  */
-import CardApi from '../../api/mockCardApi';
 import * as types from '../../constants/actionTypes';
 import agent from '../../agent';
 
@@ -29,13 +28,19 @@ export const loadCard = (id) =>
       });
   };
 
-export const saveCard = (card) =>
+export const createCard = (card) =>
   dispatch => {
-    return CardApi.saveCard(card)
-    // return agents.Cards.requests.post()
-      .then(savedCard => card.id ?
-        dispatch(updateCardSuccess(savedCard)) :
-        dispatch(createCardSuccess(savedCard)))
+    return agent.Cards.create(card)
+      .then(savedCard => dispatch(createCardSuccess(savedCard)))
+      .catch(error => {
+        throw(error)
+      });
+  };
+
+export const updateCard = (card) =>
+  dispatch => {
+    return agent.Cards.update(card)
+      .then(savedCard => dispatch(updateCardSuccess(savedCard)))
       .catch(error => {
         throw(error)
       });
