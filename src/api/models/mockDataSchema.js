@@ -12,7 +12,7 @@ export default {
       "items": {
         "type": "object",
         "properties": {
-          "_id": {
+          "id": {
             "type": "string",
             "faker": "random.uuid",
             "unique": true,
@@ -30,7 +30,7 @@ export default {
             "faker": "name.findName"
           }
         },
-        "required": ["_id", "wisdom"]
+        "required": ["id", "wisdom"]
       }
     }
   },

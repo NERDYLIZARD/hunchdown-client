@@ -9,7 +9,7 @@
     "preinstall": "node tools/nodeVersionCheck.js",
     "start-message": "babel-node tools/startMessage.js",
     "prestart": "npm run start-message",
-    "start": "concurrently -k -r -s first \"npm run test:watch\" \"npm run start-mockapi\" \"npm run open:src\" \"npm run lint:watch\"",
+    "start": "concurrently -k -r -s first \"npm run test:watch\" \"npm run open:src\" \"npm run lint:watch\"",
     "open:src": "babel-node tools/srcServer.js",
     "open:dist": "babel-node tools/distServer.js",
     "lint": "esw webpack.config.* src tools --color",
@@ -27,11 +27,12 @@
     "analyze-bundle": "babel-node ./tools/analyzeBundle.js",
     "generate-mock-data": "babel-node tools/generateMockData.js",
     "prestart-mockapi": "npm run generate-mock-data",
-    "start-mockapi": "json-server --watch src/api/db.json --port 3002"
+    "start-mockapi": "json-server --watch src/api/db.json --routes src/api/routes.json --port 3002"
   },
   "author": "Sithideth Bouasavanh",
   "license": "MIT",
   "dependencies": {
+    "axios": "0.18.0",
     "lodash": "4.17.5",
     "object-assign": "4.1.0",
     "react": "16.2.0",

@@ -3,6 +3,7 @@
  */
 import CardApi from '../../api/mockCardApi';
 import * as types from '../../constants/actionTypes';
+import agent from '../../agent';
 
 export const loadCardsSuccess = cards => ({ type: types.LOAD_CARDS_SUCCESS, payload: { cards } });
 export const loadCardSuccess = card => ({ type: types.LOAD_CARD_SUCCESS, payload: { card } });
@@ -12,8 +13,7 @@ export const deleteCardSuccess = card => ({ type: types.DELETE_CARD_SUCCESS, pay
 
 export const loadCards = () =>
   dispatch => {
-    return CardApi.getAllCards()
-    // return agents.Cards.requests.get()
+    return agent.Cards.find()
       .then(cards => dispatch(loadCardsSuccess(cards)))
       .catch(error => {
         throw(error)
@@ -22,7 +22,7 @@ export const loadCards = () =>
 
 export const loadCard = (id) =>
   dispatch => {
-    return CardApi.getCard(id)
+    return agent.Cards.get(id)
       .then(card => dispatch(loadCardSuccess(card)))
       .catch(error => {
         throw(error)
@@ -43,7 +43,7 @@ export const saveCard = (card) =>
 
 export const deleteCard = (card) =>
   dispatch => {
-    return CardApi.deleteCard(card.id)
+    return agent.Cards.delete(card.id)
       .then(() => dispatch(deleteCardSuccess(card)))
       .catch(error => {
         throw(error)
