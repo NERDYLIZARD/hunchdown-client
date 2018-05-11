@@ -18,17 +18,17 @@ describe('Card Reducer', () => {
   it('should update state on LOAD_CARDS_SUCCESS action and return the normalized version of cards', () => {
     const cards = [
       {
-        id: 'abc',
+        slug: 'abc',
         wisdom: 'abc',
         attribute: '123'
       },
       {
-        id: 'def',
+        slug: 'def',
         wisdom: 'def',
         attribute: '456'
       }
     ];
-    const expectedState = _.mapKeys(cards, 'id');
+    const expectedState = _.mapKeys(cards, 'slug');
     const action = actions.loadCardsSuccess(cards);
     const newState = reducer(initialState.cards, action);
 
@@ -38,24 +38,24 @@ describe('Card Reducer', () => {
   it('should update state on CREATE_CARD_SUCCESS action', () => {
     const currentState = {
       abc: {
-        id: 'abc',
+        slug: 'abc',
         wisdom: 'abc',
         attribute: '123'
       },
     };
     const newCard = {
-      id: 'ghi',
+      slug: 'ghi',
       wisdom: 'ghi',
       attribute: '789'
     };
     const expectedState = {
       abc: {
-        id: 'abc',
+        slug: 'abc',
         wisdom: 'abc',
         attribute: '123'
       },
       ghi: {
-        id: 'ghi',
+        slug: 'ghi',
         wisdom: 'ghi',
         attribute: '789'
       }
@@ -69,19 +69,19 @@ describe('Card Reducer', () => {
   it('should update state on UPDATE_CARD_SUCCESS action', () => {
     const currentState = {
       abc: {
-        id: 'abc',
+        slug: 'abc',
         wisdom: 'abc',
         attribute: '123'
       },
     };
     const updatingCard = {
-      id: 'abc',
+      slug: 'abc',
       wisdom: 'ghi',
       attribute: '789'
     };
     const expectedState = {
       abc: {
-        id: 'abc',
+        slug: 'abc',
         wisdom: 'ghi',
         attribute: '789'
       }
@@ -95,24 +95,24 @@ describe('Card Reducer', () => {
   it('should update state on UPDATE_CARD_SUCCESS action', () => {
     const currentState = {
       abc: {
-        id: 'abc',
+        slug: 'abc',
         wisdom: 'abc',
         attribute: '123'
       },
       def: {
-        id: 'def',
+        slug: 'def',
         wisdom: 'def',
         attribute: '456'
       },
     };
     const deletingCard = {
-      id: 'def',
+      slug: 'def',
       wisdom: 'def',
       attribute: '456'
     };
     const expectedState = {
       abc: {
-        id: 'abc',
+        slug: 'abc',
         wisdom: 'abc',
         attribute: '123'
       },

@@ -14,12 +14,12 @@ describe('Card Actions', () => {
     it('should creates an action typed LOAD_CARDS_SUCCESS and having cards[] as a payload', () => {
       const cards = [
         {
-          id: 'abc',
+          slug: 'abc',
           wisdom: 'abc',
           attribute: '123'
         },
         {
-          id: 'def',
+          slug: 'def',
           wisdom: 'def',
           attribute: '456'
         }
@@ -37,7 +37,7 @@ describe('Card Actions', () => {
   describe('loadCardSuccess', () => {
     it('should creates an action typed LOAD_CARD_SUCCESS and having card as a payload', () => {
       const card = {
-        id: 'abc',
+        slug: 'abc',
         wisdom: 'abc',
         attribute: '123'
       };
@@ -53,7 +53,7 @@ describe('Card Actions', () => {
   describe('loadCardSuccess', () => {
     it('should creates an action typed LOAD_CARD_SUCCESS and having card as a payload', () => {
       const card = {
-        id: 'abc',
+        slug: 'abc',
         wisdom: 'abc',
         attribute: '123'
       };
@@ -86,7 +86,7 @@ describe('Card Actions', () => {
   describe('updateCardSuccess', () => {
     it('should creates an action typed UPDATE_CARD_SUCCESS and having card as a payload', () => {
       const card = {
-        id: 'abc',
+        slug: 'abc',
         wisdom: 'abc',
         attribute: 'def'
       };
@@ -103,7 +103,7 @@ describe('Card Actions', () => {
   describe('deleteCardSuccess', () => {
     it('should creates an action typed DELETE_CARD_SUCCESS and having card as a payload', () => {
       const card = {
-        id: 'abc',
+        slug: 'abc',
         wisdom: 'abc',
         attribute: 'def'
       };
@@ -149,7 +149,7 @@ describe('Card Actions', () => {
       }];
       const store = mockStore(initialState, expectedActions, done);
 
-      store.dispatch(cardActions.loadCard('id'))
+      store.dispatch(cardActions.loadCard('slug'))
         .then(() => {
           const actions = store.getActions();
           expect(actions.length).toEqual(expectedActions.length);
@@ -159,7 +159,7 @@ describe('Card Actions', () => {
     });
   });
 
-  describe('saveCard', () => {
+  describe('createCard', () => {
     it('should dispatch action type CREATE_CARD_SUCCESS after resolving a promise if it is CREATE operation', done => {
       const expectedActions = [{
         type: actionTypes.CREATE_CARD_SUCCESS,
@@ -170,7 +170,7 @@ describe('Card Actions', () => {
         wisdom: 'abc',
         attribute: 'def'
       };
-      store.dispatch(cardActions.saveCard(card))
+      store.dispatch(cardActions.createCard(card))
         .then(() => {
           const actions = store.getActions();
           expect(actions.length).toEqual(expectedActions.length);
@@ -178,6 +178,9 @@ describe('Card Actions', () => {
           done();
         });
     });
+  });
+
+  describe('updateCard', () => {
 
     it('should dispatch action type UPDATE_CARD_SUCCESS after resolving a promise if it is UPDATE operation', done => {
       const expectedActions = [{
@@ -186,11 +189,11 @@ describe('Card Actions', () => {
       const store = mockStore(initialState, expectedActions, done);
 
       const card = {
-        id: 'abc',
+        slug: 'abc',
         wisdom: 'abc',
         attribute: 'def'
       };
-      store.dispatch(cardActions.saveCard(card))
+      store.dispatch(cardActions.updateCard(card))
         .then(() => {
           const actions = store.getActions();
           expect(actions.length).toEqual(expectedActions.length);
@@ -206,7 +209,7 @@ describe('Card Actions', () => {
         type: actionTypes.DELETE_CARD_SUCCESS,
       }];
       const card = {
-        id: 'abc',
+        slug: 'abc',
         wisdom: 'abc',
         attribute: 'def'
       };

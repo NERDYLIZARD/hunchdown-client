@@ -19,9 +19,9 @@ export const loadCards = () =>
       });
   };
 
-export const loadCard = (id) =>
+export const loadCard = (slug) =>
   dispatch => {
-    return agent.Cards.get(id)
+    return agent.Cards.get(slug)
       .then(card => dispatch(loadCardSuccess(card)))
       .catch(error => {
         throw(error)
@@ -48,7 +48,7 @@ export const updateCard = (card) =>
 
 export const deleteCard = (card) =>
   dispatch => {
-    return agent.Cards.delete(card.id)
+    return agent.Cards.delete(card.slug)
       .then(() => dispatch(deleteCardSuccess(card)))
       .catch(error => {
         throw(error)

@@ -11,7 +11,7 @@ const Card = ({ card, onDelete }) => {
     <tr>
       <td><i>{card.wisdom}</i></td>
       <td>{card.attribute}</td>
-      <td><Link to={`/cards/edit/${card.id}`}>Edit</Link></td>
+      <td><Link to={`/cards/edit/${card.slug}`}>Edit</Link></td>
       <td><Link to="#" onClick={() => onDelete(card)}>Delete</Link></td>
     </tr>
   );

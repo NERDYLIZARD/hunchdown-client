@@ -20,7 +20,12 @@ jsf.option({
   optionalsProbability: 0.8
 });
 
-const json = JSON.stringify(jsf(mockDataSchema));
+const data = (jsf(mockDataSchema));
+
+// card.id and card.slug share the same value to create an illusion of query by slug as id
+data.cards.map(card => card['id'] = card.slug);
+
+const json = JSON.stringify(data);
 
 fs.writeFile("./src/api/db.json", json, (err) => {
   if (err) {

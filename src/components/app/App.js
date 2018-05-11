@@ -23,7 +23,7 @@ class App extends React.Component {
         </div>
         <Switch>
           <Route exact path="/" component={HomePage} />
-          <Route path="/cards/edit/:id" component={CardEditor} />
+          <Route path="/cards/edit/:slug" component={CardEditor} />
           <Route path="/cards/new" component={CardEditor} />
           <Route path="/cards" component={CardPage} />
           <Route component={NotFoundPage} />

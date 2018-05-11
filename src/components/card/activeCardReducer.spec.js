@@ -15,7 +15,7 @@ describe('Active Card Reducer', () => {
 
   it('should update state on LOAD_CARD_SUCCESS action and return the normalized version of card', () => {
     const card = {
-      id: 'abc',
+      slug: 'abc',
       wisdom: 'abc',
       attribute: '123'
     };

@@ -27,9 +27,9 @@ export class CardEditor extends Component {
   }
 
   componentDidMount() {
-    // determine whether is creating card or editing card by :id
-    if (this.props.match.params.id)
-      this.props.actions.loadCard(this.props.match.params.id);
+    // determine whether is creating card or editing card by :slug
+    if (this.props.match.params.slug)
+      this.props.actions.loadCard(this.props.match.params.slug);
   }
 
   // nextProps call after updating activeCard state
@@ -48,7 +48,7 @@ export class CardEditor extends Component {
     e.preventDefault();
     this.setState({ isSaving: true });
 
-    const saveCard = this.props.match.params.id ?
+    const saveCard = this.props.match.params.slug ?
       this.props.actions.updateCard(this.state.card) :
       this.props.actions.createCard(this.state.card);
 
@@ -88,8 +88,8 @@ CardEditor.propTypes = {
 
 
 const mapStateToProps = (state, ownProps) => {
-  // determine whether is creating card or editing card by :id
-  const card = ownProps.match.params.id ? state.activeCard : initialState.card;
+  // determine whether is creating card or editing card by :slug
+  const card = ownProps.match.params.slug ? state.activeCard : initialState.card;
   return { card };
 };
 

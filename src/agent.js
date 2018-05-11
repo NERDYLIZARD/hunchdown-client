@@ -21,19 +21,19 @@ const requests = {
 };
 
 
-const limit = (page, perPage) => `?page=${page ? page * perPage : 1}&perPage=${perPage}`;
+const limit = (page, perPage) => `page=${page ? page * perPage : 1}&perPage=${perPage}`;
 
 const Cards = {
   find: page =>
     requests.get(`/cards?${limit(page, 12)}`),
-  get: id =>
-    requests.get(`/cards/${id}`),
-  delete: id =>
-    requests.delete(`/cards/${id}`),
+  get: slug =>
+    requests.get(`/cards/${slug}`),
+  delete: slug =>
+    requests.delete(`/cards/${slug}`),
   create: card =>
     requests.post('/cards', card),
   update: card =>
-    requests.patch(`/cards/${card.id}`, card),
+    requests.patch(`/cards/${card.slug}`, card),
 };
 
 export default {

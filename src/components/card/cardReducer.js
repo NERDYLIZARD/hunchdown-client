@@ -13,17 +13,17 @@ import _ from 'lodash';
 export default function cardReducer(state = initialState.cards, action) {
   switch (action.type) {
     case LOAD_CARDS_SUCCESS:
-      // turn array to associative array having 'id' as key
-      return _.mapKeys(action.payload.cards, 'id');
+      // turn array to associative array having 'slug' as key
+      return _.mapKeys(action.payload.cards, 'slug');
 
     case CREATE_CARD_SUCCESS:
-      return { ...state, [action.payload.card.id]: action.payload.card };
+      return { ...state, [action.payload.card.slug]: action.payload.card };
 
     case UPDATE_CARD_SUCCESS:
-      return { ...state, [action.payload.card.id]: action.payload.card };
+      return { ...state, [action.payload.card.slug]: action.payload.card };
 
     case DELETE_CARD_SUCCESS:
-      return _.omit(state, action.payload.card.id);
+      return _.omit(state, action.payload.card.slug);
 
     default:
       return state;

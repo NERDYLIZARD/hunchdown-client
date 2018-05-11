@@ -44,7 +44,7 @@ export class CardPage extends React.Component {
         <tbody>
         {_.map(this.props.cards, card =>
           <Card
-            key={card.id}
+            key={card.slug}
             card={card}
             onDelete={this.deleteCard}
           />)}
