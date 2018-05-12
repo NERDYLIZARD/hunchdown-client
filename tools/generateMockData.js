@@ -10,7 +10,7 @@
 import fs from 'fs';
 import faker from 'faker';
 import jsf from 'json-schema-faker';
-import mockDataSchema from '../src/api/models/mockDataSchema';
+import mockDataSchema from '../src/api/mockDataSchema';
 import { chalkError, chalkSuccess } from './chalkConfig';
 
 
@@ -21,10 +21,8 @@ jsf.option({
 });
 
 const data = (jsf(mockDataSchema));
-
 // card.id and card.slug share the same value to create an illusion of query by slug as id
 data.cards.map(card => card['id'] = card.slug);
-
 const json = JSON.stringify(data);
 
 fs.writeFile("./src/api/db.json", json, (err) => {

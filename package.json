@@ -27,7 +27,7 @@
     "analyze-bundle": "babel-node ./tools/analyzeBundle.js",
     "generate-mock-data": "babel-node tools/generateMockData.js",
     "prestart-mockapi": "npm run generate-mock-data",
-    "start-mockapi": "json-server --watch src/api/db.json --routes src/api/routes.json --port 3002"
+    "start-mockapi": "json-server --watch src/api/db.json"
   },
   "author": "Sithideth Bouasavanh",
   "license": "MIT",

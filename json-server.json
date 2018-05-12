@@ -1,0 +1,6 @@
+{
+  "port": "3002",
+  "delay": 200,
+  "routes": "src/api/routes.json",
+  "middlewares": ["src/api/json-server-middlewares/createCard.js"]
+}

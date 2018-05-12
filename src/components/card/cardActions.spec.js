@@ -7,22 +7,16 @@ import * as actionTypes from '../../constants/actionTypes';
 import configureMockStore from 'redux-mock-store';
 import thunk from "redux-thunk";
 import initialState from "../../constants/initialState";
+import mockDataFactory from '../../utils/test/mockDataFactory';
+
 
 describe('Card Actions', () => {
 
   describe('loadCardsSuccess', () => {
     it('should creates an action typed LOAD_CARDS_SUCCESS and having cards[] as a payload', () => {
       const cards = [
-        {
-          slug: 'abc',
-          wisdom: 'abc',
-          attribute: '123'
-        },
-        {
-          slug: 'def',
-          wisdom: 'def',
-          attribute: '456'
-        }
+        mockDataFactory.createCard(),
+        mockDataFactory.createCard()
       ];
       const expectedAction = {
         type: actionTypes.LOAD_CARDS_SUCCESS,
@@ -36,11 +30,7 @@ describe('Card Actions', () => {
 
   describe('loadCardSuccess', () => {
     it('should creates an action typed LOAD_CARD_SUCCESS and having card as a payload', () => {
-      const card = {
-        slug: 'abc',
-        wisdom: 'abc',
-        attribute: '123'
-      };
+      const card = mockDataFactory.createCard();
       const expectedAction = {
         type: actionTypes.LOAD_CARD_SUCCESS,
         payload: {
@@ -52,11 +42,7 @@ describe('Card Actions', () => {
   });
   describe('loadCardSuccess', () => {
     it('should creates an action typed LOAD_CARD_SUCCESS and having card as a payload', () => {
-      const card = {
-        slug: 'abc',
-        wisdom: 'abc',
-        attribute: '123'
-      };
+      const card = mockDataFactory.createCard();
       const expectedAction = {
         type: actionTypes.LOAD_CARD_SUCCESS,
         payload: {
@@ -69,10 +55,7 @@ describe('Card Actions', () => {
 
   describe('createCardSuccess', () => {
     it('should creates an action typed CREATE_CARD_SUCCESS and having card as a payload', () => {
-      const card = {
-        wisdom: 'abc',
-        attribute: 'def'
-      };
+      const card = mockDataFactory.omitIdentifier(mockDataFactory.createCard(), 'slug');
       const expectedAction = {
         type: actionTypes.CREATE_CARD_SUCCESS,
         payload: {
@@ -85,11 +68,7 @@ describe('Card Actions', () => {
 
   describe('updateCardSuccess', () => {
     it('should creates an action typed UPDATE_CARD_SUCCESS and having card as a payload', () => {
-      const card = {
-        slug: 'abc',
-        wisdom: 'abc',
-        attribute: 'def'
-      };
+      const card = mockDataFactory.createCard();
       const expectedAction = {
         type: actionTypes.UPDATE_CARD_SUCCESS,
         payload: {
@@ -102,11 +81,7 @@ describe('Card Actions', () => {
 
   describe('deleteCardSuccess', () => {
     it('should creates an action typed DELETE_CARD_SUCCESS and having card as a payload', () => {
-      const card = {
-        slug: 'abc',
-        wisdom: 'abc',
-        attribute: 'def'
-      };
+      const card = mockDataFactory.createCard();
       const expectedAction = {
         type: actionTypes.DELETE_CARD_SUCCESS,
         payload: {
@@ -149,7 +124,7 @@ describe('Card Actions', () => {
       }];
       const store = mockStore(initialState, expectedActions, done);
 
-      store.dispatch(cardActions.loadCard('slug'))
+      store.dispatch(cardActions.loadCard('130b700d-5ecc-4a33-9cce-c386e557b096'))
         .then(() => {
           const actions = store.getActions();
           expect(actions.length).toEqual(expectedActions.length);
@@ -166,10 +141,8 @@ describe('Card Actions', () => {
       }];
       const store = mockStore(initialState, expectedActions, done);
 
-      const card = {
-        wisdom: 'abc',
-        attribute: 'def'
-      };
+      const card = mockDataFactory.omitIdentifier(mockDataFactory.createCard(), 'slug');
+
       store.dispatch(cardActions.createCard(card))
         .then(() => {
           const actions = store.getActions();
@@ -188,11 +161,7 @@ describe('Card Actions', () => {
       }];
       const store = mockStore(initialState, expectedActions, done);
 
-      const card = {
-        slug: 'abc',
-        wisdom: 'abc',
-        attribute: 'def'
-      };
+      const card = mockDataFactory.createCard();
       store.dispatch(cardActions.updateCard(card))
         .then(() => {
           const actions = store.getActions();
@@ -208,11 +177,7 @@ describe('Card Actions', () => {
       const expectedActions = [{
         type: actionTypes.DELETE_CARD_SUCCESS,
       }];
-      const card = {
-        slug: 'abc',
-        wisdom: 'abc',
-        attribute: 'def'
-      };
+      const card = mockDataFactory.createCard();
 
       const store = mockStore(initialState, expectedActions, done);
 
