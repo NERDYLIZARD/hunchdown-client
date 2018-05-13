@@ -4,8 +4,10 @@
 const faker = require('faker');
 
 module.exports = function (req, res, next) {
-  // if it POST /cards manual generate id = slug for an illusion of having slug as id
-  if (req.method === 'POST' && req.url === '/cards/') {
+
+  // if it is POST /cards route, manually generate id = slug for an illusion of having slug as id
+  const resource = req.url.split('/')[1];
+  if (req.method === 'POST' && resource === 'cards') {
     const id = faker.random.uuid();
     req.body['id'] = id;
     req.body['slug'] = id;

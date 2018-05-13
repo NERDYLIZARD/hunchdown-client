@@ -7,35 +7,18 @@ const API_ROOT = 'http://localhost:3002';
 
 const responseData = response => response.data;
 
-const requests = {
-  delete: url =>
-    axios.delete(`${API_ROOT}${url}`).then(responseData),
-  get: url =>
-    axios.get(`${API_ROOT}${url}`).then(responseData),
-  put: (url, body) =>
-    axios.put(`${API_ROOT}${url}`, body).then(responseData),
-  patch: (url, body) =>
-    axios.patch(`${API_ROOT}${url}`, body).then(responseData),
-  post: (url, body) =>
-    axios.post(`${API_ROOT}${url}`, body).then(responseData)
-};
+const get = url =>
+  axios.get(`${API_ROOT}${url}`).then(responseData);
+const post = (url, body) =>
+  axios.post(`${API_ROOT}${url}`, body).then(responseData);
+const put = (url, body) =>
+  axios.put(`${API_ROOT}${url}`, body).then(responseData);
+const patch = (url, body) =>
+  axios.patch(`${API_ROOT}${url}`, body).then(responseData);
+const del = url =>
+  axios.delete(`${API_ROOT}${url}`).then(responseData);
 
-
-const limit = (page, perPage) => `page=${page ? page * perPage : 1}&perPage=${perPage}`;
-
-const Cards = {
-  find: page =>
-    requests.get(`/cards?${limit(page, 12)}`),
-  get: slug =>
-    requests.get(`/cards/${slug}`),
-  delete: slug =>
-    requests.delete(`/cards/${slug}`),
-  create: card =>
-    requests.post('/cards', card),
-  update: card =>
-    requests.patch(`/cards/${card.slug}`, card),
-};
 
 export default {
-  Cards
+  get, post, put, patch, delete: del
 };
