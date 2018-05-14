@@ -8,7 +8,6 @@ import initialState from '../../constants/initialState';
 import * as actions from './cardActions';
 import { bindActionCreators } from 'redux';
 import CustomPropTypes from '../../constants/customPropTypes';
-import toastr from 'toastr';
 
 import CardForm from './CardForm';
 
@@ -48,20 +47,25 @@ export class CardEditor extends Component {
     e.preventDefault();
     this.setState({ isSaving: true });
 
-    const saveCard = this.props.match.params.slug ?
-      this.props.actions.updateCard(this.state.card) :
+    if (this.props.match.params.slug)
+      this.props.actions.updateCard(this.state.card);
+    else
       this.props.actions.createCard(this.state.card);
 
-    saveCard
-      .then(() => {
-        toastr.success('Card Saved');
-        this.setState({ isSaving: false });
-        this.props.history.push('/cards');
-      })
-      .catch(error => {
-        this.setState({ errors: { wisdom: error } });
-        this.setState({ isSaving: false });
-      });
+    // const saveCard = this.props.match.params.slug ?
+    //   this.props.actions.updateCard(this.state.card) :
+    //   this.props.actions.createCard(this.state.card);
+
+    // saveCard
+    //   .then(() => {
+    //     toastr.success('Card Saved');
+    //     this.setState({ isSaving: false });
+    //     this.props.history.push('/cards');
+    //   })
+    //   .catch(error => {
+    //     this.setState({ errors: { wisdom: error } });
+    //     this.setState({ isSaving: false });
+    //   });
   }
 
   render() {
