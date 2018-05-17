@@ -53,7 +53,7 @@ export function* createCard(action) {
   try {
     const data = yield call(Services.create, action.card);
     yield put(createCardSuccess(data));
-    yield put(push('/cards'));
+    yield put(push(action.redirectLocation));
   } catch (error) {
     throw error;
   }
@@ -63,7 +63,7 @@ export function* updateCard(action) {
   try {
     const data = yield call(Services.update, action.card);
     yield put(updateCardSuccess(data));
-    yield put(push('/cards'));
+    yield put(push(action.redirectLocation));
   } catch (error) {
     throw error;
   }

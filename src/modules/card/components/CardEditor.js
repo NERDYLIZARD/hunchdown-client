@@ -48,9 +48,9 @@ export class CardEditor extends Component {
     this.setState({ isSaving: true });
 
     if (this.props.match.params.slug)
-      this.props.actions.updateCard(this.state.card);
+      this.props.actions.updateCard({ card: this.state.card, redirectLocation: '/cards' });
     else
-      this.props.actions.createCard(this.state.card);
+      this.props.actions.createCard({ card: this.state.card, redirectLocation: '/cards' });
   }
 
   render() {
