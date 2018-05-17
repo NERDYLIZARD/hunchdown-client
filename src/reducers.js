@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
+import { reducer as formReducer } from 'redux-form';
 import cards from './modules/card/reducer';
-import activeCard from './modules/card/activeCardReducer';
 
 const reducers = combineReducers({
   cards,
-  activeCard,
   routing: routerReducer,
+  form: formReducer,
 });
 
 export default reducers;

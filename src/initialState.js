@@ -1,8 +1,13 @@
 export default {
-  cards: {},  // associative array
-  card: {
-    id: '',
-    wisdom: '',
-    attribute: '',
+  cards: {
+    byId: {}, // associative array
+    editing: {
+      modalOpen: false,
+      card: {
+        slug: '',
+        wisdom: '',
+        attribute: '',
+      }
+    }
   },
 };

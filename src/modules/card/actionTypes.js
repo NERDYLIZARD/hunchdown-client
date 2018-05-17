@@ -12,3 +12,6 @@ export const UPDATE_CARD_SUCCESS = 'UPDATE_CARD_SUCCESS';
 
 export const DELETE_CARD = 'DELETE_CARD';
 export const DELETE_CARD_SUCCESS = 'DELETE_CARD_SUCCESS';
+
+export const EDIT_CARD = 'EDIT_CARD';
+

@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { shallow } from 'enzyme';
-import { CardEditor } from "./CardEditor";
+import { CardEditorForm } from "./CardEditorForm";
 import CardForm from './CardForm';
 
 
@@ -15,7 +15,7 @@ describe("<CardEdior />", () => {
   it('contains <CardForm />', () => {
 
     const wrapper = shallow(
-      <CardEditor
+      <CardEditorForm
         actions={actions}
         match={{ params: 'abc' }}
       />

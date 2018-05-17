@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Switch, NavLink, Route } from 'react-router-dom';
 import HomePage from '../pages/HomePage';
 import CardPage from '../card/components/CardPage';
-import CardEditor from '../card/components/CardEditor';
+import CardEditor from '../card/components/CardEditorForm';
 import NotFoundPage from '../pages/NotFoundPage';
 
 // This is a class-based component because the current

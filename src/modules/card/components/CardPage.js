@@ -6,12 +6,13 @@ import PropTypes from 'prop-types';
 import * as actions from '../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import CustomPropTypes from '../../../utils/customPropTypes';
+import CardEditorModal from './CardEditorModal'; // eslint-disable-line import/no-named-as-default
+import Card from './Card'; // eslint-disable-line import/no-named-as-default
 
+import Button from 'react-bootstrap/lib/Button';
 
-import Card from './Card';
 
 
 export class CardPage extends React.Component {
@@ -24,6 +25,11 @@ export class CardPage extends React.Component {
 
   componentDidMount() {
     this.props.actions.loadCards();
+  }
+
+  createCard(e) {
+    e.preventDefault();
+    this.props.actions.openCardEditorModal();
   }
 
   deleteCard(card) {
@@ -57,7 +63,8 @@ export class CardPage extends React.Component {
     return (
       <div>
         <h1>Cards</h1>
-        <Link to="/cards/new">New Card</Link>
+        <Button className="btn btn-success card-create" onClick={e => this.createCard(e)}>New Card</Button>
+        <CardEditorModal />
         {this.renderCards()}
       </div>
     );
@@ -69,9 +76,11 @@ CardPage.propTypes = {
   cards: PropTypes.objectOf(CustomPropTypes.card).isRequired,
 };
 
-const mapStateToProps = ({ cards }) => ({
-  cards
-});
+const mapStateToProps = ({ cards }) => {
+  return {
+    cards: cards.byId
+  }
+};
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(actions, dispatch)

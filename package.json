@@ -25,22 +25,25 @@
     "test:watch": "jest --watch",
     "open:cover": "npm run test:cover && opn ./coverage/lcov-report/index.html",
     "analyze-bundle": "babel-node ./tools/analyzeBundle.js",
-    "generate-mock-data": "babel-node tools/generateMockData.js",
-    "prestart-mock-api": "npm run generate-mock-data",
-    "start-mock-api": "json-server --watch src/api/db.json"
+    "generate-mockdata": "babel-node tools/generateMockData.js",
+    "prestart-mockapi": "npm run generate-mock-data",
+    "start-mockapi": "json-server --watch src/api/db.json"
   },
   "author": "Sithideth Bouasavanh",
   "license": "MIT",
   "dependencies": {
     "axios": "0.18.0",
+    "bootstrap": "~3.3.7",
     "lodash": "4.17.5",
     "object-assign": "4.1.0",
     "react": "16.2.0",
+    "react-bootstrap": "0.32.1",
     "react-dom": "16.2.0",
     "react-redux": "5.0.5",
     "react-router-dom": "4.2.2",
     "react-router-redux": "5.0.0-alpha.6",
     "redux": "3.6.0",
+    "redux-form": "7.3.0",
     "redux-saga": "0.16.0",
     "redux-thunk": "2.1.0",
     "toastr": "2.1.4"
