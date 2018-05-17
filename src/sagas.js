@@ -2,9 +2,9 @@
  * Created on 14-May-18.
  */
 import { all } from 'redux-saga/effects';
-import { cardSagaWatchers }  from '../card/cardSagas';
+import { cardSagaWatchers }  from './modules/card/saga';
 
-export default function* rootSaga() {
+export default function* sagas() {
   yield all ([
     ...cardSagaWatchers,
   ]);

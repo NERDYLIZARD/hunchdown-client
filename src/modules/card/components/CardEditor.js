@@ -4,10 +4,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import initialState from '../../constants/initialState';
-import * as actions from './cardActions';
+import initialState from '../../../initialState';
+import * as actions from '../actions';
 import { bindActionCreators } from 'redux';
-import CustomPropTypes from '../../constants/customPropTypes';
+import CustomPropTypes from '../../../utils/customPropTypes';
 
 import CardForm from './CardForm';
 

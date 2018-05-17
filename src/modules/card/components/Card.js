@@ -2,7 +2,7 @@
  * Created on 11-Apr-18.
  */
 import React from 'react';
-import CustomPropTypes from '../../constants/customPropTypes';
+import CustomPropTypes from '../../../utils/customPropTypes';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 

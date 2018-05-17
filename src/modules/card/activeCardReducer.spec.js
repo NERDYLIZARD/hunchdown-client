@@ -1,9 +1,9 @@
 /**
  * Created on 13-Apr-18.
  */
-import * as actions from './cardActions';
+import * as actions from './actions';
 import reducer from './activeCardReducer';
-import initialState from '../../constants/initialState';
+import initialState from '../../initialState';
 import mockDataFactory from '../../utils/test/mockDataFactory';
 
 describe('Active Card Reducer', () => {

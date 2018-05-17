@@ -3,8 +3,8 @@
  */
 
 import _ from 'lodash';
-import * as cardActions from './cardActions';
-import * as actionTypes from '../../constants/actionTypes';
+import * as cardActions from './actions';
+import * as actionTypes from './actionTypes';
 import mockDataFactory from '../../utils/test/mockDataFactory';
 
 

@@ -3,12 +3,12 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import * as actions from './cardActions';
+import * as actions from '../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
-import CustomPropTypes from '../../constants/customPropTypes';
+import CustomPropTypes from '../../../utils/customPropTypes';
 
 
 import Card from './Card';

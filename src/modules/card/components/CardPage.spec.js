@@ -5,10 +5,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import ConnectedCardPage, { CardPage } from './CardPage';
-import initialState from '../../constants/initialState';
+import initialState from '../../../initialState';
 import configureMockStore from 'redux-mock-store';
 import { ConnectedRouter } from 'react-router-redux';
-import {history} from "../app/configureStore";
+import {history} from "../../../configureStore";
 import { create } from 'react-test-renderer';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';

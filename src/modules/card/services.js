@@ -1,11 +1,11 @@
 /**
  * Created on 12-May-18.
  */
-import agent from '../agent';
+import agent from '../../utils/agent';
 
 const limit = (page, perPage) => `page=${page ? page * perPage : 1}&perPage=${perPage}`;
 
-const CardService = {
+const cardServices = {
   find: (page) =>
     agent.get(`/cards?${limit(page, 12)}`),
   get: (slug) =>
@@ -18,4 +18,4 @@ const CardService = {
     agent.delete(`/cards/${card.slug}`),
 };
 
-export default CardService;
+export default cardServices;

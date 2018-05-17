@@ -4,8 +4,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import CardForm from './CardForm';
-import initialState from '../../constants/initialState';
-import TextInput from '../common/TextInput';
+import initialState from '../../../initialState';
+import TextInput from '../../common/TextInput';
 
 
 function setup(saving = false) {

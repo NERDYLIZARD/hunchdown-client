@@ -4,8 +4,8 @@ import createSagaMiddleware from 'redux-saga'
 import createHistory from 'history/createBrowserHistory';
 // 'routerMiddleware': the new way of storing route changes with redux middleware since rrV4.
 import { routerMiddleware } from 'react-router-redux';
-import rootReducer from './rootReducer';
-import rootSaga from './rootSaga';
+import reducers from './reducers';
+import saga from './sagas';
 
 export const history = createHistory();
 const sagaMiddleware = createSagaMiddleware();
@@ -19,12 +19,12 @@ function configureStoreProd(initialState) {
     sagaMiddleware
   ];
 
-  const store = createStore(rootReducer, initialState, compose(
+  const store = createStore(reducers, initialState, compose(
     applyMiddleware(...middlewares)
     )
   );
 
-  sagaMiddleware.run(rootSaga);
+  sagaMiddleware.run(saga);
 
   return store;
 }
@@ -41,17 +41,17 @@ function configureStoreDev(initialState) {
   ];
 
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // add support for Redux dev tools
-  const store = createStore(rootReducer, initialState, composeEnhancers(
+  const store = createStore(reducers, initialState, composeEnhancers(
     applyMiddleware(...middlewares)
     )
   );
 
-  sagaMiddleware.run(rootSaga);
+  sagaMiddleware.run(saga);
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
-    module.hot.accept('./rootReducer', () => {
-      const nextReducer = require('./rootReducer').default; // eslint-disable-line global-require
+    module.hot.accept('./reducers', () => {
+      const nextReducer = require('./reducers').default; // eslint-disable-line global-require
       store.replaceReducer(nextReducer);
     });
   }

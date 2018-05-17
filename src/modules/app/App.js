@@ -2,10 +2,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Switch, NavLink, Route } from 'react-router-dom';
-import HomePage from '../home/HomePage';
-import CardPage from '../card/CardPage';
-import CardEditor from '../card/CardEditor';
-import NotFoundPage from '../common/NotFoundPage';
+import HomePage from '../pages/HomePage';
+import CardPage from '../card/components/CardPage';
+import CardEditor from '../card/components/CardEditor';
+import NotFoundPage from '../pages/NotFoundPage';
 
 // This is a class-based component because the current
 // version of hot reloading won't hot reload a stateless

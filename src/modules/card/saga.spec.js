@@ -5,16 +5,16 @@ import _ from 'lodash';
 import faker from 'faker';
 import { call, put } from 'redux-saga/effects';
 import { cloneableGenerator } from 'redux-saga/utils';
-import CardService from '../../services/CardService';
+import Services from './services';
 import mockDataFactory from '../../utils/test/mockDataFactory';
-import { createCard, deleteCard, loadCard, loadCards, updateCard } from './cardSagas';
+import { createCard, deleteCard, loadCard, loadCards, updateCard } from './saga';
 import {
   createCardSuccess,
   deleteCardSuccess,
   loadCardsSuccess,
   loadCardSuccess,
   updateCardSuccess
-} from './cardActions';
+} from './actions';
 import { push } from 'react-router-redux';
 
 
@@ -28,7 +28,7 @@ describe('Card Sagas', () => {
     const generator = cloneableGenerator(loadCards)();
 
     it('should call api to fetch cards', () => {
-      expect(generator.next().value).toEqual(call(CardService.find));
+      expect(generator.next().value).toEqual(call(Services.find));
     });
 
     it('should dispatch loadCardsSuccess() with the fetched cards as its argument', () => {
@@ -54,7 +54,7 @@ describe('Card Sagas', () => {
     const generator = cloneableGenerator(loadCard)(action);
 
     it('should call api to fetch a card by slug', () => {
-      expect(generator.next().value).toEqual(call(CardService.get, action.slug));
+      expect(generator.next().value).toEqual(call(Services.get, action.slug));
     });
     it('should dispatch loadCardSuccess() with the fetched card as its argument', () => {
       const clone = generator.clone();
@@ -74,7 +74,7 @@ describe('Card Sagas', () => {
     const generator = cloneableGenerator(createCard)(action);
 
     it('should call api to create a card with a card object as its argument', () => {
-      expect(generator.next().value).toEqual(call(CardService.create, action.card));
+      expect(generator.next().value).toEqual(call(Services.create, action.card));
     });
     it('should dispatch createCardsSuccess() with the created card as its argument', () => {
       const clone = generator.clone();
@@ -83,7 +83,7 @@ describe('Card Sagas', () => {
         slug: faker.random.uuid(),
       };
       expect(clone.next(card).value).toEqual(put(createCardSuccess(card)));
-      expect(clone.next().value).toEqual(put(push('/card')));
+      expect(clone.next().value).toEqual(put(push('/cards')));
       expect(clone.next().done).toBe(true);
     });
     // error case (later)
@@ -98,12 +98,13 @@ describe('Card Sagas', () => {
     const generator = cloneableGenerator(updateCard)(action);
 
     it('should call api to update a card with a card object as its argument', () => {
-      expect(generator.next().value).toEqual(call(CardService.update, action.card));
+      expect(generator.next().value).toEqual(call(Services.update, action.card));
     });
     it('should dispatch updateCardsSuccess() with the updated card as its argument', () => {
       const clone = generator.clone();
       const card = action.card;
       expect(clone.next(card).value).toEqual(put(updateCardSuccess(card)));
+      expect(clone.next().value).toEqual(put(push('/cards')));
       expect(clone.next().done).toBe(true);
     });
     // error case (later)
@@ -117,7 +118,7 @@ describe('Card Sagas', () => {
     const action = { card: mockDataFactory.createCard() };
     const generator = cloneableGenerator(deleteCard)(action);
     it('should call api to delete a card with a card object as its argument', () => {
-      expect(generator.next().value).toEqual(call(CardService.delete, action.card));
+      expect(generator.next().value).toEqual(call(Services.delete, action.card));
     });
     it('should dispatch deleteCardsSuccess() with the card that has been passed in deleteCard() as it argument', () => {
       const clone = generator.clone();

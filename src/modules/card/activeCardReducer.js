@@ -1,8 +1,9 @@
 /**
  * Created on 13-Apr-18.
  */
-import initialState from '../../constants/initialState';
-import { LOAD_CARD_SUCCESS } from '../../constants/actionTypes';
+import initialState from '../../initialState';
+import { LOAD_CARD_SUCCESS } from './actionTypes';
+
 
 export default function activeCardReducer(state = initialState.card, action) {
   switch (action.type) {

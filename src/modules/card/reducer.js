@@ -1,14 +1,15 @@
 /**
  * Created on 27-Mar-18.
  */
-import initialState from "../../constants/initialState";
+import initialState from '../../initialState';
 import {
   CREATE_CARD_SUCCESS,
   DELETE_CARD_SUCCESS,
   LOAD_CARDS_SUCCESS,
   UPDATE_CARD_SUCCESS
-} from "../../constants/actionTypes";
+} from "./actionTypes";
 import _ from 'lodash';
+
 
 export default function cardReducer(state = initialState.cards, action) {
   switch (action.type) {

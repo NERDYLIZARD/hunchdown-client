@@ -2,8 +2,8 @@
  * Created on 14-May-18.
  */
 import 'regenerator-runtime/runtime';
-import * as types from '../../constants/actionTypes';
-import CardService from '../../services/CardService';
+import * as types from './actionTypes';
+import Services from './services';
 import { takeEvery, call, put } from 'redux-saga/effects';
 import {
   createCardSuccess,
@@ -11,7 +11,7 @@ import {
   loadCardsSuccess,
   loadCardSuccess,
   updateCardSuccess
-} from './cardActions';
+} from './actions';
 import { push } from 'react-router-redux';
 
 
@@ -32,7 +32,7 @@ export const cardSagaWatchers = [
 export function* loadCards() {
   try {
     // yield put(loadCardsRequested());
-    const data = yield call(CardService.find);
+    const data = yield call(Services.find);
     yield put(loadCardsSuccess(data));
   } catch (error) {
     throw error;
@@ -42,7 +42,7 @@ export function* loadCards() {
 
 export function* loadCard(action) {
   try {
-    const data = yield call(CardService.get, action.slug);
+    const data = yield call(Services.get, action.slug);
     yield put(loadCardSuccess(data));
   } catch (error) {
     throw error;
@@ -51,7 +51,7 @@ export function* loadCard(action) {
 
 export function* createCard(action) {
   try {
-    const data = yield call(CardService.create, action.card);
+    const data = yield call(Services.create, action.card);
     yield put(createCardSuccess(data));
     yield put(push('/cards'));
   } catch (error) {
@@ -61,8 +61,9 @@ export function* createCard(action) {
 
 export function* updateCard(action) {
   try {
-    const data = yield call(CardService.update, action.card);
+    const data = yield call(Services.update, action.card);
     yield put(updateCardSuccess(data));
+    yield put(push('/cards'));
   } catch (error) {
     throw error;
   }
@@ -70,7 +71,7 @@ export function* updateCard(action) {
 
 export function* deleteCard(action) {
   try {
-    yield call(CardService.delete, action.card);
+    yield call(Services.delete, action.card);
     yield put(deleteCardSuccess(action.card));
   } catch (error) {
     throw error;
