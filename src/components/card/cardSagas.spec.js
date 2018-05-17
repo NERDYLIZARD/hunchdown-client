@@ -15,6 +15,8 @@ import {
   loadCardSuccess,
   updateCardSuccess
 } from './cardActions';
+import { push } from 'react-router-redux';
+
 
 
 describe('Card Sagas', () => {
@@ -81,6 +83,7 @@ describe('Card Sagas', () => {
         slug: faker.random.uuid(),
       };
       expect(clone.next(card).value).toEqual(put(createCardSuccess(card)));
+      expect(clone.next().value).toEqual(put(push('/card')));
       expect(clone.next().done).toBe(true);
     });
     // error case (later)

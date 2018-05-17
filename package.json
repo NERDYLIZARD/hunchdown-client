@@ -26,8 +26,8 @@
     "open:cover": "npm run test:cover && opn ./coverage/lcov-report/index.html",
     "analyze-bundle": "babel-node ./tools/analyzeBundle.js",
     "generate-mock-data": "babel-node tools/generateMockData.js",
-    "prestart-mockapi": "npm run generate-mock-data",
-    "start-mockapi": "json-server --watch src/api/db.json"
+    "prestart-mock-api": "npm run generate-mock-data",
+    "start-mock-api": "json-server --watch src/api/db.json"
   },
   "author": "Sithideth Bouasavanh",
   "license": "MIT",

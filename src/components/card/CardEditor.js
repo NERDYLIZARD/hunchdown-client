@@ -51,21 +51,6 @@ export class CardEditor extends Component {
       this.props.actions.updateCard(this.state.card);
     else
       this.props.actions.createCard(this.state.card);
-
-    // const saveCard = this.props.match.params.slug ?
-    //   this.props.actions.updateCard(this.state.card) :
-    //   this.props.actions.createCard(this.state.card);
-
-    // saveCard
-    //   .then(() => {
-    //     toastr.success('Card Saved');
-    //     this.setState({ isSaving: false });
-    //     this.props.history.push('/cards');
-    //   })
-    //   .catch(error => {
-    //     this.setState({ errors: { wisdom: error } });
-    //     this.setState({ isSaving: false });
-    //   });
   }
 
   render() {

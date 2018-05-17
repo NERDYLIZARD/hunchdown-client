@@ -12,6 +12,8 @@ import {
   loadCardSuccess,
   updateCardSuccess
 } from './cardActions';
+import { push } from 'react-router-redux';
+
 
 /**
  * Watchers
@@ -51,6 +53,7 @@ export function* createCard(action) {
   try {
     const data = yield call(CardService.create, action.card);
     yield put(createCardSuccess(data));
+    yield put(push('/cards'));
   } catch (error) {
     throw error;
   }
