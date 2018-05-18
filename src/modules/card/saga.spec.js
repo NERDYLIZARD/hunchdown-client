@@ -8,15 +8,7 @@ import { cloneableGenerator } from 'redux-saga/utils';
 import Services from './services';
 import mockDataFactory from '../../utils/test/mockDataFactory';
 import { createCard, deleteCard, loadCard, loadCards, updateCard } from './saga';
-import {
-  createCardSuccess,
-  deleteCardSuccess,
-  loadCardsSuccess,
-  loadCardSuccess,
-  updateCardSuccess
-} from './actions';
-import { push } from 'react-router-redux';
-
+import { createCardSuccess, deleteCardSuccess, loadCardsSuccess, loadCardSuccess, updateCardSuccess } from './actions';
 
 
 describe('Card Sagas', () => {
@@ -83,7 +75,6 @@ describe('Card Sagas', () => {
         slug: faker.random.uuid(),
       };
       expect(clone.next(card).value).toEqual(put(createCardSuccess(card)));
-      expect(clone.next().value).toEqual(put(push('/cards')));
       expect(clone.next().done).toBe(true);
     });
     // error case (later)
@@ -104,7 +95,6 @@ describe('Card Sagas', () => {
       const clone = generator.clone();
       const card = action.card;
       expect(clone.next(card).value).toEqual(put(updateCardSuccess(card)));
-      expect(clone.next().value).toEqual(put(push('/cards')));
       expect(clone.next().done).toBe(true);
     });
     // error case (later)

@@ -1,6 +1,7 @@
 /**
  * Created on 27-Mar-18.
  */
+import _ from 'lodash';
 import initialState from '../../initialState';
 import {
   CREATE_CARD_SUCCESS,
@@ -9,7 +10,6 @@ import {
   LOAD_CARD_SUCCESS,
   UPDATE_CARD_SUCCESS,
 } from "./actionTypes";
-import _ from 'lodash';
 
 
 export default function cardReducer(state = initialState.cards, action) {
@@ -18,14 +18,14 @@ export default function cardReducer(state = initialState.cards, action) {
       // turn array to associative array having 'slug' as key
       return {
         ...state,
-        byId: _.mapKeys(action.payload.cards, 'slug')
+        byId: _.mapKeys(action.cards, 'slug')
       };
 
     case LOAD_CARD_SUCCESS:
       return {
         ...state,
         byId: {
-          ...state.byId, [action.payload.card.slug]: action.payload.card
+          ...state.byId, [action.card.slug]: action.card
         }
       };
 
@@ -33,7 +33,7 @@ export default function cardReducer(state = initialState.cards, action) {
       return {
         ...state,
         byId: {
-          ...state.byId, [action.payload.card.slug]: action.payload.card
+          ...state.byId, [action.card.slug]: action.card
         }
       };
 
@@ -41,14 +41,14 @@ export default function cardReducer(state = initialState.cards, action) {
       return {
         ...state,
         byId: {
-          ...state.byId, [action.payload.card.slug]: action.payload.card
+          ...state.byId, [action.card.slug]: action.card
         }
       };
 
     case DELETE_CARD_SUCCESS:
       return {
         ...state,
-        byId: _.omit(state.byId, action.payload.card.slug)
+        byId: _.omit(state.byId, action.card.slug)
       };
 
     case EDIT_CARD:

@@ -5,12 +5,14 @@ exports[`<CardPage /> should match snapshot 1`] = `
   <h1>
     Cards
   </h1>
-  <a
-    href="/cards/new"
+  <button
+    className="btn btn-success card-create btn btn-default"
+    disabled={false}
     onClick={[Function]}
+    type="button"
   >
     New Card
-  </a>
+  </button>
   <table
     className="table"
   >
@@ -30,50 +32,7 @@ exports[`<CardPage /> should match snapshot 1`] = `
         </th>
       </tr>
     </thead>
-    <tbody>
-      <tr>
-        <td>
-          <i />
-        </td>
-        <td />
-        <td>
-          <p
-            onClick={[Function]}
-          >
-            Edit
-          </p>
-        </td>
-        <td>
-          <a
-            href="#"
-            onClick={[Function]}
-          >
-            Delete
-          </a>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <i />
-        </td>
-        <td />
-        <td>
-          <p
-            onClick={[Function]}
-          >
-            Edit
-          </p>
-        </td>
-        <td>
-          <a
-            href="#"
-            onClick={[Function]}
-          >
-            Delete
-          </a>
-        </td>
-      </tr>
-    </tbody>
+    <tbody />
   </table>
 </div>
 `;

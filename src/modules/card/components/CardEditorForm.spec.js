@@ -3,24 +3,13 @@
  */
 import React from 'react';
 import { shallow } from 'enzyme';
-import { CardEditorForm } from "./CardEditorForm";
-import CardForm from './CardForm';
+import CardEditorFormContainer, { CardEditorForm } from "./CardEditorForm";
 
 
-describe("<CardEdior />", () => {
-  const actions = {
-    saveCard: jest.fn(),
-  };
+describe("<CardEdiorForm />", () => {
 
-  it('contains <CardForm />', () => {
+  it('should ', () =>{
 
-    const wrapper = shallow(
-      <CardEditorForm
-        actions={actions}
-        match={{ params: 'abc' }}
-      />
-    );
-    expect(wrapper.find(CardForm).length).toBe(1);
   });
 
 });

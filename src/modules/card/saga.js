@@ -4,15 +4,8 @@
 import 'regenerator-runtime/runtime';
 import * as types from './actionTypes';
 import Services from './services';
-import { takeEvery, call, put } from 'redux-saga/effects';
-import {
-  createCardSuccess,
-  deleteCardSuccess,
-  loadCardsSuccess,
-  loadCardSuccess,
-  updateCardSuccess
-} from './actions';
-import { push } from 'react-router-redux';
+import { call, put, takeEvery } from 'redux-saga/effects';
+import { createCardSuccess, deleteCardSuccess, loadCardsSuccess, loadCardSuccess, updateCardSuccess } from './actions';
 
 
 /**
@@ -53,7 +46,6 @@ export function* createCard(action) {
   try {
     const data = yield call(Services.create, action.card);
     yield put(createCardSuccess(data));
-    yield put(push(action.redirectLocation));
   } catch (error) {
     throw error;
   }
@@ -63,7 +55,6 @@ export function* updateCard(action) {
   try {
     const data = yield call(Services.update, action.card);
     yield put(updateCardSuccess(data));
-    yield put(push(action.redirectLocation));
   } catch (error) {
     throw error;
   }

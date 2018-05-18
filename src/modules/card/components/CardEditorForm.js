@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 
-const CardEditorForm = ({handleSubmit}) => {
+export const CardEditorForm = ({handleSubmit}) => {
 
   return (
     <form onSubmit={handleSubmit}>
