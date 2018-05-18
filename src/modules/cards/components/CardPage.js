@@ -9,6 +9,7 @@ import { bindActionCreators } from 'redux';
 import CustomPropTypes from '../../../utils/customPropTypes';
 import CardEditorModal from './CardEditorModal'; // eslint-disable-line import/no-named-as-default
 import CardList from './CardList'; // eslint-disable-line import/no-named-as-default
+
 import Button from 'react-bootstrap/lib/Button';
 
 
@@ -35,17 +36,21 @@ export class CardPage extends React.Component {
 
   render() {
     return (
-      <div className="container-fluid">
+      <div className="card-page container-fluid">
         <div className="row">
-          <div className="col-xs-10">
-            <h2>Cards</h2>
-          </div>
-          <div className="col-xs-2">
-            <Button className="create-card-button btn btn-success" onClick={e => this.createCard(e)}>New Card</Button>
+          <div className="card-page-header clearfix">
+            <div className="pull-left">
+              <h2>Cards</h2>
+            </div>
+            <div className="pull-right">
+              <Button className="create-card-button btn btn-success" onClick={e => this.createCard(e)}>New Card</Button>
+            </div>
           </div>
         </div>
         <div className="row">
-          <CardList cards={this.props.cards} onDelete={this.deleteCard}/>
+          <div className="col-xs-offset-4 col-xs-4">
+            <CardList cards={this.props.cards} onDelete={this.deleteCard}/>
+          </div>
         </div>
         <CardEditorModal/>
       </div>
