@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import * as actions from '../actions';
 
-export class Card extends Component {
+export class CardItem extends Component {
 
   editCard(e, card) {
     e.preventDefault();
@@ -29,11 +29,11 @@ export class Card extends Component {
   }
 }
 
-Card.propTypes = {
+CardItem.propTypes = {
   card: CustomPropTypes.card.isRequired,
   onDelete: PropTypes.func,
   openCardEditorModal: PropTypes.func,
 };
 
-export default connect(null, { ...actions })(Card);
+export default connect(null, { ...actions })(CardItem);
 

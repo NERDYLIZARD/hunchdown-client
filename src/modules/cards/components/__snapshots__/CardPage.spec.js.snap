@@ -1,38 +1,72 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<CardPage /> should match snapshot 1`] = `
-<div>
-  <h1>
-    Cards
-  </h1>
-  <button
-    className="btn btn-success card-create btn btn-default"
-    disabled={false}
-    onClick={[Function]}
-    type="button"
+<div
+  className="container-fluid"
+>
+  <div
+    className="row"
   >
-    New Card
-  </button>
-  <table
-    className="table"
+    <div
+      className="col-xs-10"
+    >
+      <h2>
+        Cards
+      </h2>
+    </div>
+    <div
+      className="col-xs-2"
+    >
+      <button
+        className="create-card-button btn btn-success btn btn-default"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        New Card
+      </button>
+    </div>
+  </div>
+  <div
+    className="row"
   >
-    <thead>
-      <tr>
-        <th>
-          Wisdom
-        </th>
-        <th>
-          Attribute
-        </th>
-        <th>
-           
-        </th>
-        <th>
-           
-        </th>
-      </tr>
-    </thead>
-    <tbody />
-  </table>
+    <table
+      className="table"
+    >
+      <thead>
+        <tr>
+          <th
+            style={
+              Object {
+                "textAlign": "center",
+              }
+            }
+          >
+            Wisdom
+          </th>
+          <th
+            style={
+              Object {
+                "textAlign": "center",
+              }
+            }
+          >
+            Attribute
+          </th>
+          <th
+            colSpan={2}
+            style={
+              Object {
+                "textAlign": "center",
+              }
+            }
+          >
+            actions
+          </th>
+        </tr>
+      </thead>
+      <tbody />
+    </table>
+  </div>
 </div>
 `;

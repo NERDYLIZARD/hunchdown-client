@@ -27,9 +27,9 @@ describe("<CardPage />", () => {
     return shallow(<CardPage {...props} />)
   }
 
-  it('should contain h1 with "Cards" as its value', () => {
+  it('should contain h2 with "Cards" as its value', () => {
     const wrapper = setup();
-    expect(wrapper.find('h1').text()).toBe('Cards');
+    expect(wrapper.find('h2').text()).toBe('Cards');
   });
 
   it('should call loadCards()', () => {
