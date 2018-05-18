@@ -1,7 +1,8 @@
 /* eslint-disable import/no-named-as-default */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Switch, NavLink, Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
+import Navbar from './Navbar'
 import HomePage from '../pages/HomePage';
 import CardPage from '../cards/components/CardPage';
 import NotFoundPage from '../pages/NotFoundPage';
@@ -12,14 +13,9 @@ import NotFoundPage from '../pages/NotFoundPage';
 
 class App extends React.Component {
   render() {
-    const activeStyle = { color: 'blue' };
     return (
       <div>
-        <div>
-          <NavLink exact to="/" activeStyle={activeStyle}>Home</NavLink>
-          {' | '}
-          <NavLink to="/cards" activeStyle={activeStyle}>Cards</NavLink>
-        </div>
+        <Navbar />
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/cards" component={CardPage} />
