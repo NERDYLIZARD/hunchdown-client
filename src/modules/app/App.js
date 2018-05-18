@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
-import Navbar from './Navbar'
+import NavigationBar from './NavigationBar'
 import HomePage from '../pages/HomePage';
 import CardPage from '../cards/components/CardPage';
 import NotFoundPage from '../pages/NotFoundPage';
@@ -15,7 +15,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Navbar />
+        <NavigationBar />
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/cards" component={CardPage} />
