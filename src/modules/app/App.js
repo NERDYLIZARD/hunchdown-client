@@ -3,8 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Switch, NavLink, Route } from 'react-router-dom';
 import HomePage from '../pages/HomePage';
-import CardPage from '../card/components/CardPage';
-import CardEditor from '../card/components/CardEditorForm';
+import CardPage from '../cards/components/CardPage';
 import NotFoundPage from '../pages/NotFoundPage';
 
 // This is a class-based component because the current
@@ -23,8 +22,6 @@ class App extends React.Component {
         </div>
         <Switch>
           <Route exact path="/" component={HomePage} />
-          <Route path="/cards/edit/:slug" component={CardEditor} />
-          <Route path="/cards/new" component={CardEditor} />
           <Route path="/cards" component={CardPage} />
           <Route component={NotFoundPage} />
         </Switch>
