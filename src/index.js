@@ -7,6 +7,7 @@ import configureStore, { history } from './configureStore';
 import Root from './modules/app/Root';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/styles.sass'; // Yep, that's right. You can import SASS/CSS files too! Webpack will run the associated loader and plug this into the page.
+import 'font-awesome/css/font-awesome.min.css';
 require('./favicon.ico'); // Tell webpack to load favicon.ico
 
 const store = configureStore();

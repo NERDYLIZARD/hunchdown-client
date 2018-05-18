@@ -5,7 +5,6 @@ import React, { Component } from 'react';
 import CustomPropTypes from '../../../utils/customPropTypes';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import * as actions from '../actions';
 
 export class CardItem extends Component {
@@ -18,14 +17,19 @@ export class CardItem extends Component {
   render() {
     const { card, onDelete } = this.props;
     return (
-      <tr>
-        <td><i>{card.wisdom}</i></td>
-        <td>{card.attribute}</td>
-        <td><Link to="#" onClick={e => this.editCard(e, card)}>Edit</Link></td>
-        <td><Link to="#" onClick={() => onDelete(card)}>Delete</Link></td>
-      </tr>
+      <div className="card">
+        <div className="card-header clearfix">
+          <div className="card-actions pull-right">
+            <a href="#" onClick={e => this.editCard(e, card)}><i className="fa fa-edit"></i></a>
+            <a href="#" onClick={() => onDelete(card)}><i className="fa fa-trash"></i></a>
+          </div>
+        </div>
+        <div className="card-body">
+          <p className="card-wisdom">{card.wisdom}</p>
+          <p className="card-attribute">- {card.attribute} -</p>
+        </div>
+      </div>
     );
-
   }
 }
 

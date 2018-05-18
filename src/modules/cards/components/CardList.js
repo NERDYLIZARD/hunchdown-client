@@ -9,23 +9,14 @@ import CardItem from './CardItem'; // eslint-disable-line import/no-named-as-def
 
 const CardList = ({ cards, onDelete }) => {
   return (
-    <table className="table">
-      <thead>
-      <tr>
-        <th style={{textAlign:'center'}}>Wisdom</th>
-        <th style={{textAlign:'center'}}>Attribute</th>
-        <th colSpan={2} style={{textAlign:'center'}}>actions</th>
-      </tr>
-      </thead>
-      <tbody>
+    <div className="card-list">
       {_.map(cards, card =>
         <CardItem
           key={card.slug}
           card={card}
           onDelete={onDelete}
         />)}
-      </tbody>
-    </table>
+    </div>
   );
 };
 
