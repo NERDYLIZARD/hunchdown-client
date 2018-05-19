@@ -18,6 +18,8 @@ export class CardPage extends React.Component {
   constructor(props, context) {
     super(props, context);
 
+    this.createCard = this.createCard.bind(this);
+    this.editCard = this.editCard.bind(this);
     this.deleteCard = this.deleteCard.bind(this);
   }
 
@@ -30,7 +32,13 @@ export class CardPage extends React.Component {
     this.props.actions.openCardEditorModal();
   }
 
-  deleteCard(card) {
+  editCard(e, card) {
+    e.preventDefault();
+    this.props.actions.openCardEditorModal(card);
+  }
+
+  deleteCard(e, card) {
+    e.preventDefault();
     this.props.actions.deleteCard(card);
   }
 
@@ -43,13 +51,13 @@ export class CardPage extends React.Component {
               <h2>Cards</h2>
             </div>
             <div className="pull-right">
-              <Button className="create-card-button btn btn-success" onClick={e => this.createCard(e)}>New Card</Button>
+              <Button className="create-card-button btn btn-success" onClick={this.createCard}>New Card</Button>
             </div>
           </div>
         </div>
         <div className="row">
           <div className="col-xs-offset-4 col-xs-4">
-            <CardList cards={this.props.cards} onDelete={this.deleteCard}/>
+            <CardList cards={this.props.cards} onDelete={this.deleteCard} onEdit={this.editCard}/>
           </div>
         </div>
         <CardEditorModal/>

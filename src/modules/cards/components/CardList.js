@@ -7,13 +7,14 @@ import PropTypes from 'prop-types';
 import CardItem from './CardItem'; // eslint-disable-line import/no-named-as-default
 
 
-const CardList = ({ cards, onDelete }) => {
+const CardList = ({ cards, onEdit, onDelete }) => {
   return (
     <div className="card-list">
       {_.map(cards, card =>
         <CardItem
           key={card.slug}
           card={card}
+          onEdit={onEdit}
           onDelete={onDelete}
         />)}
     </div>
@@ -22,6 +23,7 @@ const CardList = ({ cards, onDelete }) => {
 
 CardList.propTypes = {
   cards: PropTypes.object.isRequired,
+  onEdit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired
 };
 

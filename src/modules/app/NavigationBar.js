@@ -3,7 +3,6 @@
  */
 /* eslint-disable import/no-named-as-default */
 import React from 'react';
-import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import { Nav, Navbar, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
@@ -39,7 +38,5 @@ class NavigationBar extends React.Component {
     );
   }
 }
-
-NavigationBar.propTypes = {};
 
 export default NavigationBar;
