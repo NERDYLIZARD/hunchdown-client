@@ -10,13 +10,15 @@ const CardItem = ({ card, onEdit, onDelete }) => {
     <div className="card">
       <div className="card-header clearfix">
         <div className="card-actions pull-right">
-          <a href="#" onClick={e => onEdit(e, card)}><i className="fa fa-edit"></i></a>
-          <a href="#" onClick={e => onDelete(e, card)}><i className="fa fa-trash"></i></a>
+          <a className="card-edit-button" href="#" onClick={e => onEdit(e, card)}><i className="fa fa-edit"></i></a>
+          <a className="card-delete-button" href="#" onClick={e => onDelete(e, card)}><i className="fa fa-trash"></i></a>
         </div>
       </div>
       <div className="card-body">
         <p className="card-wisdom">{card.wisdom}</p>
-        <p className="card-attribute">- {card.attribute} -</p>
+        {card.attribute ?
+          <p className="card-attribute">- {card.attribute} -</p> : null
+        }
       </div>
     </div>
   );
@@ -24,8 +26,8 @@ const CardItem = ({ card, onEdit, onDelete }) => {
 
 CardItem.propTypes = {
   card: CustomPropTypes.card.isRequired,
-  onEdit: PropTypes.func,
-  onDelete: PropTypes.func,
+  onEdit: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
 };
 
 export default CardItem;

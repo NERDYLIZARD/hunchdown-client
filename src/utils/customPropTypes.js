@@ -4,10 +4,15 @@
 
 import PropTypes from 'prop-types';
 
+
 export default {
   card : PropTypes.shape({
-    id: PropTypes.string,
+    slug: PropTypes.string,
     wisdom: PropTypes.string,
     attribute: PropTypes.string,
   }),
+// TODO: the normalized card
+  // normalizedCard : PropTypes.shape({
+  //   slug: PropTypes.objectOf(card),
+  // }),
 };
