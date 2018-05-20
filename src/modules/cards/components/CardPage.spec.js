@@ -1,56 +1,96 @@
 /**
- * Created on 07-Apr-18.
+ * Created on 19-May-18.
  */
-
+import _ from 'lodash';
 import React from 'react';
-import { shallow } from 'enzyme';
-import ConnectedCardPage, { CardPage } from './CardPage';
-import initialState from '../../../initialState';
-import configureMockStore from 'redux-mock-store';
-import { ConnectedRouter } from 'react-router-redux';
-import {history} from "../../../configureStore";
-import { create } from 'react-test-renderer';
+import { mount } from 'enzyme';
+import { CardPage } from './CardPage';
 import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
+import configureMockStore from 'redux-mock-store';
+import initialState from '../../../initialState';
+import mockDataFactory from '../../../utils/test/mockDataFactory';
 
 
-describe("<CardPage />", () => {
-  const actions = {
-    loadCards: jest.fn(),
+describe('<CardPage />', () => {
+  let props;
+  let mountedCardPage;
+
+  const cardPage = () => {
+    // if running new test, mount the component
+    // otherwise, use the mounted component
+    if (!mountedCardPage) {
+      const store = configureMockStore()(initialState);
+      mountedCardPage = mount(
+        <Provider store={store}>
+          <CardPage {...props} />
+        </Provider>
+      );
+    }
+    return mountedCardPage;
   };
 
-  function setup() {
-    const props = {
-      cards: initialState.cards,
-      actions: actions,
+
+  // reset props before running a new test
+  beforeEach(() => {
+    props = {
+      loadCards: jest.fn(),
+      deleteCard: jest.fn(),
+      openCardEditorModal: jest.fn(),
+      cards: undefined,
     };
-    return shallow(<CardPage {...props} />)
-  }
-
-  it('should contain h2 with "Cards" as its value', () => {
-    const wrapper = setup();
-    expect(wrapper.find('h2').text()).toBe('Cards');
+    mountedCardPage = undefined;
   });
 
-  it('should call loadCards()', () => {
-    setup();
-    expect(actions.loadCards).toBeCalled();
+  it('always renders a div as wrapper', () => {
+    const divs = cardPage().find('div');
+    expect(divs.length).toBeGreaterThan(0);
   });
 
-  it("should match snapshot", () => {
-    const middlewares = [thunk];
-    const store = configureMockStore(middlewares)(initialState);
-
-    const component = create(
-      <Provider store={store}>
-        <ConnectedRouter history={history}>
-          <ConnectedCardPage/>
-        </ConnectedRouter>
-      </Provider>
-    );
-    const tree = component.toJSON();
-
-    expect(tree).toMatchSnapshot();
+  it('calls `loadCards()` on `ComponentDidMount()`', () => {
+    cardPage();
+    expect(props.loadCards).toBeCalled();
   });
+
+  it('always renders the `New Card` button', () => {
+    const createCardButton = cardPage().find('.create-card-button');
+    expect(createCardButton.length).toBe(1);
+  });
+
+  describe('when the `New Card` button is clicked`', () => {
+    it('calls `openCardEditorModal()`', () => {
+      const createCardButton = cardPage().find('.create-card-button');
+      createCardButton.simulate('click');
+      expect(props.openCardEditorModal).toBeCalled();
+    });
+  });
+
+  describe('when `cards` is passed', () => {
+    beforeEach(() => {
+      props.cards = _.mapKeys([
+        mockDataFactory.createCard(),
+        mockDataFactory.createCard(),
+      ], 'slug');
+    });
+    it('renders `<CardList />`', () => {
+      expect(cardPage().find('CardList').length).toBe(1);
+    });
+    it('passes `cards` as `cards` property of `<CardList />`', () => {
+      const CardPage = cardPage().find('CardList');
+      expect(CardPage.props().cards).toEqual(props.cards);
+    });
+  });
+
+  describe('when `cards` is not passed', () => {
+    beforeEach(() => {
+      props.cards = undefined;
+    });
+    it('does not render `<CardList />`', () => {
+      expect(cardPage().find('CardList').length).toBe(0);
+    });
+  });
+
+  it('always renders a `<CardEditorModal />`', () => {
+    expect(cardPage().find('CardEditorModal').length).toBe(1);
+  });
+
 });
-

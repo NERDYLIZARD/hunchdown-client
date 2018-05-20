@@ -5,12 +5,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as actions from '../actions';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import CustomPropTypes from '../../../utils/customPropTypes';
 import CardEditorModal from './CardEditorModal'; // eslint-disable-line import/no-named-as-default
 import CardList from './CardList'; // eslint-disable-line import/no-named-as-default
-
-import Button from 'react-bootstrap/lib/Button';
 
 
 export class CardPage extends React.Component {
@@ -24,22 +21,22 @@ export class CardPage extends React.Component {
   }
 
   componentDidMount() {
-    this.props.actions.loadCards();
+    this.props.loadCards();
   }
 
   createCard(e) {
     e.preventDefault();
-    this.props.actions.openCardEditorModal();
+    this.props.openCardEditorModal();
   }
 
   editCard(e, card) {
     e.preventDefault();
-    this.props.actions.openCardEditorModal(card);
+    this.props.openCardEditorModal(card);
   }
 
   deleteCard(e, card) {
     e.preventDefault();
-    this.props.actions.deleteCard(card);
+    this.props.deleteCard(card);
   }
 
   render() {
@@ -52,14 +49,14 @@ export class CardPage extends React.Component {
               <h2>Cards</h2>
             </div>
             <div className="pull-right">
-              <Button className="create-card-button btn btn-success" onClick={this.createCard}>New Card</Button>
+              <button className="create-card-button btn btn-success" onClick={this.createCard}>New Card</button>
             </div>
           </div>
         </div>
         <div className="row">
           <div className="col-xs-offset-4 col-xs-4">
             {cards ?
-              <CardList cards={cards} onDelete={this.deleteCard} onEdit={this.editCard}/> : null
+              <CardList cards={cards} onEdit={this.editCard} onDelete={this.deleteCard}/> : null
             }
           </div>
         </div>
@@ -70,7 +67,9 @@ export class CardPage extends React.Component {
 }
 
 CardPage.propTypes = {
-  actions: PropTypes.object.isRequired,
+  loadCards: PropTypes.func.isRequired,
+  deleteCard: PropTypes.func.isRequired,
+  openCardEditorModal: PropTypes.func.isRequired,
   cards: PropTypes.objectOf(CustomPropTypes.card),
 };
 
@@ -80,8 +79,4 @@ const mapStateToProps = ({ cards }) => {
   }
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators(actions, dispatch)
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(CardPage);
+export default connect(mapStateToProps, { ...actions })(CardPage);
