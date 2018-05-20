@@ -43,6 +43,7 @@ export class CardPage extends React.Component {
   }
 
   render() {
+    const { cards } = this.props;
     return (
       <div className="card-page container-fluid">
         <div className="row">
@@ -57,7 +58,9 @@ export class CardPage extends React.Component {
         </div>
         <div className="row">
           <div className="col-xs-offset-4 col-xs-4">
-            <CardList cards={this.props.cards} onDelete={this.deleteCard} onEdit={this.editCard}/>
+            {cards ?
+              <CardList cards={cards} onDelete={this.deleteCard} onEdit={this.editCard}/> : null
+            }
           </div>
         </div>
         <CardEditorModal/>
@@ -68,7 +71,7 @@ export class CardPage extends React.Component {
 
 CardPage.propTypes = {
   actions: PropTypes.object.isRequired,
-  cards: PropTypes.objectOf(CustomPropTypes.card).isRequired,
+  cards: PropTypes.objectOf(CustomPropTypes.card),
 };
 
 const mapStateToProps = ({ cards }) => {

@@ -43,7 +43,8 @@ describe('<CardItem />', () => {
       // use .first() to get the outermost div.
       const wrappingDiv = divs.first();
 
-      expect(wrappingDiv).toEqual(cardItem().children());
+      // cardItem().children === outermost div
+      expect(wrappingDiv.children()).toEqual(cardItem().children().children());
     });
   });
 
