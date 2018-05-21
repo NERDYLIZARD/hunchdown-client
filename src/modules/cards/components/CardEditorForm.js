@@ -13,7 +13,7 @@ export const CardEditorForm = ({handleSubmit}) => {
       <Field name="slug" component="input" type="hidden" id="card-editor-id" />
       <div className="form-group">
         <label htmlFor="card-editor-wisdom">Wisdom</label>
-        <Field name="wisdom" component="input" type="text" className="form-control" id="card-editor-wisdom" placeholder="After reading a book, forget everything but the messages that you can apply to your life." />
+        <Field name="wisdom" component="textarea" type="text" rows="4" className="form-control" id="card-editor-wisdom" placeholder="After reading a book, forget everything but the messages that you can apply to your life." />
       </div>
       <div className="form-group">
         <label htmlFor="card-editor-attribute">Attribute</label>
