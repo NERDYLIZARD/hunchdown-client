@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
-import cards from './modules/cards';
+import hunches from './modules/hunches';
 
 const reducers = combineReducers({
-  [cards.constants.NAME]: cards.reducer,
+  [hunches.constants.NAME]: hunches.reducer,
   routing: routerReducer,
   form: formReducer,
 });

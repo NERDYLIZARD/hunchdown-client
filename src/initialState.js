@@ -1,9 +1,9 @@
 export default {
-  cards: {
+  hunches: {
     byId: {}, // associative array
     editing: {
       modalOpen: false,
-      card: {
+      hunch: {
         slug: '',
         wisdom: '',
         attribute: '',

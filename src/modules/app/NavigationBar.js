@@ -22,9 +22,9 @@ class NavigationBar extends React.Component {
 
         <Navbar.Collapse>
           <Nav>
-            <LinkContainer to="/cards" activeClassName="active">
+            <LinkContainer to="/hunches" activeClassName="active">
               <NavItem eventKey={1}>
-                Cards
+                Hunches
               </NavItem>
             </LinkContainer>
             <LinkContainer to="/boxes" activeClassName="active">

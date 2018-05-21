@@ -5,7 +5,7 @@
 export default {
   "type": "object",
   "properties": {
-    "cards": {
+    "hunches": {
       "type": "array",
       "minItems": 3,
       "maxItems": 5,
@@ -32,7 +32,7 @@ export default {
       }
     }
   },
-  "required": ["cards"]
+  "required": ["hunches"]
 };
 
 

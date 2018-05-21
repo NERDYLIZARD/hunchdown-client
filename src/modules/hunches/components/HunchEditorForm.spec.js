@@ -3,26 +3,26 @@
  */
 import React from 'react';
 import { mount } from 'enzyme';
-import CardEditorForm from './CardEditorForm'; // eslint-disable-line import/no-named-as-default
+import HunchEditorForm from './HunchEditorForm'; // eslint-disable-line import/no-named-as-default
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import initialState from '../../../initialState';
 
-describe('<CardEditorForm />', () => {
+describe('<HunchEditorForm />', () => {
   let props;
-  let mountedCardEditorForm;
-  const cardEditorForm = () => {
+  let mountedHunchEditorForm;
+  const hunchEditorForm = () => {
     // if running new test, mount the component
     // otherwise, use the mounted component
-    if (!mountedCardEditorForm) {
+    if (!mountedHunchEditorForm) {
       const store = configureMockStore()(initialState);
-      mountedCardEditorForm = mount(
+      mountedHunchEditorForm = mount(
         <Provider store={store}>
-          <CardEditorForm {...props} />
+          <HunchEditorForm {...props} />
         </Provider>
       );
     }
-    return mountedCardEditorForm;
+    return mountedHunchEditorForm;
   };
 
   // reset props before running a new test
@@ -30,24 +30,24 @@ describe('<CardEditorForm />', () => {
     props = {
       handleSubmit: jest.fn(),
     };
-    mountedCardEditorForm = undefined;
+    mountedHunchEditorForm = undefined;
   });
 
   it('always renders a form as wrapper', () => {
-    const form = cardEditorForm().find('form');
+    const form = hunchEditorForm().find('form');
     expect(form.length).toBeGreaterThan(0);
   });
 
   it('always renders the hidden field `slug`', () => {
-    expect(cardEditorForm().find('input[name="slug"]').length).toBe(1);
+    expect(hunchEditorForm().find('input[name="slug"]').length).toBe(1);
   });
 
   it('always renders the text input field `wisdom`', () => {
-    expect(cardEditorForm().find('textarea[name="wisdom"]').length).toBe(1);
+    expect(hunchEditorForm().find('textarea[name="wisdom"]').length).toBe(1);
   });
 
   it('always renders the text input field `attribute`', () => {
-    expect(cardEditorForm().find('input[name="attribute"]').length).toBe(1);
+    expect(hunchEditorForm().find('input[name="attribute"]').length).toBe(1);
   });
 
 });

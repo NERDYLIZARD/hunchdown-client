@@ -21,8 +21,8 @@ jsf.option({
 });
 
 const data = (jsf(mockDataSchema));
-// card.id and card.slug share the same value to create an illusion of query by slug as id
-data.cards.map(card => card['id'] = card.slug);
+// hunch.id and hunch.slug share the same value to create an illusion of query by slug as id
+data.hunches.map(hunch => hunch['id'] = hunch.slug);
 const json = JSON.stringify(data);
 
 fs.writeFile("./src/api/db.json", json, (err) => {
