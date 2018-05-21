@@ -12,6 +12,10 @@ import mockDataFactory from '../../../utils/test/mockDataFactory';
 
 
 describe('<CardPage />', () => {
+
+  jest.spyOn(CardPage.prototype, 'createCard');
+  jest.spyOn(CardPage.prototype, 'componentDidMount');
+
   let props;
   let mountedCardPage;
 
@@ -48,6 +52,7 @@ describe('<CardPage />', () => {
 
   it('calls `loadCards()` on `ComponentDidMount()`', () => {
     cardPage();
+    expect(CardPage.prototype.componentDidMount).toBeCalled();
     expect(props.loadCards).toBeCalled();
   });
 
@@ -57,9 +62,10 @@ describe('<CardPage />', () => {
   });
 
   describe('when the `New Card` button is clicked`', () => {
-    it('calls `openCardEditorModal()`', () => {
+    it('dispatches `openCardEditorModal()` action creator in `createCard()` method', () => {
       const createCardButton = cardPage().find('.create-card-button');
       createCardButton.simulate('click');
+      expect(CardPage.prototype.createCard).toBeCalled();
       expect(props.openCardEditorModal).toBeCalled();
     });
   });

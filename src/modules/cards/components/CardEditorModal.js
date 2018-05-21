@@ -8,7 +8,6 @@ import * as actions from '../actions';
 import CardEditorForm from './CardEditorForm'; // eslint-disable-line import/no-named-as-default
 
 import Modal from 'react-bootstrap/lib/Modal';
-import Button from 'react-bootstrap/lib/Button';
 
 export class CardEditorModal extends Component {
 
@@ -35,16 +34,16 @@ export class CardEditorModal extends Component {
     const { modalOpen, closeCardEditorModal, card } = this.props;
 
     return (
-      <Modal show={modalOpen} onHide={() => closeCardEditorModal()} bsSize="lg" aria-labelledby="contained-modal-title-sm" id="card-editor-modal">
+      <Modal show={modalOpen} onHide={() => closeCardEditorModal()} id="card-editor-modal">
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-sm">{card ? 'Edit Card' : 'New Card'}</Modal.Title>
+          <Modal.Title id="card-editor-modal-title">{card ? 'Edit Card' : 'New Card'}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <CardEditorForm ref={f => this.editForm = f} onSubmit={card => this.submitForm(card)}/>
         </Modal.Body>
         <Modal.Footer>
-          <Button className="btn btn-primary card-editor-modal-save" onClick={this.saveClick}>Save</Button>
-          <Button className="btn btn-warning card-editor-modal-close" onClick={() => closeCardEditorModal()}>Cancel</Button>
+          <button id="card-editor-modal-save" className="btn btn-primary" onClick={this.saveClick}>Save</button>
+          <button id="card-editor-modal-close" className="btn" onClick={() => closeCardEditorModal()}>Cancel</button>
         </Modal.Footer>
       </Modal>
     );
