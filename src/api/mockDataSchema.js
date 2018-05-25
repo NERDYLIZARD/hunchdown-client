@@ -12,10 +12,10 @@ export default {
       "items": {
         "type": "object",
         "properties": {
-          "slug": {
+          "id": {
             "type": "string",
             "faker": "random.uuid",
-            "unique": true
+            "unique": true,
           },
           "wisdom": {
             "type": "string",
@@ -28,7 +28,7 @@ export default {
             "faker": "name.findName"
           }
         },
-        "required": ["slug", "wisdom"]
+        "required": ["id", "wisdom"]
       }
     }
   },

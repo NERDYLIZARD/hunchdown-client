@@ -10,7 +10,7 @@ export const HunchEditorForm = ({handleSubmit}) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Field name="slug" component="input" type="hidden" id="hunch-editor-id" />
+      <Field name="id" component="input" type="hidden" id="hunch-editor-id" />
       <div className="form-group">
         <label htmlFor="hunch-editor-wisdom">Wisdom</label>
         <Field name="wisdom" component="textarea" type="text" rows="4" className="form-control" id="hunch-editor-wisdom" placeholder="After reading a book, forget everything but the messages that you can apply to your life." />

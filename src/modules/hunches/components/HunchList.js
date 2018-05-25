@@ -12,7 +12,7 @@ const HunchList = ({ hunches, onEdit, onDelete }) => {
     <div className="hunch-list">
       {_.map(hunches, hunch =>
         <HunchItem
-          key={hunch.slug}
+          key={hunch.id}
           hunch={hunch}
           onEdit={onEdit}
           onDelete={onDelete}

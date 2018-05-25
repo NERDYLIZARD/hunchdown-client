@@ -4,6 +4,7 @@ export default {
     editing: {
       modalOpen: false,
       hunch: {
+        id: '',
         slug: '',
         wisdom: '',
         attribute: '',

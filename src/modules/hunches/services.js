@@ -8,14 +8,14 @@ const limit = (page, perPage) => `page=${page ? page * perPage : 1}&perPage=${pe
 const hunchServices = {
   find: (page) =>
     agent.get(`/hunches?${limit(page, 12)}`),
-  get: (slug) =>
-    agent.get(`/hunches/${slug}`),
+  get: (id) =>
+    agent.get(`/hunches/${id}`),
   create: (hunch) =>
     agent.post('/hunches', hunch),
   update: (hunch) =>
-    agent.patch(`/hunches/${hunch.slug}`, hunch),
+    agent.patch(`/hunches/${hunch.id}`, hunch),
   delete: (hunch) =>
-    agent.delete(`/hunches/${hunch.slug}`),
+    agent.delete(`/hunches/${hunch.id}`),
 };
 
 export default hunchServices;

@@ -38,8 +38,8 @@ describe('<HunchEditorForm />', () => {
     expect(form.length).toBeGreaterThan(0);
   });
 
-  it('always renders the hidden field `slug`', () => {
-    expect(hunchEditorForm().find('input[name="slug"]').length).toBe(1);
+  it('always renders the hidden field `id`', () => {
+    expect(hunchEditorForm().find('input[name="id"]').length).toBe(1);
   });
 
   it('always renders the text input field `wisdom`', () => {

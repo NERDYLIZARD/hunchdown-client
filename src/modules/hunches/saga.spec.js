@@ -42,11 +42,11 @@ describe('Hunch Sagas', () => {
    * Load Hunch
    */
   describe('loadHunch', () => {
-    const action = { slug: 'abc' };
+    const action = { id: faker.random.uuid() };
     const generator = cloneableGenerator(loadHunch)(action);
 
-    it('should call api to fetch a hunch by slug', () => {
-      expect(generator.next().value).toEqual(call(Services.get, action.slug));
+    it('should call api to fetch a hunch by id', () => {
+      expect(generator.next().value).toEqual(call(Services.get, action.id));
     });
     it('should dispatch loadHunchSuccess() with the fetched hunch as its argument', () => {
       const clone = generator.clone();
@@ -62,7 +62,7 @@ describe('Hunch Sagas', () => {
    * Create Hunch
    */
   describe('createHunch', () => {
-    const action = { hunch: _.omit(mockDataFactory.createHunch(), 'slug') };
+    const action = { hunch: _.omit(mockDataFactory.createHunch(), 'id') };
     const generator = cloneableGenerator(createHunch)(action);
 
     it('should call api to create a hunch with a hunch object as its argument', () => {
@@ -72,7 +72,7 @@ describe('Hunch Sagas', () => {
       const clone = generator.clone();
       const hunch = {
         ...action.hunch,
-        slug: faker.random.uuid(),
+        id: faker.random.uuid(),
       };
       expect(clone.next(hunch).value).toEqual(put(createHunchSuccess(hunch)));
       expect(clone.next().done).toBe(true);

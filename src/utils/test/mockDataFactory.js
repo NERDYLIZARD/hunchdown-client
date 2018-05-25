@@ -4,6 +4,7 @@
 import faker from 'faker';
 
 const createHunch = () => ({
+  id: faker.random.uuid(),
   slug: faker.random.uuid(),
   wisdom: faker.lorem.sentences(),
   attribute: faker.name.findName(),

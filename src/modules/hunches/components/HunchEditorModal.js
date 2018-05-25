@@ -19,7 +19,7 @@ export class HunchEditorModal extends Component {
   submitForm(hunch) {
     const { closeHunchEditorModal, updateHunch, createHunch } = this.props;
 
-    if (hunch.slug)
+    if (hunch.id)
       updateHunch(hunch);
     else
       createHunch(hunch);

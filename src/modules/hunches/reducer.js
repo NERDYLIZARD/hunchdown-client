@@ -15,17 +15,17 @@ import {
 export default function hunchReducer(state = initialState.hunches, action) {
   switch (action.type) {
     case LOAD_HUNCHES_SUCCESS:
-      // turn array to associative array having 'slug' as key
+      // turn array to associative array having 'id' as key
       return {
         ...state,
-        byId: _.mapKeys(action.hunches, 'slug')
+        byId: _.mapKeys(action.hunches, 'id')
       };
 
     case LOAD_HUNCH_SUCCESS:
       return {
         ...state,
         byId: {
-          ...state.byId, [action.hunch.slug]: action.hunch
+          ...state.byId, [action.hunch.id]: action.hunch
         }
       };
 
@@ -33,7 +33,7 @@ export default function hunchReducer(state = initialState.hunches, action) {
       return {
         ...state,
         byId: {
-          ...state.byId, [action.hunch.slug]: action.hunch
+          ...state.byId, [action.hunch.id]: action.hunch
         }
       };
 
@@ -41,14 +41,14 @@ export default function hunchReducer(state = initialState.hunches, action) {
       return {
         ...state,
         byId: {
-          ...state.byId, [action.hunch.slug]: action.hunch
+          ...state.byId, [action.hunch.id]: action.hunch
         }
       };
 
     case DELETE_HUNCH_SUCCESS:
       return {
         ...state,
-        byId: _.omit(state.byId, action.hunch.slug)
+        byId: _.omit(state.byId, action.hunch.id)
       };
 
     case EDIT_HUNCH:

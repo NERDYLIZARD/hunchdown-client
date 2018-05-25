@@ -9,6 +9,7 @@
 
 import fs from 'fs';
 import faker from 'faker';
+import slug from 'slug';
 import jsf from 'json-schema-faker';
 import mockDataSchema from '../src/api/mockDataSchema';
 import { chalkError, chalkSuccess } from './chalkConfig';
@@ -21,8 +22,13 @@ jsf.option({
 });
 
 const data = (jsf(mockDataSchema));
-// hunch.id and hunch.slug share the same value to create an illusion of query by slug as id
-data.hunches.map(hunch => hunch['id'] = hunch.slug);
+
+/**
+ * manually added field
+ */
+// create slug from wisdom
+data.hunches.map(hunch => hunch['slug'] = slug(hunch.wisdom));
+
 const json = JSON.stringify(data);
 
 fs.writeFile("./src/api/db.json", json, (err) => {

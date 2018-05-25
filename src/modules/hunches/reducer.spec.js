@@ -37,7 +37,7 @@ describe('Hunch Reducer', () => {
       mockDataFactory.createHunch(),
       mockDataFactory.createHunch()
     ];
-    const expectedState = { byId: _.mapKeys(hunches, 'slug') };
+    const expectedState = { byId: _.mapKeys(hunches, 'id') };
     const action = actions.loadHunchesSuccess(hunches);
     const newState = reducer(initialState, action);
 
@@ -47,12 +47,12 @@ describe('Hunch Reducer', () => {
 
   it(`should update state on ${types.LOAD_HUNCH_SUCCESS} action`, () => {
 
-    const currentState = { byId: _.mapKeys([mockDataFactory.createHunch()], 'slug') };
+    const currentState = { byId: _.mapKeys([mockDataFactory.createHunch()], 'id') };
     const loadedHunch = mockDataFactory.createHunch();
     const expectedState = {
       ...currentState,
       byId: {
-        ...currentState.byId, [loadedHunch.slug]: loadedHunch
+        ...currentState.byId, [loadedHunch.id]: loadedHunch
       }
     };
     const action = actions.loadHunchSuccess(loadedHunch);
@@ -64,18 +64,19 @@ describe('Hunch Reducer', () => {
 
   it(`should update state on ${types.CREATE_HUNCH_SUCCESS} action`, () => {
     // const currentState = {
-    //   abc: {
-    //     slug: 'abc',
-    //     wisdom: 'abc',
-    //     attribute: '123'
+    //   35d925c1-bb39-4729-b59f-eb078f1e70d0: {
+    //     id: '35d925c1-bb39-4729-b59f-eb078f1e70d0',
+    //     slug: 'abc-def',
+    //     wisdom: 'Abc dEf',
+    //     attribute: 'hoppy'
     //   },
     // };
-    const currentState = { byId: _.mapKeys([mockDataFactory.createHunch()], 'slug') };
+    const currentState = { byId: _.mapKeys([mockDataFactory.createHunch()], 'id') };
     const newHunch = mockDataFactory.createHunch();
     const expectedState = {
       ...currentState,
       byId: {
-        ...currentState.byId, [newHunch.slug]: newHunch
+        ...currentState.byId, [newHunch.id]: newHunch
       }
     };
     const action = actions.createHunchSuccess(newHunch);
@@ -87,12 +88,12 @@ describe('Hunch Reducer', () => {
 
   it(`should update state on ${types.UPDATE_HUNCH_SUCCESS} action`, () => {
     const hunch = mockDataFactory.createHunch();
-    const currentState = { byId: _.mapKeys([hunch], 'slug') };
+    const currentState = { byId: _.mapKeys([hunch], 'id') };
     const updatingHunch = { ...hunch, wisdom: 'updated wisdom' };
     const expectedState = {
       ...currentState,
       byId: {
-        ...currentState.byId, [updatingHunch.slug]: updatingHunch
+        ...currentState.byId, [updatingHunch.id]: updatingHunch
       }
     };
     const action = actions.updateHunchSuccess(updatingHunch);
@@ -104,11 +105,11 @@ describe('Hunch Reducer', () => {
 
   it(`should update state on ${types.DELETE_HUNCH_SUCCESS} action`, () => {
     const hunches = [mockDataFactory.createHunch(), mockDataFactory.createHunch()];
-    const currentState = { byId: _.mapKeys(hunches, 'slug') };
+    const currentState = { byId: _.mapKeys(hunches, 'id') };
     const deletingHunch = hunches[1];
     const expectedState = {
       ...currentState,
-      byId: _.omit(currentState.byId, deletingHunch.slug)
+      byId: _.omit(currentState.byId, deletingHunch.id)
     };
     const action = actions.deleteHunchSuccess(deletingHunch);
     const newState = reducer(currentState, action);

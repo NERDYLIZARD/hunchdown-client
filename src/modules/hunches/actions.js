@@ -6,7 +6,7 @@ import * as types from './actionTypes';
 export const loadHunches = () => ({ type: types.LOAD_HUNCHES });
 export const loadHunchesSuccess = hunches => ({ type: types.LOAD_HUNCHES_SUCCESS, hunches });
 
-export const loadHunch = (slug) => ({ type: types.LOAD_HUNCH, slug });
+export const loadHunch = (id) => ({ type: types.LOAD_HUNCH, id });
 export const loadHunchSuccess = hunch => ({ type: types.LOAD_HUNCH_SUCCESS, hunch });
 
 export const createHunch = (hunch) => ({ type: types.CREATE_HUNCH, hunch });

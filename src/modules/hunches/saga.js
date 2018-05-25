@@ -35,7 +35,7 @@ export function* loadHunches() {
 
 export function* loadHunch(action) {
   try {
-    const data = yield call(Services.get, action.slug);
+    const data = yield call(Services.get, action.id);
     yield put(loadHunchSuccess(data));
   } catch (error) {
     throw error;
