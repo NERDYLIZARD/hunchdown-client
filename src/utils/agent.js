@@ -3,7 +3,11 @@
  */
 import axios from 'axios';
 
+// json server
 const API_ROOT = 'http://localhost:3002';
+
+// nodejs dev server
+// const API_ROOT = 'http://localhost:4000/api';
 
 const responseData = response => response.data;
 

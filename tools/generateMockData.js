@@ -18,6 +18,7 @@ import { chalkError, chalkSuccess } from './chalkConfig';
 jsf.extend('faker', () => faker);
 
 jsf.option({
+  resolveJsonPath: true,
   optionalsProbability: 0.8
 });
 
