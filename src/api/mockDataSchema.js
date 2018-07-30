@@ -6,8 +6,8 @@ export default {
   "properties": {
     "hunches": {
       "type": "array",
-      "minItems": 2,
-      "maxItems": 3,
+      "minItems": 5,
+      "maxItems": 8,
       "items": {
         "type": "object",
         "properties": {
@@ -28,8 +28,8 @@ export default {
           },
           "boxes": {
             "type": "array",
-            "minItems": 1,
-            "maxItems": 2,
+            "minItems": 2,
+            "maxItems": 3,
             "items": {
               "type": "string",
               "jsonPath": "$..boxes[*].id"
@@ -41,8 +41,8 @@ export default {
     },
     "boxes": {
       "type": "array",
-      "minItems": 2,
-      "maxItems": 3,
+      "minItems": 5,
+      "maxItems": 8,
       "items": {
         "type": "object",
         "properties": {
@@ -61,8 +61,8 @@ export default {
           },
           "hunches": {
             "type": "array",
-            "minItems": 1,
-            "maxItems": 2,
+            "minItems": 3,
+            "maxItems": 4,
             "items": {
               "type": "string",
               "jsonPath": "$..hunches[*].id"

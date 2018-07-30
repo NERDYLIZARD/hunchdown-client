@@ -5,13 +5,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import CustomPropTypes from '../../../utils/customPropTypes';
 
-const BoxItem = ({ box, onEdit, onDelete }) => {
+const BoxItem = ({ box, onDelete }) => {
   return (
     <div className="box card">
       <div className="box-header card-header clearfix">
         <div className="box-actions pull-right">
-          {/*<a className="box-edit-button" href="#" onClick={e => onEdit(e, box)}><i className="fa fa-edit"></i></a>*/}
-          {/*<a className="box-delete-button" href="#" onClick={e => onDelete(e, box)}><i className="fa fa-trash"></i></a>*/}
+          <a className="box-delete-button" href="#" onClick={e => onDelete(e, box)}><i className="fa fa-trash"></i></a>
         </div>
       </div>
       <div className="box-body card-body">
@@ -26,8 +25,7 @@ const BoxItem = ({ box, onEdit, onDelete }) => {
 
 BoxItem.propTypes = {
   box: CustomPropTypes.box.isRequired,
-  // onEdit: PropTypes.func.isRequired,
-  // onDelete: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
 };
 
 export default BoxItem;

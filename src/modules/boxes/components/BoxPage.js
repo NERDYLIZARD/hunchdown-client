@@ -14,10 +14,16 @@ export class BoxPage extends React.Component
   constructor (props, context) {
     super(props, context);
 
+    this.deleteBox = this.deleteBox.bind(this);
   }
 
   componentDidMount () {
     this.props.loadBoxes();
+  }
+
+  deleteBox(e, box) {
+    e.preventDefault();
+    this.props.deleteBox(box);
   }
 
   render () {
@@ -37,7 +43,7 @@ export class BoxPage extends React.Component
         </div>
         <div className="row">
           {boxes ?
-            <BoxList boxes={boxes}/> : null
+            <BoxList boxes={boxes} onDelete={this.deleteBox}/> : null
           }
         </div>
       </div>
@@ -46,8 +52,9 @@ export class BoxPage extends React.Component
 }
 
 BoxPage.propTypes = {
-  loadBoxes: PropTypes.func.isRequired,
   boxes: PropTypes.objectOf(CustomPropTypes.box),
+  loadBoxes: PropTypes.func.isRequired,
+  deleteBox: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({boxes}) => {

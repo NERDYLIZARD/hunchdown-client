@@ -11,12 +11,10 @@ const BoxList = ({boxes, onEdit, onDelete}) => {
   return (
     <div className="box-list">
       {_.map(boxes, box =>
-        <div className="col-xs-4">
+        <div className="col-xs-4" key={box.id}>
           <BoxItem
-            key={box.id}
             box={box}
-            // onEdit={onEdit}
-            // onDelete={onDelete}
+            onDelete={onDelete}
           />
         </div>)}
     </div>
@@ -25,8 +23,7 @@ const BoxList = ({boxes, onEdit, onDelete}) => {
 
 BoxList.propTypes = {
   boxes: PropTypes.object.isRequired,
-  // onEdit: PropTypes.func.isRequired,
-  // onDelete: PropTypes.func.isRequired
+  onDelete: PropTypes.func.isRequired
 };
 
 export default BoxList;

@@ -1,2 +1,5 @@
 export const LOAD_BOXES = 'LOAD_BOXES';
 export const LOAD_BOXES_SUCCESS = 'LOAD_BOXES_SUCCESS';
+
+export const DELETE_BOX = 'DELETE_BOX';
+export const DELETE_BOX_SUCCESS = 'DELETE_BOX_SUCCESS';
