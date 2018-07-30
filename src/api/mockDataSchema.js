@@ -51,9 +51,13 @@ export default {
             "faker": "random.uuid",
             "unique": "true"
           },
-          "name": {
+          "title": {
             "type": "string",
             "faker": "random.word"
+          },
+          "description": {
+            "type": "string",
+            "faker": "lorem.sentence"
           },
           "hunches": {
             "type": "array",
@@ -65,7 +69,7 @@ export default {
             }
           }
         },
-        "required": ["id", "name"]
+        "required": ["id", "title"]
       }
     }
   },

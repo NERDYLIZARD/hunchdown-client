@@ -1,0 +1,2 @@
+export const LOAD_BOXES = 'LOAD_BOXES';
+export const LOAD_BOXES_SUCCESS = 'LOAD_BOXES_SUCCESS';

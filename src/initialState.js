@@ -11,4 +11,15 @@ export default {
       }
     }
   },
+  boxes: {
+    byId: {}, // associative array
+    editing: {
+      modalOpen: false,
+      box: {
+        id: '',
+        title: '',
+        description: '',
+      }
+    }
+  },
 };

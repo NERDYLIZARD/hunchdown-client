@@ -3,9 +3,11 @@
  */
 import { all } from 'redux-saga/effects';
 import { hunchSagaWatchers }  from './modules/hunches/saga';
+import { boxSagaWatchers }  from './modules/boxes/saga';
 
 export default function* sagas() {
   yield all ([
     ...hunchSagaWatchers,
+    ...boxSagaWatchers,
   ]);
 }
