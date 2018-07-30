@@ -7,14 +7,14 @@ import CustomPropTypes from '../../../utils/customPropTypes';
 
 const HunchItem = ({ hunch, onEdit, onDelete }) => {
   return (
-    <div className="hunch">
-      <div className="hunch-header clearfix">
+    <div className="hunch card">
+      <div className="card-header hunch-header clearfix">
         <div className="hunch-actions pull-right">
           <a className="hunch-edit-button" href="#" onClick={e => onEdit(e, hunch)}><i className="fa fa-edit"></i></a>
           <a className="hunch-delete-button" href="#" onClick={e => onDelete(e, hunch)}><i className="fa fa-trash"></i></a>
         </div>
       </div>
-      <div className="hunch-body">
+      <div className="hunch-body card-body">
         <p className="hunch-wisdom">{hunch.wisdom}</p>
         {hunch.attribute ?
           <p className="hunch-attribute">- {hunch.attribute} -</p> : null

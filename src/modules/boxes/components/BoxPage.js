@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import CustomPropTypes from '../../../utils/customPropTypes';
+import BoxList from './BoxList';
 
 
 export class BoxPage extends React.Component
@@ -15,14 +16,12 @@ export class BoxPage extends React.Component
 
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.props.loadBoxes();
   }
 
   render () {
-    const { boxes } = this.props;
-
-    console.log(boxes);
+    const {boxes} = this.props;
 
     return (
       <div className="box-page container-fluid">
@@ -37,11 +36,9 @@ export class BoxPage extends React.Component
           </div>
         </div>
         <div className="row">
-          <div className="col-xs-offset-4 col-xs-4">
-            {/*{boxes ?*/}
-              {/*<BoxList boxes={boxes}/> : null*/}
-            {/*}*/}
-          </div>
+          {boxes ?
+            <BoxList boxes={boxes}/> : null
+          }
         </div>
       </div>
     );
