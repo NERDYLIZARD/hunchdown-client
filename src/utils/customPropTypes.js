@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 
 export default {
-  hunch : PropTypes.shape({
+  hunch: PropTypes.shape({
     slug: PropTypes.string,
     wisdom: PropTypes.string,
     attribute: PropTypes.string,
@@ -15,4 +15,8 @@ export default {
   // normalizedCard : PropTypes.shape({
   //   slug: PropTypes.objectOf(hunch),
   // }),
+  box: PropTypes.shape({
+    title: PropTypes.string,
+    description: PropTypes.string,
+  })
 };
