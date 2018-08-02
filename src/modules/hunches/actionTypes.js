@@ -14,4 +14,3 @@ export const DELETE_HUNCH = 'DELETE_HUNCH';
 export const DELETE_HUNCH_SUCCESS = 'DELETE_HUNCH_SUCCESS';
 
 export const EDIT_HUNCH = 'EDIT_HUNCH';
-

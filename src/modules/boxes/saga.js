@@ -5,7 +5,7 @@ import 'regenerator-runtime/runtime';
 import * as types from './actionTypes';
 import Services from './services';
 import { call, put, takeEvery } from 'redux-saga/effects';
-import { loadBoxesSuccess, deleteBoxSuccess } from './actions';
+import { loadBoxesSuccess, createBoxSuccess, deleteBoxSuccess } from './actions';
 
 
 /**
@@ -13,6 +13,7 @@ import { loadBoxesSuccess, deleteBoxSuccess } from './actions';
  */
 export const boxSagaWatchers = [
   takeEvery(types.LOAD_BOXES, loadBoxes),
+  takeEvery(types.CREATE_BOX, createBox),
   takeEvery(types.DELETE_BOX, deleteBox),
 ];
 
@@ -27,6 +28,15 @@ export function* loadBoxes() {
   } catch (error) {
     throw error;
     // yield put(loadBoxesFailed());
+  }
+}
+
+export function* createBox(action) {
+  try {
+    const data = yield call(Services.create, action.box);
+    yield put(createBoxSuccess(data));
+  } catch (error) {
+    throw error;
   }
 }
 

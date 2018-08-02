@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 import CustomPropTypes from '../../../utils/customPropTypes';
 import BoxList from './BoxList';
+import CreateBoxModal from './CreateBoxModal';
 
 
 export class BoxPage extends React.Component
@@ -15,10 +16,16 @@ export class BoxPage extends React.Component
     super(props, context);
 
     this.deleteBox = this.deleteBox.bind(this);
+    this.createBox = this.createBox.bind(this);
   }
 
   componentDidMount () {
     this.props.loadBoxes();
+  }
+
+  createBox(e) {
+    e.preventDefault();
+    this.props.openCreateBoxModal();
   }
 
   deleteBox(e, box) {
@@ -37,7 +44,7 @@ export class BoxPage extends React.Component
               <h2>Boxes</h2>
             </div>
             <div className="pull-right">
-              <button className="create-box-button btn btn-success">New Box</button>
+              <button className="create-box-button btn btn-success" onClick={this.createBox}>New Box</button>
             </div>
           </div>
         </div>
@@ -46,6 +53,7 @@ export class BoxPage extends React.Component
             <BoxList boxes={boxes} onDelete={this.deleteBox}/> : null
           }
         </div>
+        <CreateBoxModal/>
       </div>
     );
   }
@@ -55,6 +63,7 @@ BoxPage.propTypes = {
   boxes: PropTypes.objectOf(CustomPropTypes.box),
   loadBoxes: PropTypes.func.isRequired,
   deleteBox: PropTypes.func.isRequired,
+  openCreateBoxModal: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({boxes}) => {
