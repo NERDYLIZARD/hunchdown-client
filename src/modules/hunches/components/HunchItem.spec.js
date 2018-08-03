@@ -55,7 +55,7 @@ describe('<HunchItem />', () => {
     expect(props.onEdit).toBeCalledWith(expect.anything(), props.hunch);
   });
 
-  it('calls `onDelete()` when edit link is clicked', () => {
+  it('calls `onDelete()` when `delete` link is clicked', () => {
     const deleteButton = hunchItem().find('.hunch-delete-button');
     deleteButton.simulate('click');
     // call onDelete with props.hunch as its second argument
