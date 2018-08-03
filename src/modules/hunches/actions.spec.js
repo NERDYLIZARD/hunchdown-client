@@ -130,4 +130,33 @@ describe('Hunch Actions', () => {
     });
   });
 
+
+  describe('openHunchEditorModal', () => {
+    it(`creates an action typed ${types.EDIT_HUNCH} with 'editing.modelOpen = true' and the being edited 'hunch' as a payload`, () => {
+      const hunch = generateHunch();
+      const editing = {
+        modalOpen: true,
+        hunch
+      };
+      const expectedAction = {
+        type: types.EDIT_HUNCH,
+        editing
+      };
+      expect(hunchActions.openHunchEditorModal(hunch)).toEqual(expectedAction);
+    });
+  });
+
+  describe('closeHunchEditorModal', () => {
+    it(`creates an action typed ${types.EDIT_HUNCH} with 'editing.modelOpen = false' as a payload`, () => {
+      const editing = {
+        modalOpen: false,
+      };
+      const expectedAction = {
+        type: types.EDIT_HUNCH,
+        editing
+      };
+      expect(hunchActions.closeHunchEditorModal()).toEqual(expectedAction);
+    });
+  });
+
 });
