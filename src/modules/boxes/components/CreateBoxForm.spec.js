@@ -3,26 +3,26 @@
  */
 import React from 'react';
 import { mount } from 'enzyme';
-import HunchEditorForm from './HunchEditorForm'; // eslint-disable-line import/no-named-as-default
+import CreateBoxForm from './CreateBoxForm'; // eslint-disable-line import/no-named-as-default
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import initialState from '../../../initialState';
 
-describe('<HunchEditorForm />', () => {
+describe('<CreateBoxForm />', () => {
   let props;
-  let mountedHunchEditorForm;
-  const hunchEditorForm = () => {
+  let mountedCreateBoxForm;
+  const createBoxForm = () => {
     // if running new test, mount the component
     // otherwise, use the mounted component
-    if (!mountedHunchEditorForm) {
+    if (!mountedCreateBoxForm) {
       const store = configureMockStore()(initialState);
-      mountedHunchEditorForm = mount(
+      mountedCreateBoxForm = mount(
         <Provider store={store}>
-          <HunchEditorForm {...props} />
+          <CreateBoxForm {...props} />
         </Provider>
       );
     }
-    return mountedHunchEditorForm;
+    return mountedCreateBoxForm;
   };
 
   // reset props before running a new test
@@ -30,30 +30,30 @@ describe('<HunchEditorForm />', () => {
     props = {
       handleSubmit: jest.fn(),
     };
-    mountedHunchEditorForm = undefined;
+    mountedCreateBoxForm = undefined;
   });
 
   it('always renders a form as wrapper', () => {
-    const form = hunchEditorForm().find('form');
+    const form = createBoxForm().find('form');
     expect(form.length).toBeGreaterThan(0);
   });
 
   it('always renders the `hidden` field `id`', () => {
-    const hiddenIdField = hunchEditorForm().find('input[name="id"]');
+    const hiddenIdField = createBoxForm().find('input[name="id"]');
     expect(hiddenIdField.length).toBe(1);
     expect(hiddenIdField.props().type).toBe('hidden');
   });
 
-  it('always renders the `input` field `wisdom`', () => {
-    expect(hunchEditorForm().find('textarea[name="wisdom"]').length).toBe(1);
+  it('always renders the `input` field `title`', () => {
+    expect(createBoxForm().find('input[name="title"]').length).toBe(1);
   });
 
-  it('always renders the `textarea` field `attribute`', () => {
-    expect(hunchEditorForm().find('input[name="attribute"]').length).toBe(1);
+  it('always renders the `textarea` field `description`', () => {
+    expect(createBoxForm().find('textarea[name="description"]').length).toBe(1);
   });
 
   it('calls `handleSubmit()` when submitting the form', () => {
-    hunchEditorForm().simulate('submit');
+    createBoxForm().simulate('submit');
     expect(props.handleSubmit).toBeCalled();
   });
 
