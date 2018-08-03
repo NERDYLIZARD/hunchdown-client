@@ -8,7 +8,7 @@ import { HunchPage } from './HunchPage';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import initialState from '../../../initialState';
-import mockDataFactory from '../../../utils/test/mockDataFactory';
+import { generateHunch } from '../../../utils/test/mockDataFactory';
 
 
 describe('<HunchPage />', () => {
@@ -73,8 +73,8 @@ describe('<HunchPage />', () => {
   describe('when `hunches` is passed', () => {
     beforeEach(() => {
       props.hunches = _.mapKeys([
-        mockDataFactory.createHunch(),
-        mockDataFactory.createHunch(),
+        generateHunch(),
+        generateHunch(),
       ], 'slug');
     });
     it('renders `<HunchList />`', () => {

@@ -27,7 +27,7 @@ CreateBoxForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired
 };
 
-function mapStateToProps(state) {
+function mapStateToProps() {
   return {
     initialValues: {}
   };

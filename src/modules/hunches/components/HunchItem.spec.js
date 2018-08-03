@@ -4,7 +4,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import HunchItem from './HunchItem';
-import mockDataFactory from '../../../utils/test/mockDataFactory';
+import { generateHunch } from '../../../utils/test/mockDataFactory';
 
 describe('<HunchItem />', () => {
   let props;
@@ -25,7 +25,7 @@ describe('<HunchItem />', () => {
     props = {
       onEdit: jest.fn(),
       onDelete: jest.fn(),
-      hunch: mockDataFactory.createHunch(),
+      hunch: generateHunch(),
     };
     mountedHunchItem = undefined;
   });
@@ -69,7 +69,7 @@ describe('<HunchItem />', () => {
 
   describe('when `hunch.attribute` is defined', () => {
 
-    // hunch.attribute is defined from mockDataFactory.createHunch() in top-level beforeEach()
+    // hunch.attribute is defined from generateHunch() in top-level beforeEach()
     it('renders a `<p class="hunch-attribute">`', () => {
       expect(hunchItem().find('.hunch-attribute').length).toBe(1);
     });

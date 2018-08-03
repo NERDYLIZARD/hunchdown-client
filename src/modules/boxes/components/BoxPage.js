@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 import CustomPropTypes from '../../../utils/customPropTypes';
 import BoxList from './BoxList';
-import CreateBoxModal from './CreateBoxModal';
+import CreateBoxModal from './CreateBoxModal'; // eslint-disable-line import/no-named-as-default
 
 
 export class BoxPage extends React.Component

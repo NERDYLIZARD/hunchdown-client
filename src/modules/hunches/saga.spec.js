@@ -6,9 +6,15 @@ import faker from 'faker';
 import { call, put } from 'redux-saga/effects';
 import { cloneableGenerator } from 'redux-saga/utils';
 import Services from './services';
-import mockDataFactory from '../../utils/test/mockDataFactory';
+import { generateHunch } from '../../utils/test/mockDataFactory';
 import { createHunch, deleteHunch, loadHunch, loadHunches, updateHunch } from './saga';
-import { createHunchSuccess, deleteHunchSuccess, loadHunchesSuccess, loadHunchSuccess, updateHunchSuccess } from './actions';
+import {
+  createHunchSuccess,
+  deleteHunchSuccess,
+  loadHunchesSuccess,
+  loadHunchSuccess,
+  updateHunchSuccess
+} from './actions';
 
 
 describe('Hunch Sagas', () => {
@@ -25,7 +31,7 @@ describe('Hunch Sagas', () => {
 
     it('should dispatch loadHunchesSuccess() with the fetched hunches as its argument', () => {
       const clone = generator.clone();
-      const hunches = [mockDataFactory.createHunch(), mockDataFactory.createHunch()];
+      const hunches = [generateHunch(), generateHunch()];
       expect(clone.next(hunches).value).toEqual(put(loadHunchesSuccess(hunches)));
       expect(clone.next().done).toBe(true);
     });
@@ -42,7 +48,7 @@ describe('Hunch Sagas', () => {
    * Load Hunch
    */
   describe('loadHunch', () => {
-    const action = { id: faker.random.uuid() };
+    const action = {id: faker.random.uuid()};
     const generator = cloneableGenerator(loadHunch)(action);
 
     it('should call api to fetch a hunch by id', () => {
@@ -50,7 +56,7 @@ describe('Hunch Sagas', () => {
     });
     it('should dispatch loadHunchSuccess() with the fetched hunch as its argument', () => {
       const clone = generator.clone();
-      const hunch = mockDataFactory.createHunch();
+      const hunch = generateHunch();
       expect(clone.next(hunch).value).toEqual(put(loadHunchSuccess(hunch)));
       expect(clone.next().done).toBe(true);
     });
@@ -62,7 +68,7 @@ describe('Hunch Sagas', () => {
    * Create Hunch
    */
   describe('createHunch', () => {
-    const action = { hunch: _.omit(mockDataFactory.createHunch(), 'id') };
+    const action = {hunch: _.omit(generateHunch(), 'id')};
     const generator = cloneableGenerator(createHunch)(action);
 
     it('should call api to create a hunch with a hunch object as its argument', () => {
@@ -85,7 +91,7 @@ describe('Hunch Sagas', () => {
    * Update Hunch
    */
   describe('updateHunch', () => {
-    const action = { hunch: mockDataFactory.createHunch() };
+    const action = {hunch: generateHunch()};
     const generator = cloneableGenerator(updateHunch)(action);
 
     it('should call api to update a hunch with a hunch object as its argument', () => {
@@ -105,7 +111,7 @@ describe('Hunch Sagas', () => {
    * Delete Hunch
    */
   describe('deleteHunch', () => {
-    const action = { hunch: mockDataFactory.createHunch() };
+    const action = {hunch: generateHunch()};
     const generator = cloneableGenerator(deleteHunch)(action);
     it('should call api to delete a hunch with a hunch object as its argument', () => {
       expect(generator.next().value).toEqual(call(Services.delete, action.hunch));

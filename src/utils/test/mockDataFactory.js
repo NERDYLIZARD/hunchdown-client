@@ -3,11 +3,15 @@
  */
 import faker from 'faker';
 
-const createHunch = () => ({
+export const generateHunch = () => ({
   id: faker.random.uuid(),
   slug: faker.random.uuid(),
   wisdom: faker.lorem.sentences(),
   attribute: faker.name.findName(),
 });
 
-export default { createHunch };
+export const generateBox = () => ({
+  id: faker.random.uuid(),
+  title: faker.random.word(),
+  description: faker.lorem.sentence(),
+});

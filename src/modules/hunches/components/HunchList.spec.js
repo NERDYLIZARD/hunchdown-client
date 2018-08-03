@@ -5,7 +5,7 @@ import React from 'react';
 import _ from 'lodash';
 import { mount } from 'enzyme';
 import HunchList from './HunchList';
-import mockDataFactory from '../../../utils/test/mockDataFactory';
+import { generateHunch } from '../../../utils/test/mockDataFactory';
 
 describe('<HunchList />', () => {
   let props;
@@ -27,8 +27,8 @@ describe('<HunchList />', () => {
       onEdit: jest.fn(),
       onDelete: jest.fn(),
       hunches: _.mapKeys([
-        mockDataFactory.createHunch(),
-        mockDataFactory.createHunch(),
+        generateHunch(),
+        generateHunch(),
       ], 'slug'),
     };
     mountedHunchList = undefined;

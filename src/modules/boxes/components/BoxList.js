@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import BoxItem from './BoxItem'; // eslint-disable-line import/no-named-as-default
 
 
-const BoxList = ({boxes, onEdit, onDelete}) => {
+const BoxList = ({boxes, onDelete}) => {
   return (
     <div className="box-list">
       {_.map(boxes, box =>
