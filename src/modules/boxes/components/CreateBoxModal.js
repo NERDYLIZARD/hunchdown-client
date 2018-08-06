@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
+import * as selectors from '../selectors';
 import CreateBoxForm from './CreateBoxForm'; // eslint-disable-line import/no-named-as-default
 
 import Modal from 'react-bootstrap/lib/Modal';
@@ -54,7 +55,7 @@ CreateBoxModal.propTypes = {
 };
 
 export function mapStateToProps (state) {
-  return {...state.boxes.editing};
+  return {...selectors.getEditing(state)};
 }
 
 export default connect(mapStateToProps, {...actions})(CreateBoxModal);

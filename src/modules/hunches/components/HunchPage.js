@@ -7,7 +7,8 @@ import * as actions from '../actions';
 import { connect } from 'react-redux';
 import CustomPropTypes from '../../../utils/customPropTypes';
 import HunchEditorModal from './HunchEditorModal'; // eslint-disable-line import/no-named-as-default
-import HunchList from './HunchList'; // eslint-disable-line import/no-named-as-default
+import HunchList from './HunchList';
+import * as selectors from '../selectors';
 
 
 export class HunchPage extends React.Component {
@@ -73,9 +74,9 @@ HunchPage.propTypes = {
   hunches: PropTypes.objectOf(CustomPropTypes.hunch),
 };
 
-const mapStateToProps = ({ hunches }) => {
+const mapStateToProps = (state) => {
   return {
-    hunches: hunches.byId
+    hunches: selectors.getAll(state)
   }
 };
 

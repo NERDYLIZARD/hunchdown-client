@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import CheckboxGroup from '../../common/CheckboxGroup';
 import boxes from '../../boxes';
+import * as selectors from '../selectors';
 
 export const HunchEditorForm = ({boxOptions, handleSubmit}) => {
 
@@ -38,11 +39,12 @@ export const HunchEditorForm = ({boxOptions, handleSubmit}) => {
 };
 
 HunchEditorForm.propTypes = {
-  handleSubmit: PropTypes.func.isRequired
+  handleSubmit: PropTypes.func.isRequired,
+  boxOptions: PropTypes.array.isRequired,
 };
 
 function mapStateToProps (state) {
-  const {hunch} = state.hunches.editing;
+  const hunch = selectors.getSelected(state);
 
   return {
     boxOptions: boxes.selectors.getOptionsForCheckbox(state),

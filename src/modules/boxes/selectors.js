@@ -7,6 +7,10 @@ import _ from 'lodash';
 
 export const getAll = state => state[NAME].byId;
 
+export const getEditing = state => state[NAME].editing;
+
+export const getSelected = state => state[NAME].editing.box;
+
 export const getOptionsForCheckbox = createSelector(
   getAll,
   (boxes) => {

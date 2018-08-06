@@ -7,12 +7,12 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 import boxes from '../../boxes';
 import HunchEditorForm from './HunchEditorForm'; // eslint-disable-line import/no-named-as-default
+import * as selectors from '../selectors';
 
 import Modal from 'react-bootstrap/lib/Modal';
 
 export class HunchEditorModal extends Component
 {
-
   constructor () {
     super();
     this.saveClick = this.saveClick.bind(this);
@@ -58,18 +58,18 @@ export class HunchEditorModal extends Component
 
 HunchEditorModal.propTypes = {
   hunch: PropTypes.object,
-  boxes: PropTypes.object.isRequired,
   modalOpen: PropTypes.bool.isRequired,
   closeHunchEditorModal: PropTypes.func.isRequired,
   createHunch: PropTypes.func.isRequired,
   updateHunch: PropTypes.func.isRequired,
+  boxes: PropTypes.object.isRequired,
   loadBoxes: PropTypes.func.isRequired
 };
 
 export function mapStateToProps (state) {
   return {
-    ...state.hunches.editing,
-    boxes: state.boxes.byId
+    ...selectors.getEditing(state),
+    boxes: boxes.selectors.getAll(state)
   };
 }
 

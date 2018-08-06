@@ -5,6 +5,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
+import * as selectors from '../selectors';
 import CustomPropTypes from '../../../utils/customPropTypes';
 import BoxList from './BoxList';
 import CreateBoxModal from './CreateBoxModal'; // eslint-disable-line import/no-named-as-default
@@ -66,9 +67,9 @@ BoxPage.propTypes = {
   openCreateBoxModal: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({boxes}) => {
+const mapStateToProps = (state) => {
   return {
-    boxes: boxes.byId
+    boxes: selectors.getAll(state)
   }
 };
 
