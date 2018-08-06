@@ -8,6 +8,7 @@ export default {
         slug: '',
         wisdom: '',
         attribute: '',
+        boxes: [],
       }
     }
   },
@@ -19,6 +20,7 @@ export default {
         id: '',
         title: '',
         description: '',
+        hunches: [],
       }
     }
   },

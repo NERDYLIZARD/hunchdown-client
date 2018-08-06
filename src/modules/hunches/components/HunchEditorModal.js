@@ -5,19 +5,25 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
+import { loadBoxes } from '../../boxes/actions';
 import HunchEditorForm from './HunchEditorForm'; // eslint-disable-line import/no-named-as-default
 
 import Modal from 'react-bootstrap/lib/Modal';
 
-export class HunchEditorModal extends Component {
+export class HunchEditorModal extends Component
+{
 
-  constructor() {
+  constructor () {
     super();
     this.saveClick = this.saveClick.bind(this);
   }
 
-  submitForm(hunch) {
-    const { closeHunchEditorModal, updateHunch, createHunch } = this.props;
+  componentDidMount () {
+    this.props.loadBoxes();
+  }
+
+  submitForm (hunch) {
+    const {closeHunchEditorModal, updateHunch, createHunch} = this.props;
 
     if (hunch.id)
       updateHunch(hunch);
@@ -26,12 +32,12 @@ export class HunchEditorModal extends Component {
     closeHunchEditorModal();
   }
 
-  saveClick() {
+  saveClick () {
     this.editForm.getWrappedInstance().submit();
   }
 
-  render() {
-    const { modalOpen, closeHunchEditorModal, hunch } = this.props;
+  render () {
+    const {modalOpen, closeHunchEditorModal, hunch} = this.props;
 
     return (
       <Modal show={modalOpen} onHide={() => closeHunchEditorModal()} id="hunch-editor-modal">
@@ -52,14 +58,18 @@ export class HunchEditorModal extends Component {
 
 HunchEditorModal.propTypes = {
   hunch: PropTypes.object,
+  boxes: PropTypes.object.isRequired,
   modalOpen: PropTypes.bool.isRequired,
   closeHunchEditorModal: PropTypes.func.isRequired,
   createHunch: PropTypes.func.isRequired,
   updateHunch: PropTypes.func.isRequired
 };
 
-export function mapStateToProps(state) {
-  return { ...state.hunches.editing };
+export function mapStateToProps (state) {
+  return {
+    ...state.hunches.editing,
+    boxes: state.boxes.byId
+  };
 }
 
-export default connect(mapStateToProps, { ...actions })(HunchEditorModal);
+export default connect(mapStateToProps, {...actions, loadBoxes})(HunchEditorModal);
