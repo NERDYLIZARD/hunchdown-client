@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import CheckboxGroup from '../../common/CheckboxGroup';
-import _ from 'lodash';
+import boxes from '../../boxes';
 
 export const HunchEditorForm = ({boxOptions, handleSubmit}) => {
 
@@ -44,14 +44,8 @@ HunchEditorForm.propTypes = {
 function mapStateToProps (state) {
   const {hunch} = state.hunches.editing;
 
-  const boxes = state.boxes.byId;
-  const boxOptions = _.reduce(boxes, (options, box) => {
-    options.push({ label: box.title, value: box.id});
-    return options;
-  }, []);
-
   return {
-    boxOptions,
+    boxOptions: boxes.selectors.getOptionsForCheckbox(state),
     initialValues: {...hunch},
   };
 }

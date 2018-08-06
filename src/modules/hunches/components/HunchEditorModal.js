@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
-import { loadBoxes } from '../../boxes/actions';
+import boxes from '../../boxes';
 import HunchEditorForm from './HunchEditorForm'; // eslint-disable-line import/no-named-as-default
 
 import Modal from 'react-bootstrap/lib/Modal';
@@ -62,7 +62,8 @@ HunchEditorModal.propTypes = {
   modalOpen: PropTypes.bool.isRequired,
   closeHunchEditorModal: PropTypes.func.isRequired,
   createHunch: PropTypes.func.isRequired,
-  updateHunch: PropTypes.func.isRequired
+  updateHunch: PropTypes.func.isRequired,
+  loadBoxes: PropTypes.func.isRequired
 };
 
 export function mapStateToProps (state) {
@@ -72,4 +73,4 @@ export function mapStateToProps (state) {
   };
 }
 
-export default connect(mapStateToProps, {...actions, loadBoxes})(HunchEditorModal);
+export default connect(mapStateToProps, {...actions, loadBoxes: boxes.actions.loadBoxes})(HunchEditorModal);
