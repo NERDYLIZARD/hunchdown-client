@@ -81,8 +81,8 @@ describe('<HunchPage />', () => {
       expect(hunchPage().find('HunchList').length).toBe(1);
     });
     it('passes `hunches` as `hunches` property of `<HunchList />`', () => {
-      const HunchPage = hunchPage().find('HunchList');
-      expect(HunchPage.props().hunches).toEqual(props.hunches);
+      const HunchList = hunchPage().find('HunchList');
+      expect(HunchList.props().hunches).toEqual(props.hunches);
     });
   });
 

@@ -81,8 +81,8 @@ describe('<BoxPage />', () => {
       expect(boxPage().find('BoxList').length).toBe(1);
     });
     it('passes `boxes` as `boxes` property of `<BoxList />`', () => {
-      const BoxPage = boxPage().find('BoxList');
-      expect(BoxPage.props().boxes).toEqual(props.boxes);
+      const BoxList = boxPage().find('BoxList');
+      expect(BoxList.props().boxes).toEqual(props.boxes);
     });
   });
 

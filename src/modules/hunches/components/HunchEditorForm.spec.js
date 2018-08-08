@@ -2,11 +2,11 @@
  * Created on 19-May-18.
  */
 import React from 'react';
-import { mount } from 'enzyme';
-import HunchEditorForm from './HunchEditorForm'; // eslint-disable-line import/no-named-as-default
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
-import initialState from '../../../initialState';
+import { Field } from 'redux-form';
+import { shallow } from 'enzyme';
+import { HunchEditorForm } from './HunchEditorForm'; // eslint-disable-line import/no-named-as-default
+import CheckboxGroup from '../../common/CheckboxGroup';
+
 
 describe('<HunchEditorForm />', () => {
   let props;
@@ -15,11 +15,8 @@ describe('<HunchEditorForm />', () => {
     // if running new test, mount the component
     // otherwise, use the mounted component
     if (!mountedHunchEditorForm) {
-      const store = configureMockStore()(initialState);
-      mountedHunchEditorForm = mount(
-        <Provider store={store}>
-          <HunchEditorForm {...props} />
-        </Provider>
+      mountedHunchEditorForm = shallow(
+        <HunchEditorForm {...props} />
       );
     }
     return mountedHunchEditorForm;
@@ -29,6 +26,10 @@ describe('<HunchEditorForm />', () => {
   beforeEach(() => {
     props = {
       handleSubmit: jest.fn(),
+      boxOptions: [
+        {label: 'Life', value: 'id#1'},
+        {label: 'Inspiration', value: 'id#2'},
+      ],
     };
     mountedHunchEditorForm = undefined;
   });
@@ -39,22 +40,34 @@ describe('<HunchEditorForm />', () => {
   });
 
   it('always renders the `hidden` field `id`', () => {
-    const hiddenIdField = hunchEditorForm().find('input[name="id"]');
+    const hiddenIdField = hunchEditorForm().find(Field).filter({name: 'id'});
     expect(hiddenIdField.length).toBe(1);
     expect(hiddenIdField.props().type).toBe('hidden');
   });
 
-  it('always renders the `input` field `wisdom`', () => {
-    expect(hunchEditorForm().find('textarea[name="wisdom"]').length).toBe(1);
+  it('always renders the `input` field for `wisdom`', () => {
+    const wisdomInput = hunchEditorForm().find(Field).filter({name: 'wisdom'});
+    expect(wisdomInput.length).toBe(1);
   });
 
-  it('always renders the `textarea` field `attribute`', () => {
-    expect(hunchEditorForm().find('input[name="attribute"]').length).toBe(1);
+  it('always renders the `textarea` field for `attribute`', () => {
+    const attributeTextArea = hunchEditorForm().find(Field).filter({name: 'attribute'});
+    expect(attributeTextArea.length).toBe(1);
+  });
+
+  it('always renders the `checkbox` for `boxes` with props `name` & `boxOptions`', () => {
+    const checkboxGroup = hunchEditorForm().find(CheckboxGroup);
+
+    expect(checkboxGroup.length).toBe(1);
+    expect(checkboxGroup.props().name).toBe('boxes');
+    expect(checkboxGroup.props().options).toEqual([
+      {label: 'Life', value: 'id#1'},
+      {label: 'Inspiration', value: 'id#2'},
+    ]);
   });
 
   it('calls `handleSubmit()` when submitting the form', () => {
     hunchEditorForm().simulate('submit');
     expect(props.handleSubmit).toBeCalled();
   });
-
 });
