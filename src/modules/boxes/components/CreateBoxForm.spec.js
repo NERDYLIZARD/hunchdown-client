@@ -2,11 +2,9 @@
  * Created on 19-May-18.
  */
 import React from 'react';
-import { mount } from 'enzyme';
-import CreateBoxForm from './CreateBoxForm'; // eslint-disable-line import/no-named-as-default
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
-import initialState from '../../../initialState';
+import { shallow } from 'enzyme';
+import { Field } from 'redux-form';
+import { CreateBoxForm } from './CreateBoxForm'; // eslint-disable-line import/no-named-as-default
 
 describe('<CreateBoxForm />', () => {
   let props;
@@ -15,11 +13,8 @@ describe('<CreateBoxForm />', () => {
     // if running new test, mount the component
     // otherwise, use the mounted component
     if (!mountedCreateBoxForm) {
-      const store = configureMockStore()(initialState);
-      mountedCreateBoxForm = mount(
-        <Provider store={store}>
-          <CreateBoxForm {...props} />
-        </Provider>
+      mountedCreateBoxForm = shallow(
+        <CreateBoxForm {...props} />
       );
     }
     return mountedCreateBoxForm;
@@ -39,17 +34,17 @@ describe('<CreateBoxForm />', () => {
   });
 
   it('always renders the `hidden` field `id`', () => {
-    const hiddenIdField = createBoxForm().find('input[name="id"]');
+    const hiddenIdField = createBoxForm().find(Field).filter({name: 'id'});
     expect(hiddenIdField.length).toBe(1);
     expect(hiddenIdField.props().type).toBe('hidden');
   });
 
   it('always renders the `input` field `title`', () => {
-    expect(createBoxForm().find('input[name="title"]').length).toBe(1);
+    expect(createBoxForm().find(Field).filter({name: 'title'}).length).toBe(1);
   });
 
   it('always renders the `textarea` field `description`', () => {
-    expect(createBoxForm().find('textarea[name="description"]').length).toBe(1);
+    expect(createBoxForm().find(Field).filter({name: 'description'}).length).toBe(1);
   });
 
   it('calls `handleSubmit()` when submitting the form', () => {
