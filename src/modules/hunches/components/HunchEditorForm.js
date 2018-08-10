@@ -9,7 +9,14 @@ import CheckboxGroup from '../../common/CheckboxGroup';
 import boxes from '../../boxes';
 import * as selectors from '../selectors';
 
-export const HunchEditorForm = ({boxOptions, handleSubmit}) => {
+const {CreateBoxModal} = boxes.components;
+
+export const HunchEditorForm = ({boxOptions, handleSubmit, openCreateBoxModal}) => {
+
+  const openCreateBoxForm = (e) => {
+    e.preventDefault();
+    openCreateBoxModal();
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -27,12 +34,13 @@ export const HunchEditorForm = ({boxOptions, handleSubmit}) => {
       <div className="form-group">
         <div className="box-list-header clearfix">
           <label htmlFor="hunch-editor-boxes" className="pull-left">Boxes</label>
-          <button id="hunch-editor-new-box" className="btn btn-success pull-right">New Box</button>
+          <button id="hunch-editor-new-box" className="btn btn-success pull-right" onClick={openCreateBoxForm}>New Box</button>
         </div>
         <CheckboxGroup
           name="boxes"
           options={boxOptions}
         />
+        <CreateBoxModal/>
       </div>
     </form>
   );
@@ -41,6 +49,7 @@ export const HunchEditorForm = ({boxOptions, handleSubmit}) => {
 HunchEditorForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   boxOptions: PropTypes.array.isRequired,
+  openCreateBoxModal: PropTypes.func.isRequired,
 };
 
 function mapStateToProps (state) {
@@ -52,7 +61,7 @@ function mapStateToProps (state) {
   };
 }
 
-export default connect(mapStateToProps, null, null, {withRef: true})(
+export default connect(mapStateToProps, {openCreateBoxModal: boxes.actions.openCreateBoxModal}, null, {withRef: true})(
   reduxForm({
     form: 'hunch-editor'
   })(HunchEditorForm));
