@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import * as actions from '../actions';
+import { loadHunches, deleteHunch } from '../actions';
 import { connect } from 'react-redux';
 import CustomPropTypes from '../../../utils/customPropTypes';
 import HunchEditorModal from './HunchEditorModal'; // eslint-disable-line import/no-named-as-default
@@ -11,37 +11,55 @@ import HunchList from './HunchList';
 import * as selectors from '../selectors';
 
 
-export class HunchPage extends React.Component {
-
-  constructor(props, context) {
+export class HunchPage extends React.Component
+{
+  constructor (props, context) {
     super(props, context);
 
+    this.state = {
+      showHunchEditorModal: false,
+      activeHunch: null,
+    };
+
     this.createHunch = this.createHunch.bind(this);
-    this.editHunch = this.editHunch.bind(this);
     this.deleteHunch = this.deleteHunch.bind(this);
+    this.editHunch = this.editHunch.bind(this);
+    this.openHunchEditorModal = this.openHunchEditorModal.bind(this);
+    this.closeHunchEditorModal = this.closeHunchEditorModal.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.props.loadHunches();
   }
 
-  createHunch(e) {
+  createHunch (e) {
     e.preventDefault();
-    this.props.openHunchEditorModal();
+    this.openHunchEditorModal();
   }
 
-  editHunch(e, hunch) {
+  editHunch (e, hunch) {
     e.preventDefault();
-    this.props.openHunchEditorModal(hunch);
+    this.openHunchEditorModal(hunch)
   }
 
-  deleteHunch(e, hunch) {
+  openHunchEditorModal (hunch = null) {
+    this.setState({
+      showHunchEditorModal: true,
+      activeHunch: hunch
+    })
+  }
+
+  closeHunchEditorModal () {
+    this.setState({showHunchEditorModal: false});
+  }
+
+  deleteHunch (e, hunch) {
     e.preventDefault();
     this.props.deleteHunch(hunch);
   }
 
-  render() {
-    const { hunches } = this.props;
+  render () {
+    const {hunches} = this.props;
     return (
       <div className="hunch-page container-fluid">
         <div className="row">
@@ -61,7 +79,10 @@ export class HunchPage extends React.Component {
             }
           </div>
         </div>
-        <HunchEditorModal/>
+        <HunchEditorModal
+          hunch={this.state.activeHunch}
+          modalOpen={this.state.showHunchEditorModal}
+          closeHunchEditorModal={this.closeHunchEditorModal}/>
       </div>
     );
   }
@@ -70,7 +91,6 @@ export class HunchPage extends React.Component {
 HunchPage.propTypes = {
   loadHunches: PropTypes.func.isRequired,
   deleteHunch: PropTypes.func.isRequired,
-  openHunchEditorModal: PropTypes.func.isRequired,
   hunches: PropTypes.objectOf(CustomPropTypes.hunch),
 };
 
@@ -80,4 +100,4 @@ const mapStateToProps = (state) => {
   }
 };
 
-export default connect(mapStateToProps, { ...actions })(HunchPage);
+export default connect(mapStateToProps, {loadHunches, deleteHunch})(HunchPage);

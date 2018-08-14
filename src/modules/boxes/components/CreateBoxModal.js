@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import * as actions from '../actions';
+import { createBox } from '../actions';
 import * as selectors from '../selectors';
 import CreateBoxForm from './CreateBoxForm'; // eslint-disable-line import/no-named-as-default
 
@@ -14,17 +14,16 @@ export class CreateBoxModal extends Component
 {
   constructor () {
     super();
-    this.saveClick = this.saveClick.bind(this);
+    this.handleSave = this.handleSave.bind(this);
   }
 
   submitForm (box) {
     const {closeCreateBoxModal, createBox} = this.props;
-
     createBox(box);
     closeCreateBoxModal();
   }
 
-  saveClick () {
+  handleSave () {
     this.editForm.getWrappedInstance().submit();
   }
 
@@ -32,7 +31,7 @@ export class CreateBoxModal extends Component
     const {modalOpen, closeCreateBoxModal} = this.props;
 
     return (
-      <Modal show={modalOpen} onHide={() => closeCreateBoxModal()} id="create-box-modal">
+      <Modal show={modalOpen} onHide={closeCreateBoxModal} id="create-box-modal">
         <Modal.Header closeButton>
           <Modal.Title id="create-box-modal-title">New Box</Modal.Title>
         </Modal.Header>
@@ -40,8 +39,8 @@ export class CreateBoxModal extends Component
           <CreateBoxForm ref={f => this.editForm = f} onSubmit={box => this.submitForm(box)}/>
         </Modal.Body>
         <Modal.Footer>
-          <button id="create-box-modal-save" className="btn btn-primary" onClick={this.saveClick}>Create</button>
-          <button id="create-box-modal-close" className="btn" onClick={() => closeCreateBoxModal()}>Cancel</button>
+          <button id="create-box-modal-save" className="btn btn-primary" onClick={this.handleSave}>Create</button>
+          <button id="create-box-modal-close" className="btn" onClick={closeCreateBoxModal}>Cancel</button>
         </Modal.Footer>
       </Modal>
     );
@@ -55,7 +54,7 @@ CreateBoxModal.propTypes = {
 };
 
 export function mapStateToProps (state) {
-  return {...selectors.getEditing(state)};
+  return {...selectors.getSelected(state)};
 }
 
-export default connect(mapStateToProps, {...actions})(CreateBoxModal);
+export default connect(mapStateToProps, {createBox})(CreateBoxModal);

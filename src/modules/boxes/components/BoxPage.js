@@ -16,20 +16,29 @@ export class BoxPage extends React.Component
   constructor (props, context) {
     super(props, context);
 
+    this.state = {
+      showCreateBoxModal: false,
+    };
+
     this.deleteBox = this.deleteBox.bind(this);
-    this.createBox = this.createBox.bind(this);
+    this.openCreateBoxModal = this.openCreateBoxModal.bind(this);
+    this.closeCreateBoxModal = this.closeCreateBoxModal.bind(this);
   }
 
   componentDidMount () {
     this.props.loadBoxes();
   }
 
-  createBox(e) {
+  openCreateBoxModal (e) {
     e.preventDefault();
-    this.props.openCreateBoxModal();
+    this.setState({showCreateBoxModal: true});
   }
 
-  deleteBox(e, box) {
+  closeCreateBoxModal () {
+    this.setState({showCreateBoxModal: false});
+  }
+
+  deleteBox (e, box) {
     e.preventDefault();
     this.props.deleteBox(box);
   }
@@ -45,7 +54,7 @@ export class BoxPage extends React.Component
               <h2>Boxes</h2>
             </div>
             <div className="pull-right">
-              <button className="create-box-button btn btn-success" onClick={this.createBox}>New Box</button>
+              <button className="create-box-button btn btn-success" onClick={this.openCreateBoxModal}>New Box</button>
             </div>
           </div>
         </div>
@@ -54,7 +63,7 @@ export class BoxPage extends React.Component
             <BoxList boxes={boxes} onDelete={this.deleteBox}/> : null
           }
         </div>
-        <CreateBoxModal/>
+        <CreateBoxModal modalOpen={this.state.showCreateBoxModal} closeCreateBoxModal={this.closeCreateBoxModal}/>
       </div>
     );
   }
@@ -64,7 +73,6 @@ BoxPage.propTypes = {
   boxes: PropTypes.objectOf(CustomPropTypes.box),
   loadBoxes: PropTypes.func.isRequired,
   deleteBox: PropTypes.func.isRequired,
-  openCreateBoxModal: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {

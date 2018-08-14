@@ -9,6 +9,9 @@ import CheckboxGroup from '../../common/CheckboxGroup';
 
 
 describe('<HunchEditorForm />', () => {
+
+  jest.spyOn(HunchEditorForm.prototype, 'openCreateBoxModal');
+
   let props;
   let mountedHunchEditorForm;
   const hunchEditorForm = () => {
@@ -30,7 +33,6 @@ describe('<HunchEditorForm />', () => {
         {label: 'Life', value: 'id#1'},
         {label: 'Inspiration', value: 'id#2'},
       ],
-      openCreateBoxModal: jest.fn()
     };
     mountedHunchEditorForm = undefined;
   });
@@ -75,7 +77,7 @@ describe('<HunchEditorForm />', () => {
   it('calls `prop.openCreateBoxModal()` when `New Box` button is clicked', () => {
     const newBoxButton = hunchEditorForm().find('#hunch-editor-new-box');
     newBoxButton.simulate('click', { preventDefault: jest.fn()});
-    expect(props.openCreateBoxModal).toBeCalled();
+    expect(HunchEditorForm.prototype.openCreateBoxModal).toBeCalled();
   });
 
 });
