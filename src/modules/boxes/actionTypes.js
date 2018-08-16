@@ -1,5 +1,7 @@
 export const LOAD_BOXES = 'LOAD_BOXES';
-export const LOAD_BOXES_SUCCESS = 'LOAD_BOXES_SUCCESS';
+
+export const FETCH_BOXES = 'FETCH_BOXES';
+export const FETCH_BOXES_SUCCESS = 'FETCH_BOXES_SUCCESS';
 
 export const CREATE_BOX = 'CREATE_BOX';
 export const CREATE_BOX_SUCCESS = 'CREATE_BOX_SUCCESS';

@@ -6,17 +6,16 @@ import initialState from '../../initialState';
 import {
   CREATE_BOX_SUCCESS,
   DELETE_BOX_SUCCESS, EDIT_BOX,
-  LOAD_BOXES_SUCCESS,
+  FETCH_BOXES_SUCCESS,
 } from "./actionTypes";
 
 
 export default function boxReducer(state = initialState.boxes, action) {
   switch (action.type) {
-    case LOAD_BOXES_SUCCESS:
-      // turn array to associative array having 'id' as key
+    case FETCH_BOXES_SUCCESS:
       return {
         ...state,
-        byId: _.mapKeys(action.boxes, 'id')
+        visible: _.union(state.visible, action.items)
       };
 
     case CREATE_BOX_SUCCESS:

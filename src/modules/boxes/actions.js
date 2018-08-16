@@ -4,7 +4,9 @@
 import * as types from './actionTypes';
 
 export const loadBoxes = () => ({type: types.LOAD_BOXES});
-export const loadBoxesSuccess = boxes => ({type: types.LOAD_BOXES_SUCCESS, boxes});
+
+export const fetchBoxes = () => ({type: types.FETCH_BOXES});
+export const fetchBoxesSuccess = (entities, items) => ({type: types.FETCH_BOXES_SUCCESS, entities, items});
 
 export const createBox = (box) => ({type: types.CREATE_BOX, box});
 export const createBoxSuccess = box => ({type: types.CREATE_BOX_SUCCESS, box});

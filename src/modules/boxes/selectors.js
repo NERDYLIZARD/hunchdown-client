@@ -3,18 +3,23 @@
  */
 import { createSelector } from 'reselect';
 import { NAME } from './constants';
-import _ from 'lodash';
 
-export const getAll = state => state[NAME].byId;
+export const getEntity = state => state.entities[NAME];
 
-export const getEditing = state => state[NAME].editing;
+export const getVisibleItems = state => state[NAME].visible;
 
-export const getSelected = state => state[NAME].editing.box;
+export const getAll = createSelector(
+  getVisibleItems,
+  getEntity,
+  (visibleItems, entitiy) => visibleItems.map(item => entitiy[item])
+);
+
+export const getSelected = state => state.entities[NAME].editing.box;
 
 export const getOptionsForCheckbox = createSelector(
   getAll,
   (boxes) => {
-    return _.reduce(boxes, (options, box) => {
+    return boxes.reduce((options, box) => {
       options.push({
         label: box.title,
         value: box.id

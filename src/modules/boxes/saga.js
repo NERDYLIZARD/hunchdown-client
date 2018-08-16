@@ -3,9 +3,11 @@
  */
 import 'regenerator-runtime/runtime';
 import * as types from './actionTypes';
+import { normalize } from 'normalizr';
 import Services from './services';
 import { call, put, takeEvery } from 'redux-saga/effects';
-import { loadBoxesSuccess, createBoxSuccess, deleteBoxSuccess } from './actions';
+import { fetchBoxesSuccess, createBoxSuccess, deleteBoxSuccess } from './actions';
+import { boxesSchema } from '../../normalizr-schema';
 
 
 /**
@@ -13,6 +15,7 @@ import { loadBoxesSuccess, createBoxSuccess, deleteBoxSuccess } from './actions'
  */
 export const boxSagaWatchers = [
   takeEvery(types.LOAD_BOXES, loadBoxes),
+  takeEvery(types.FETCH_BOXES, fetchBoxes),
   takeEvery(types.CREATE_BOX, createBox),
   takeEvery(types.DELETE_BOX, deleteBox),
 ];
@@ -20,18 +23,23 @@ export const boxSagaWatchers = [
 /**
  * Generators
  */
-export function* loadBoxes() {
+export function* loadBoxes () {
+  yield put({type: types.FETCH_BOXES});
+}
+
+export function* fetchBoxes () {
   try {
-    // yield put(loadBoxesRequested());
+    // yield put(fetchBoxesRequested());
     const data = yield call(Services.find);
-    yield put(loadBoxesSuccess(data));
+    const {entities, result} = normalize(data, boxesSchema);
+    yield put(fetchBoxesSuccess(entities, result));
   } catch (error) {
     throw error;
-    // yield put(loadBoxesFailed());
+    // yield put(fetchBoxesFailed());
   }
 }
 
-export function* createBox(action) {
+export function* createBox (action) {
   try {
     const data = yield call(Services.create, action.box);
     yield put(createBoxSuccess(data));
@@ -40,7 +48,7 @@ export function* createBox(action) {
   }
 }
 
-export function* deleteBox(action) {
+export function* deleteBox (action) {
   try {
     yield call(Services.delete, action.box);
     yield put(deleteBoxSuccess(action.box));

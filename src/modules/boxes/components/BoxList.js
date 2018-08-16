@@ -22,7 +22,7 @@ const BoxList = ({boxes, onDelete}) => {
 };
 
 BoxList.propTypes = {
-  boxes: PropTypes.object.isRequired,
+  boxes: PropTypes.array.isRequired,
   onDelete: PropTypes.func.isRequired
 };
 

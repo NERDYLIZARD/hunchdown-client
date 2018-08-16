@@ -4,9 +4,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import * as actions from '../actions';
+import { loadBoxes, deleteBox } from '../actions';
 import * as selectors from '../selectors';
-import CustomPropTypes from '../../../utils/customPropTypes';
 import BoxList from './BoxList';
 import CreateBoxModal from './CreateBoxModal'; // eslint-disable-line import/no-named-as-default
 
@@ -63,14 +62,14 @@ export class BoxPage extends React.Component
             <BoxList boxes={boxes} onDelete={this.deleteBox}/> : null
           }
         </div>
-        <CreateBoxModal modalOpen={this.state.showCreateBoxModal} closeCreateBoxModal={this.closeCreateBoxModal}/>
+        {/*<CreateBoxModal modalOpen={this.state.showCreateBoxModal} closeCreateBoxModal={this.closeCreateBoxModal}/>*/}
       </div>
     );
   }
 }
 
 BoxPage.propTypes = {
-  boxes: PropTypes.objectOf(CustomPropTypes.box),
+  boxes: PropTypes.array,
   loadBoxes: PropTypes.func.isRequired,
   deleteBox: PropTypes.func.isRequired,
 };
@@ -81,4 +80,4 @@ const mapStateToProps = (state) => {
   }
 };
 
-export default connect(mapStateToProps, {...actions})(BoxPage);
+export default connect(mapStateToProps, {loadBoxes, deleteBox})(BoxPage);

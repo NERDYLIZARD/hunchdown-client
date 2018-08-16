@@ -1,4 +1,9 @@
 export default {
+  entities: {
+    hunches: {},
+    boxes: {}
+  },
+
   hunches: {
     byId: {}, // associative array
     editing: {
@@ -12,16 +17,12 @@ export default {
       }
     }
   },
+
   boxes: {
-    byId: {}, // associative array
-    editing: {
-      modalOpen: false,
-      box: {
-        id: '',
-        title: '',
-        description: '',
-        hunches: [],
-      }
-    }
+    visible: [],
+    active: '',
+    isFetching: false,
+    pageNumber: 0,
+    nextPageUrl: ""
   },
 };
