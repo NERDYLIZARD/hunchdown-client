@@ -23,6 +23,6 @@ export default {
     active: '',
     isFetching: false,
     pageNumber: 0,
-    nextPageUrl: ""
+    nextPageUrl: ''
   },
 };

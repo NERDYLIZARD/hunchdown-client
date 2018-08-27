@@ -6,8 +6,9 @@ import * as types from './actionTypes';
 import { normalize } from 'normalizr';
 import Services from './services';
 import { call, put, takeEvery } from 'redux-saga/effects';
-import { fetchBoxesSuccess, createBoxSuccess, deleteBoxSuccess } from './actions';
-import { boxesSchema } from '../../normalizr-schema';
+import { fetchBoxes as createFetchBoxesAction } from './actions';
+import { createBoxSuccess, deleteBoxSuccess, fetchBoxesSuccess } from './actions';
+import { boxSchema } from '../../normalizr-schema';
 
 
 /**
@@ -24,14 +25,14 @@ export const boxSagaWatchers = [
  * Generators
  */
 export function* loadBoxes () {
-  yield put({type: types.FETCH_BOXES});
+  yield put(createFetchBoxesAction());
 }
 
 export function* fetchBoxes () {
   try {
     // yield put(fetchBoxesRequested());
     const data = yield call(Services.find);
-    const {entities, result} = normalize(data, boxesSchema);
+    const {entities, result} = normalize(data, [boxSchema]);
     yield put(fetchBoxesSuccess(entities, result));
   } catch (error) {
     throw error;
