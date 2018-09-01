@@ -1,47 +1,20 @@
 /**
  * Created on 30-Jul-18.
  */
-import _ from 'lodash';
-import initialState from '../../initialState';
 import {
-  CREATE_BOX_SUCCESS,
-  DELETE_BOX_SUCCESS, EDIT_BOX,
-  FETCH_BOXES_SUCCESS,
+  FETCH_BOXES_FAILURE, FETCH_BOXES_REQUEST, FETCH_BOXES_SUCCESS,
+  CREATE_BOX_FAILURE, CREATE_BOX_REQUEST, CREATE_BOX_SUCCESS,
+  DELETE_BOX_FAILURE, DELETE_BOX_REQUEST, DELETE_BOX_SUCCESS,
 } from "./actionTypes";
+import { combineReducers } from 'redux';
+import { createPaginationReducer } from '../common/reducer-factories';
 
 
-export default function boxReducer(state = initialState.boxes, action) {
-  switch (action.type) {
-    case FETCH_BOXES_SUCCESS:
-      return {
-        ...state,
-        visible: _.union(state.visible, action.items)
-      };
+const boxesReducer = combineReducers({
+  pagination: createPaginationReducer(
+    [FETCH_BOXES_REQUEST, FETCH_BOXES_SUCCESS, FETCH_BOXES_FAILURE],
+    [CREATE_BOX_REQUEST, CREATE_BOX_SUCCESS, CREATE_BOX_FAILURE],
+    [DELETE_BOX_REQUEST, DELETE_BOX_SUCCESS, DELETE_BOX_FAILURE]),
+});
 
-    case CREATE_BOX_SUCCESS:
-      return {
-        ...state,
-        byId: {
-          ...state.byId, [action.box.id]: action.box
-        }
-      };
-
-    case DELETE_BOX_SUCCESS:
-      return {
-        ...state,
-        byId: _.omit(state.byId, action.box.id)
-      };
-
-    case EDIT_BOX:
-      return {
-        ...state,
-        editing: {
-          ...state.editing,
-          ...action.editing
-        }
-      };
-
-    default:
-      return state;
-  }
-}
+export default boxesReducer;

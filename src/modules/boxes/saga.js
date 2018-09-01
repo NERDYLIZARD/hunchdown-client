@@ -3,12 +3,21 @@
  */
 import 'regenerator-runtime/runtime';
 import * as types from './actionTypes';
-import { normalize } from 'normalizr';
 import Services from './services';
-import { call, put, takeEvery } from 'redux-saga/effects';
-import { fetchBoxes as createFetchBoxesAction } from './actions';
-import { createBoxSuccess, deleteBoxSuccess, fetchBoxesSuccess } from './actions';
-import { boxSchema } from '../../normalizr-schema';
+import { call, put, takeEvery, select } from 'redux-saga/effects';
+import {
+  createBoxFailed,
+  createBoxRequested,
+  createBoxSucceeded,
+  deleteBoxFailed,
+  deleteBoxRequested,
+  deleteBoxSucceeded,
+  fetchBoxes as createFetchBoxesAction,
+  fetchBoxesFailed,
+  fetchBoxesRequested,
+  fetchBoxesSucceeded
+} from './actions';
+import { getPaginationData } from './selectors';
 
 
 /**
@@ -24,36 +33,49 @@ export const boxSagaWatchers = [
 /**
  * Generators
  */
-export function* loadBoxes () {
-  yield put(createFetchBoxesAction());
+// call `fetchBox()` if it's the first time call
+// or when it's specifically told to fetch the next page
+export function* loadBoxes (action) {
+  const {
+    nextPageUrl = '/boxes?page=1&perPage=3',
+    pageCount = 0,
+    isFetching
+  } = select(getPaginationData);
+  const {requestingNextPage} = action.payload;
+
+  if (pageCount > 0 && !requestingNextPage && !isFetching)
+    return null;
+
+  yield put(createFetchBoxesAction(nextPageUrl));
 }
 
-export function* fetchBoxes () {
+export function* fetchBoxes (action) {
   try {
-    // yield put(fetchBoxesRequested());
-    const data = yield call(Services.find);
-    const {entities, result} = normalize(data, [boxSchema]);
-    yield put(fetchBoxesSuccess(entities, result));
+    yield put(fetchBoxesRequested());
+    const data = yield call(Services.find, action.payload.url);
+    const {entities, result, nextPageUrl} = data;
+    yield put(fetchBoxesSucceeded(entities, result, nextPageUrl));
   } catch (error) {
-    throw error;
-    // yield put(fetchBoxesFailed());
+    yield put(fetchBoxesFailed(error));
   }
 }
 
 export function* createBox (action) {
   try {
-    const data = yield call(Services.create, action.box);
-    yield put(createBoxSuccess(data));
+    yield put(createBoxRequested());
+    const data = yield call(Services.create, action.payload);
+    yield put(createBoxSucceeded(data));
   } catch (error) {
-    throw error;
+    yield put(createBoxFailed(error));
   }
 }
 
 export function* deleteBox (action) {
   try {
-    yield call(Services.delete, action.box);
-    yield put(deleteBoxSuccess(action.box));
+    yield put(deleteBoxRequested());
+    yield call(Services.delete, action.payload);
+    yield put(deleteBoxSucceeded(action.payload));
   } catch (error) {
-    throw error;
+    yield put(deleteBoxFailed(error));
   }
 }

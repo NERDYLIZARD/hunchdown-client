@@ -11,6 +11,13 @@
 import { schema } from 'normalizr';
 
 const hunchSchema = new schema.Entity('hunches');
-const boxSchema = new schema.Entity('boxes');
+
+const boxSchema = new schema.Entity('boxes', {
+  hunches: [hunchSchema],
+});
+
+hunchSchema.define({
+  boxes: [boxSchema]
+});
 
 export { boxSchema, hunchSchema };

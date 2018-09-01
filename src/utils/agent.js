@@ -11,8 +11,10 @@ const API_ROOT = 'http://localhost:3002';
 
 const responseData = response => response.data;
 
-const get = url =>
-  axios.get(`${API_ROOT}${url}`).then(responseData);
+const get = endpoint => {
+  const fullUrl = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint;
+  return axios.get(fullUrl).then(response => response);
+};
 const post = (url, body) =>
   axios.post(`${API_ROOT}${url}`, body).then(responseData);
 const put = (url, body) =>

@@ -6,13 +6,15 @@ import { NAME } from './constants';
 
 export const getEntity = state => state.entities[NAME];
 
-export const getVisibleItems = state => state[NAME].visible;
+export const getVisibleItems = state => state[NAME].pagination.ids;
 
 export const getAll = createSelector(
   getVisibleItems,
   getEntity,
   (visibleItems, entitiy) => visibleItems.map(item => entitiy[item])
 );
+
+export const getPaginationData = state => state[NAME].pagination;
 
 export const getSelected = state => state.entities[NAME].editing.box;
 
