@@ -41,7 +41,7 @@ export const createPaginationReducer = (fetchTypes, createTypes, deleteTypes) =>
         return {
           ...state,
           isFetching: false,
-          ids: union(state.ids, action.payload.items),
+          ids: union(state.ids, action.payload.result),
           nextPageUrl: action.payload.nextPageUrl,
           page: state.page + 1
         };

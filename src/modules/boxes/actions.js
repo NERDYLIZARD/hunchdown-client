@@ -2,13 +2,20 @@
  * Created on 30-Jul-18.
  */
 import * as types from './actionTypes';
+import { CALL_API } from '../../middlewares/api';
+import { boxSchema } from '../../normalizr-schema';
+
 
 export const loadBoxes = (requestingNextPage) => ({type: types.LOAD_BOXES, payload: {requestingNextPage}});
 
-export const fetchBoxes = (url) => ({type: types.FETCH_BOXES, payload: {url}});
-export const fetchBoxesRequested = () => ({type: types.FETCH_BOXES_REQUEST});
-export const fetchBoxesSucceeded = (entities, items, nextPageUrl) => ({type: types.FETCH_BOXES_SUCCESS, payload: {entities, items, nextPageUrl}});
-export const fetchBoxesFailed = (error) => ({type: types.FETCH_BOXES_FAILURE, error});
+export const fetchBoxes = (url) => ({
+  [CALL_API]: {
+    types: [types.FETCH_BOXES_REQUEST, types.FETCH_BOXES_SUCCESS, types.FETCH_BOXES_FAILURE],
+    schema: [boxSchema],
+    endpoint: url,
+    method: 'GET',
+  }
+});
 
 export const createBox = (box) => ({type: types.CREATE_BOX, payload: {...box}});
 export const createBoxRequested = () => ({type: types.CREATE_BOX_REQUEST});

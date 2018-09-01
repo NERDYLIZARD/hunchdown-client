@@ -6,6 +6,7 @@ import createHistory from 'history/createBrowserHistory';
 import { routerMiddleware } from 'react-router-redux';
 import reducers from './reducers';
 import saga from './sagas';
+import apiMiddleware from './middlewares/api';
 
 export const history = createHistory();
 const sagaMiddleware = createSagaMiddleware();
@@ -16,7 +17,8 @@ function configureStoreProd(initialState) {
     // Add other middleware on this line...
 
     reactRouterMiddleware,
-    sagaMiddleware
+    sagaMiddleware,
+    apiMiddleware
   ];
 
   const store = createStore(reducers, initialState, compose(
@@ -37,7 +39,8 @@ function configureStoreDev(initialState) {
     // Redux middleware that spits an error on you when you try to mutate your state either inside a dispatch or between dispatches.
     reduxImmutableStateInvariant(),
     reactRouterMiddleware,
-    sagaMiddleware
+    sagaMiddleware,
+    apiMiddleware
   ];
 
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // add support for Redux dev tools

@@ -12,10 +12,7 @@ import {
   deleteBoxFailed,
   deleteBoxRequested,
   deleteBoxSucceeded,
-  fetchBoxes as createFetchBoxesAction,
-  fetchBoxesFailed,
-  fetchBoxesRequested,
-  fetchBoxesSucceeded
+  fetchBoxes,
 } from './actions';
 import { getPaginationData } from './selectors';
 
@@ -25,7 +22,6 @@ import { getPaginationData } from './selectors';
  */
 export const boxSagaWatchers = [
   takeEvery(types.LOAD_BOXES, loadBoxes),
-  takeEvery(types.FETCH_BOXES, fetchBoxes),
   takeEvery(types.CREATE_BOX, createBox),
   takeEvery(types.DELETE_BOX, deleteBox),
 ];
@@ -46,19 +42,9 @@ export function* loadBoxes (action) {
   if (pageCount > 0 && !requestingNextPage && !isFetching)
     return null;
 
-  yield put(createFetchBoxesAction(nextPageUrl));
+  yield put(fetchBoxes(nextPageUrl));
 }
 
-export function* fetchBoxes (action) {
-  try {
-    yield put(fetchBoxesRequested());
-    const data = yield call(Services.find, action.payload.url);
-    const {entities, result, nextPageUrl} = data;
-    yield put(fetchBoxesSucceeded(entities, result, nextPageUrl));
-  } catch (error) {
-    yield put(fetchBoxesFailed(error));
-  }
-}
 
 export function* createBox (action) {
   try {
