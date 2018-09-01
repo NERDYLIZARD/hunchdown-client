@@ -5,7 +5,6 @@ import _ from 'lodash';
 import faker from 'faker';
 import { call, put } from 'redux-saga/effects';
 import { cloneableGenerator } from 'redux-saga/utils';
-import Services from './services';
 import { generateBox } from '../../utils/test/mockDataFactory';
 import { createBox, deleteBox, loadBoxes } from './saga';
 import {

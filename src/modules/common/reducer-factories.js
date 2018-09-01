@@ -51,14 +51,14 @@ export const createPaginationReducer = (fetchTypes, createTypes, deleteTypes) =>
           ...state,
           isFetching: false,
           // todo slow, use immutable `unshift()` for an alternative
-          ids: [action.payload.id, ...state.ids],
+          ids: [action.payload.result, ...state.ids],
         };
 
       case deleteSuccessType:
         return {
           ...state,
           isFetching: false,
-          ids: without(state.ids, action.payload.id),
+          ids: without(state.ids, action.payload.result),
         };
 
       case fetchFailureType:

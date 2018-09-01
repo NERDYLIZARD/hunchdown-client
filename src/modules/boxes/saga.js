@@ -3,17 +3,8 @@
  */
 import 'regenerator-runtime/runtime';
 import * as types from './actionTypes';
-import Services from './services';
-import { call, put, takeEvery, select } from 'redux-saga/effects';
-import {
-  createBoxFailed,
-  createBoxRequested,
-  createBoxSucceeded,
-  deleteBoxFailed,
-  deleteBoxRequested,
-  deleteBoxSucceeded,
-  fetchBoxes,
-} from './actions';
+import { put, select, takeEvery } from 'redux-saga/effects';
+import { fetchBoxes } from './actions';
 import { getPaginationData } from './selectors';
 
 
@@ -22,8 +13,6 @@ import { getPaginationData } from './selectors';
  */
 export const boxSagaWatchers = [
   takeEvery(types.LOAD_BOXES, loadBoxes),
-  takeEvery(types.CREATE_BOX, createBox),
-  takeEvery(types.DELETE_BOX, deleteBox),
 ];
 
 /**
@@ -43,25 +32,4 @@ export function* loadBoxes (action) {
     return null;
 
   yield put(fetchBoxes(nextPageUrl));
-}
-
-
-export function* createBox (action) {
-  try {
-    yield put(createBoxRequested());
-    const data = yield call(Services.create, action.payload);
-    yield put(createBoxSucceeded(data));
-  } catch (error) {
-    yield put(createBoxFailed(error));
-  }
-}
-
-export function* deleteBox (action) {
-  try {
-    yield put(deleteBoxRequested());
-    yield call(Services.delete, action.payload);
-    yield put(deleteBoxSucceeded(action.payload));
-  } catch (error) {
-    yield put(deleteBoxFailed(error));
-  }
 }

@@ -6,7 +6,11 @@ import { CALL_API } from '../../middlewares/api';
 import { boxSchema } from '../../normalizr-schema';
 
 
-export const loadBoxes = (requestingNextPage) => ({type: types.LOAD_BOXES, payload: {requestingNextPage}});
+export const loadBoxes = (requestingNextPage) => ({
+  type: types.LOAD_BOXES,
+  // todo does it need meta, payload for actions that are not api-concerned
+  payload: {requestingNextPage}
+});
 
 export const fetchBoxes = (url) => ({
   [CALL_API]: {
@@ -17,15 +21,25 @@ export const fetchBoxes = (url) => ({
   }
 });
 
-export const createBox = (box) => ({type: types.CREATE_BOX, payload: {...box}});
-export const createBoxRequested = () => ({type: types.CREATE_BOX_REQUEST});
-export const createBoxSucceeded = box => ({type: types.CREATE_BOX_SUCCESS, payload: {...box}});
-export const createBoxFailed = (error) => ({type: types.CREATE_BOX_FAILURE, error});
+export const createBox = (box) => ({
+  [CALL_API]: {
+    types: [types.CREATE_BOX_REQUEST, types.CREATE_BOX_SUCCESS, types.CREATE_BOX_FAILURE],
+    schema: boxSchema,
+    endpoint: '/boxes',
+    method: 'POST',
+    data: box
+  }
+});
 
-export const deleteBox = (box) => ({type: types.DELETE_BOX, payload: {...box}});
-export const deleteBoxRequested = () => ({type: types.DELETE_BOX_REQUEST});
-export const deleteBoxSucceeded = box => ({type: types.DELETE_BOX_SUCCESS, payload: {...box}});
-export const deleteBoxFailed = (error) => ({type: types.DELETE_BOX_FAILURE, error});
+export const deleteBox = (box) => ({
+  [CALL_API]: {
+    types: [types.DELETE_BOX_REQUEST, types.DELETE_BOX_SUCCESS, types.DELETE_BOX_FAILURE],
+    schema: boxSchema,
+    endpoint: `/boxes/${box.id}`,
+    method: 'DELETE',
+    data: box
+  }
+});
 
 export const openCreateBoxModal = () => ({type: types.EDIT_BOX, editing: {modalOpen: true}});
 export const closeCreateBoxModal = () => ({type: types.EDIT_BOX, editing: {modalOpen: false}});

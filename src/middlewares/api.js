@@ -1,8 +1,8 @@
 /**
  * Created on 01-Sep-18.
  */
-import { normalize } from 'normalizr';
 import axios from 'axios';
+import { normalize } from 'normalizr';
 
 // Extracts the next page URL from Github API response.
 const getNextPageUrl = response => {
@@ -35,9 +35,12 @@ const callApi = (endpoint, schema, method, data) => {
   return axios({
     url,
     method,
-    data
+    // for deletion, we don't want to send data, but we still need data to return as action's payload
+    data: method === 'DELETE' ? null : data
   }).then(response => {
-    const {entities, result} = normalize(response.data, schema);
+    // in case server return empty of object, i.e. status 204, normalize data that passed in
+    const toBeNormalized = _.isEmpty(response.data) ? data : response.data;
+    const {entities, result} = normalize(toBeNormalized, schema);
     const json = {
       entities,
       result
@@ -53,7 +56,7 @@ const callApi = (endpoint, schema, method, data) => {
     if (error.response) {
       return Promise.reject(error.response.data);
     } else if (error.request) {
-      return Promise.reject(error.request);
+      return Promise.reject({message: 'The request was made but no response was received'});
     } else {
       return Promise.reject(error);
     }
