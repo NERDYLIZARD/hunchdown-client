@@ -19,6 +19,7 @@ class App extends React.Component {
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/hunches" component={HunchPage} />
+          <Route path="/boxes/:id" component={HunchPage} />
           <Route path="/boxes" component={BoxPage} />
           <Route component={NotFoundPage} />
         </Switch>

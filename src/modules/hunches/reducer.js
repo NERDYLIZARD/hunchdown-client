@@ -1,66 +1,20 @@
 /**
  * Created on 27-Mar-18.
  */
-import _ from 'lodash';
-import initialState from '../../initialState';
 import {
-  CREATE_HUNCH_SUCCESS,
-  DELETE_HUNCH_SUCCESS, EDIT_HUNCH,
-  LOAD_HUNCHES_SUCCESS,
-  LOAD_HUNCH_SUCCESS,
-  UPDATE_HUNCH_SUCCESS,
+  FETCH_HUNCHES_FAILURE, FETCH_HUNCHES_REQUEST, FETCH_HUNCHES_SUCCESS,
+  CREATE_HUNCH_FAILURE, CREATE_HUNCH_REQUEST, CREATE_HUNCH_SUCCESS,
+  DELETE_HUNCH_FAILURE, DELETE_HUNCH_REQUEST, DELETE_HUNCH_SUCCESS,
 } from "./actionTypes";
+import { combineReducers } from 'redux';
+import { createPaginationReducer } from '../common/reducer-factories';
 
 
-export default function hunchReducer(state = initialState.hunches, action) {
-  switch (action.type) {
-    case LOAD_HUNCHES_SUCCESS:
-      // turn array to associative array having 'id' as key
-      return {
-        ...state,
-        byId: _.mapKeys(action.hunches, 'id')
-      };
+const boxesReducer = combineReducers({
+  pagination: createPaginationReducer(
+    [FETCH_HUNCHES_REQUEST, FETCH_HUNCHES_SUCCESS, FETCH_HUNCHES_FAILURE],
+    [CREATE_HUNCH_REQUEST, CREATE_HUNCH_SUCCESS, CREATE_HUNCH_FAILURE],
+    [DELETE_HUNCH_REQUEST, DELETE_HUNCH_SUCCESS, DELETE_HUNCH_FAILURE]),
+});
 
-    case LOAD_HUNCH_SUCCESS:
-      return {
-        ...state,
-        byId: {
-          ...state.byId, [action.hunch.id]: action.hunch
-        }
-      };
-
-    case CREATE_HUNCH_SUCCESS:
-      return {
-        ...state,
-        byId: {
-          ...state.byId, [action.hunch.id]: action.hunch
-        }
-      };
-
-    case UPDATE_HUNCH_SUCCESS:
-      return {
-        ...state,
-        byId: {
-          ...state.byId, [action.hunch.id]: action.hunch
-        }
-      };
-
-    case DELETE_HUNCH_SUCCESS:
-      return {
-        ...state,
-        byId: _.omit(state.byId, action.hunch.id)
-      };
-
-    case EDIT_HUNCH:
-      return {
-        ...state,
-        editing: {
-          ...state.editing,
-          ...action.editing
-        }
-      };
-
-    default:
-      return state;
-  }
-}
+export default boxesReducer;

@@ -6,10 +6,10 @@ import { CALL_API } from '../../middlewares/api';
 import { boxSchema } from '../../normalizr-schema';
 
 
-export const loadBoxes = (requestingNextPage) => ({
+export const loadBoxes = (nextPageIsRequested) => ({
   type: types.LOAD_BOXES,
   // todo does it need meta, payload for actions that are not api-concerned
-  payload: {requestingNextPage}
+  nextPageIsRequested
 });
 
 export const fetchBoxes = (url) => ({

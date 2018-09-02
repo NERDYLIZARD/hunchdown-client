@@ -5,7 +5,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { loadHunches, deleteHunch } from '../actions';
 import { connect } from 'react-redux';
-import CustomPropTypes from '../../../utils/customPropTypes';
 import HunchEditorModal from './HunchEditorModal'; // eslint-disable-line import/no-named-as-default
 import HunchList from './HunchList';
 import * as selectors from '../selectors';
@@ -91,7 +90,7 @@ export class HunchPage extends React.Component
 HunchPage.propTypes = {
   loadHunches: PropTypes.func.isRequired,
   deleteHunch: PropTypes.func.isRequired,
-  hunches: PropTypes.objectOf(CustomPropTypes.hunch),
+  hunches: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = (state) => {

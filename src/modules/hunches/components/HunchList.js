@@ -22,7 +22,7 @@ const HunchList = ({ hunches, onEdit, onDelete }) => {
 };
 
 HunchList.propTypes = {
-  hunches: PropTypes.object.isRequired,
+  hunches: PropTypes.array.isRequired,
   onEdit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired
 };

@@ -3,11 +3,12 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import CustomPropTypes from '../../../utils/customPropTypes';
 
-const BoxItem = ({ box, onDelete }) => {
+export const BoxItem = ({ box, onDelete, history }) => {
   return (
-    <div className="box card">
+    <div className="box card" onClick={() => history.push(`boxes/${box.id}`)}>
       <div className="box-header card-header clearfix">
         <div className="box-actions pull-right">
           <a className="box-delete-button" href="#" onClick={e => onDelete(e, box)}><i className="fa fa-trash"></i></a>
@@ -26,6 +27,7 @@ const BoxItem = ({ box, onDelete }) => {
 BoxItem.propTypes = {
   box: CustomPropTypes.box.isRequired,
   onDelete: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
-export default BoxItem;
+export default withRouter(BoxItem);

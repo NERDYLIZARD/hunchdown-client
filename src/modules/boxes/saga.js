@@ -26,9 +26,9 @@ export function* loadBoxes (action) {
     pageCount = 0,
     isFetching
   } = select(getPaginationData);
-  const {requestingNextPage} = action.payload;
+  const {nextPageIsRequested} = action;
 
-  if (pageCount > 0 && !requestingNextPage && !isFetching)
+  if (pageCount > 0 && !nextPageIsRequested && !isFetching)
     return null;
 
   yield put(fetchBoxes(nextPageUrl));

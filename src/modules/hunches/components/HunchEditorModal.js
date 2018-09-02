@@ -60,7 +60,7 @@ HunchEditorModal.propTypes = {
   closeHunchEditorModal: PropTypes.func.isRequired,
   createHunch: PropTypes.func.isRequired,
   updateHunch: PropTypes.func.isRequired,
-  boxes: PropTypes.object.isRequired,
+  boxes: PropTypes.array.isRequired,
   loadBoxes: PropTypes.func.isRequired
 };
 
