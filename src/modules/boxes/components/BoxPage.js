@@ -16,6 +16,8 @@ export class BoxPage extends React.Component
     super(props, context);
 
     this.deleteBox = this.deleteBox.bind(this);
+    this.createBox = this.createBox.bind(this);
+    this.editBox = this.editBox.bind(this);
   }
 
   componentDidMount () {
@@ -27,8 +29,18 @@ export class BoxPage extends React.Component
     this.props.deleteBox(box);
   }
 
+  createBox (e) {
+    e.preventDefault();
+    this.props.openBoxEditorModal(null, selectors.getEditor);
+  }
+
+  editBox (e, box) {
+    e.preventDefault();
+    this.props.openBoxEditorModal(box, selectors.getEditor);
+  }
+
   render () {
-    const {boxes, openBoxEditorModal} = this.props;
+    const {boxes} = this.props;
 
     return (
       <div className="box-page container-fluid">
@@ -38,13 +50,13 @@ export class BoxPage extends React.Component
               <h2>Boxes</h2>
             </div>
             <div className="pull-right">
-              <button className="create-box-button btn btn-success" onClick={() => openBoxEditorModal(null, selectors.getEditor)}>New Box</button>
+              <button className="create-box-button btn btn-success" onClick={this.createBox}>New Box</button>
             </div>
           </div>
         </div>
         <div className="row">
           {boxes ?
-            <BoxList boxes={boxes} onDelete={this.deleteBox}/> : null
+            <BoxList boxes={boxes} onEdit={this.editBox} onDelete={this.deleteBox}/> : null
           }
         </div>
         <BoxEditorModal/>

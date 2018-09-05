@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { createBox, closeBoxEditorModal, clearBoxEditor } from '../actions';
+import { createBox, closeBoxEditorModal, clearBoxEditor, updateBox } from '../actions';
 import * as selectors from '../selectors';
 import CreateBoxForm from './BoxEditorForm'; // eslint-disable-line import/no-named-as-default
 import { getFormValues } from 'redux-form';
@@ -20,9 +20,9 @@ export class BoxEditorModal extends Component
   }
 
   submitForm (box) {
-    const {closeBoxEditorModal, createBox} = this.props;
-    createBox(box);
-    closeBoxEditorModal();
+    const {createBox, updateBox} = this.props;
+    box.id ? updateBox(box) : createBox(box);
+    this.close();
   }
 
   handleSave () {
@@ -39,15 +39,17 @@ export class BoxEditorModal extends Component
   }
 
   render () {
-    const {isOpenedWithModal} = this.props;
+    const {box, isOpenedWithModal} = this.props;
 
     return (
       <Modal show={isOpenedWithModal}
              keyboard={false}
-             onHide={(e) => {e ? this.close() : this.suspend()}}
+             onHide={(e) => {
+               e ? this.close() : this.suspend()
+             }}
              id="box-editor-modal">
         <Modal.Header closeButton>
-          <Modal.Title id="box-editor-modal-title">New Box</Modal.Title>
+          <Modal.Title id="box-editor-modal-title">{box ? 'Edit Box' : 'New Box'}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <CreateBoxForm ref={f => this.editForm = f} onSubmit={box => this.submitForm(box)}/>
@@ -66,15 +68,22 @@ BoxEditorModal.propTypes = {
   closeBoxEditorModal: PropTypes.func.isRequired,
   clearBoxEditor: PropTypes.func.isRequired,
   createBox: PropTypes.func.isRequired,
+  updateBox: PropTypes.func.isRequired,
   formValues: PropTypes.object,
 };
 
 export function mapStateToProps (state) {
-  const {isOpenedWithModal} = selectors.getEditor(state);
+  const {isOpenedWithModal, props} = selectors.getEditor(state);
   return {
+    box: props,
     isOpenedWithModal,
     formValues: getFormValues('box-editor')(state)
   };
 }
 
-export default connect(mapStateToProps, {createBox, closeBoxEditorModal, clearBoxEditor})(BoxEditorModal);
+export default connect(mapStateToProps, {
+  createBox,
+  updateBox,
+  closeBoxEditorModal,
+  clearBoxEditor
+})(BoxEditorModal);

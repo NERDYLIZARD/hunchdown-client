@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import BoxItem from './BoxItem'; // eslint-disable-line import/no-named-as-default
 
 
-const BoxList = ({boxes, onDelete}) => {
+const BoxList = ({boxes, onEdit, onDelete}) => {
   return (
     <div className="box-list">
       {_.map(boxes, box =>
@@ -15,6 +15,7 @@ const BoxList = ({boxes, onDelete}) => {
           <BoxItem
             box={box}
             onDelete={onDelete}
+            onEdit={onEdit}
           />
         </div>)}
     </div>

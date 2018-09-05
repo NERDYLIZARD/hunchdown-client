@@ -6,11 +6,12 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import CustomPropTypes from '../../../utils/customPropTypes';
 
-export const BoxItem = ({ box, onDelete, history }) => {
+export const BoxItem = ({ box, onDelete, onEdit, history }) => {
   return (
     <div className="box card">
       <div className="box-header card-header clearfix">
         <div className="box-actions pull-right">
+          <a className="box-edit-button" href="#" onClick={e => onEdit(e, box)}><i className="fa fa-edit"></i></a>
           <a className="box-delete-button" href="#" onClick={e => onDelete(e, box)}><i className="fa fa-trash"></i></a>
         </div>
       </div>

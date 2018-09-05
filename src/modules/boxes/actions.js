@@ -31,6 +31,16 @@ export const createBox = (box) => ({
   }
 });
 
+export const updateBox = (box) => ({
+  [CALL_API]: {
+    types: [types.UPDATE_BOX_REQUEST, types.UPDATE_BOX_SUCCESS, types.UPDATE_BOX_FAILURE],
+    schema: boxSchema,
+    endpoint: `/boxes/${box.id}`,
+    method: 'PATCH',
+    data: box
+  }
+});
+
 export const deleteBox = (box) => ({
   [CALL_API]: {
     types: [types.DELETE_BOX_REQUEST, types.DELETE_BOX_SUCCESS, types.DELETE_BOX_FAILURE],
