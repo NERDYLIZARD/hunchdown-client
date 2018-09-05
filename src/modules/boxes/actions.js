@@ -4,7 +4,7 @@
 import * as types from './actionTypes';
 import { boxSchema } from '../../normalizr-schema';
 import { CALL_API } from '../../middlewares/api';
-import { OPEN_EDITOR_MODAL } from '../../middlewares/editor-modal';
+import {editorActionCreatorFactory} from '../common/factories/action-creators';
 
 
 export const loadBoxes = (nextPageIsRequested) => ({
@@ -41,26 +41,7 @@ export const deleteBox = (box) => ({
   }
 });
 
-export const openBoxEditorModal = (data, editorSelector) => ({
-  [OPEN_EDITOR_MODAL]: {
-    boostEditorType: types.BOOST_BOX_EDITOR,
-    resumeEditorType: types.RESUME_BOX_EDITOR_MODAL,
-    data,
-    editorSelector
-  }
-});
-
-export const openBoxEditor = (data) => ({
-  type: types.BOOST_BOX_EDITOR,
-  withModal: false,
-  data,
-});
-
-export const clearBoxEditor = () => ({
-  type: types.CLEAR_BOX_EDITOR,
-});
-
-export const closeBoxEditorModal = (retainedData) => ({
-  type: types.CLOSE_BOX_EDITOR_MODAL,
-  retainedData
-});
+export const openBoxEditorModal = editorActionCreatorFactory.createOpenEditorModal(types.BOOST_BOX_EDITOR, types.RESUME_BOX_EDITOR_MODAL);
+export const openBoxEditor = editorActionCreatorFactory.createOpenEditor(types.BOOST_BOX_EDITOR);
+export const clearBoxEditor = editorActionCreatorFactory.createClearEditor(types.CLEAR_BOX_EDITOR);
+export const closeBoxEditorModal = editorActionCreatorFactory.createCloseEditorModal(types.CLOSE_BOX_EDITOR_MODAL);

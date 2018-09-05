@@ -7,33 +7,21 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import CheckboxGroup from '../../common/CheckboxGroup';
 import boxes from '../../boxes';
+import * as selectors from '../selectors';
 
-const {CreateBoxModal} = boxes.components;
-
-export class HunchEditorForm extends React.Component {
-
+export class HunchEditorForm extends React.Component
+{
   constructor () {
     super();
-
-    this.state = {
-      showCreateBoxModal: false
-    };
-
-    this.openCreateBoxModal = this.openCreateBoxModal.bind(this);
-    this.closeCreateBoxModal = this.closeCreateBoxModal.bind(this);
+    this.openBoxEditorModal = this.openBoxEditorModal.bind(this);
   }
 
-
-  openCreateBoxModal (e) {
+  openBoxEditorModal(e) {
     e.preventDefault();
-    this.setState({showCreateBoxModal: true})
+    this.props.openBoxEditorModal(null, boxes.selectors.getEditor);
   }
 
-  closeCreateBoxModal () {
-    this.setState({showCreateBoxModal: false})
-  }
-
-  render() {
+  render () {
     const {boxOptions, handleSubmit} = this.props;
     return (
       <form onSubmit={handleSubmit}>
@@ -52,15 +40,16 @@ export class HunchEditorForm extends React.Component {
         <div className="form-group">
           <div className="box-list-header clearfix">
             <label htmlFor="hunch-editor-boxes" className="pull-left">Boxes</label>
-            <button id="hunch-editor-new-box" className="btn btn-success pull-right" onClick={this.openCreateBoxModal}>New
-              Box
+            <button id="hunch-editor-new-box"
+                    className="btn btn-success pull-right"
+                    onClick={this.openBoxEditorModal}>New Box
             </button>
           </div>
           <CheckboxGroup
             name="boxes"
             options={boxOptions}
           />
-          <CreateBoxModal modalOpen={this.state.showCreateBoxModal} closeCreateBoxModal={this.closeCreateBoxModal}/>
+          <boxes.components.BoxEditorModal/>
         </div>
       </form>
     );
@@ -70,18 +59,19 @@ export class HunchEditorForm extends React.Component {
 HunchEditorForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   boxOptions: PropTypes.array.isRequired,
+  openBoxEditorModal: PropTypes.func.isRequired,
 };
 
-function mapStateToProps (state, ownProps) {
-  const hunch = ownProps.hunch;
-
+function mapStateToProps (state) {
+  const {props} = selectors.getEditor(state);
+  const boxOptions = boxes.selectors.getOptionsForCheckbox(state);
   return {
-    boxOptions: boxes.selectors.getOptionsForCheckbox(state),
-    initialValues: {...hunch},
+    boxOptions,
+    initialValues: props,
   };
 }
 
-export default connect(mapStateToProps, null, null, {withRef: true})(
+export default connect(mapStateToProps, {openBoxEditorModal: boxes.actions.openBoxEditorModal}, null, {withRef: true})(
   reduxForm({
     form: 'hunch-editor'
   })(HunchEditorForm));

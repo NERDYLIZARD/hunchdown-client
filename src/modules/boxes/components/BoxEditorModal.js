@@ -70,8 +70,9 @@ BoxEditorModal.propTypes = {
 };
 
 export function mapStateToProps (state) {
+  const {isOpenedWithModal} = selectors.getEditor(state);
   return {
-    ...selectors.getEditor(state),
+    isOpenedWithModal,
     formValues: getFormValues('box-editor')(state)
   };
 }

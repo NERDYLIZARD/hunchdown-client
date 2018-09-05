@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { loadHunches, deleteHunch } from '../actions';
+import { deleteHunch, loadHunches, openHunchEditorModal } from '../actions';
 import { connect } from 'react-redux';
 import HunchEditorModal from './HunchEditorModal'; // eslint-disable-line import/no-named-as-default
 import HunchList from './HunchList';
@@ -15,16 +15,9 @@ export class HunchPage extends React.Component
   constructor (props, context) {
     super(props, context);
 
-    this.state = {
-      showHunchEditorModal: false,
-      activeHunch: null,
-    };
-
     this.createHunch = this.createHunch.bind(this);
     this.deleteHunch = this.deleteHunch.bind(this);
     this.editHunch = this.editHunch.bind(this);
-    this.openHunchEditorModal = this.openHunchEditorModal.bind(this);
-    this.closeHunchEditorModal = this.closeHunchEditorModal.bind(this);
   }
 
   componentDidMount () {
@@ -33,23 +26,12 @@ export class HunchPage extends React.Component
 
   createHunch (e) {
     e.preventDefault();
-    this.openHunchEditorModal();
+    this.props.openHunchEditorModal(null, selectors.getEditor);
   }
 
   editHunch (e, hunch) {
     e.preventDefault();
-    this.openHunchEditorModal(hunch)
-  }
-
-  openHunchEditorModal (hunch = null) {
-    this.setState({
-      showHunchEditorModal: true,
-      activeHunch: hunch
-    })
-  }
-
-  closeHunchEditorModal () {
-    this.setState({showHunchEditorModal: false});
+    this.props.openHunchEditorModal(hunch, selectors.getEditor)
   }
 
   deleteHunch (e, hunch) {
@@ -78,16 +60,14 @@ export class HunchPage extends React.Component
             }
           </div>
         </div>
-        <HunchEditorModal
-          hunch={this.state.activeHunch}
-          modalOpen={this.state.showHunchEditorModal}
-          closeHunchEditorModal={this.closeHunchEditorModal}/>
+        <HunchEditorModal/>
       </div>
     );
   }
 }
 
 HunchPage.propTypes = {
+  openHunchEditorModal: PropTypes.func.isRequired,
   loadHunches: PropTypes.func.isRequired,
   deleteHunch: PropTypes.func.isRequired,
   hunches: PropTypes.array.isRequired,
@@ -99,4 +79,4 @@ const mapStateToProps = (state) => {
   }
 };
 
-export default connect(mapStateToProps, {loadHunches, deleteHunch})(HunchPage);
+export default connect(mapStateToProps, {loadHunches, deleteHunch, openHunchEditorModal})(HunchPage);

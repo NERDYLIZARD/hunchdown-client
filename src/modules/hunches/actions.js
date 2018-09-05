@@ -4,6 +4,7 @@
 import * as types from './actionTypes';
 import { CALL_API } from '../../middlewares/api';
 import { hunchSchema } from '../../normalizr-schema';
+import { editorActionCreatorFactory } from '../common/factories/action-creators';
 
 
 export const loadHunches = (nextPageIsRequested) => ({
@@ -34,7 +35,7 @@ export const updateHunch = (hunch) => ({
   [CALL_API]: {
     types: [types.UPDATE_HUNCH_REQUEST, types.UPDATE_HUNCH_SUCCESS, types.UPDATE_HUNCH_FAILURE],
     schema: hunchSchema,
-    endpoint: '/hunches',
+    endpoint: `/hunches/${hunch.id}`,
     method: 'PATCH',
     data: hunch
   }
@@ -50,5 +51,7 @@ export const deleteHunch = (hunch) => ({
   }
 });
 
-export const openHunchEditorModal = hunch => ({type: types.EDIT_HUNCH, editing: {modalOpen: true, hunch}});
-export const closeHunchEditorModal = () => ({type: types.EDIT_HUNCH, editing: {modalOpen: false}});
+export const openHunchEditorModal = editorActionCreatorFactory.createOpenEditorModal(types.BOOST_HUNCH_EDITOR, types.RESUME_HUNCH_EDITOR_MODAL);
+export const openHunchEditor = editorActionCreatorFactory.createOpenEditor(types.BOOST_HUNCH_EDITOR);
+export const clearHunchEditor = editorActionCreatorFactory.createClearEditor(types.CLEAR_HUNCH_EDITOR);
+export const closeHunchEditorModal = editorActionCreatorFactory.createCloseEditorModal(types.CLOSE_HUNCH_EDITOR_MODAL);

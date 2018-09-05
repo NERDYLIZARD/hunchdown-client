@@ -16,7 +16,7 @@ import {
   CLEAR_BOX_EDITOR, CLOSE_BOX_EDITOR_MODAL,
 } from "./actionTypes";
 import { combineReducers } from 'redux';
-import { createEditorReducer, createPaginationReducer } from '../common/reducer-factories';
+import { createEditorReducer, createPaginationReducer } from '../common/factories/reducers';
 
 
 const boxesReducer = combineReducers({

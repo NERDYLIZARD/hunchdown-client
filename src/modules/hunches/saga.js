@@ -5,7 +5,7 @@ import 'regenerator-runtime/runtime';
 import * as types from './actionTypes';
 import { put, select, takeEvery } from 'redux-saga/effects';
 import { fetchHunches } from './actions';
-import { getPaginationData } from './selectors';
+import { getPagination } from './selectors';
 
 
 /**
@@ -25,7 +25,7 @@ export function* loadHunches (action) {
     nextPageUrl = '/hunches?page=1&perPage=3',
     pageCount = 0,
     isFetching
-  } = select(getPaginationData);
+  } = select(getPagination);
   const {nextPageIsRequested} = action;
 
   if (pageCount > 0 && !nextPageIsRequested && !isFetching)
