@@ -8,13 +8,13 @@ import CustomPropTypes from '../../../utils/customPropTypes';
 
 export const BoxItem = ({ box, onDelete, history }) => {
   return (
-    <div className="box card" onClick={() => history.push(`boxes/${box.id}`)}>
+    <div className="box card">
       <div className="box-header card-header clearfix">
         <div className="box-actions pull-right">
           <a className="box-delete-button" href="#" onClick={e => onDelete(e, box)}><i className="fa fa-trash"></i></a>
         </div>
       </div>
-      <div className="box-body card-body">
+      <div className="box-body card-body" onClick={() => history.push(`boxes/${box.id}`)}>
         <p className="box-title card-title">{box.title}</p>
         {box.description ?
           <p className="box-description card-description">{box.description}</p> : null

@@ -4,10 +4,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { loadBoxes, deleteBox } from '../actions';
+import { loadBoxes, deleteBox, openBoxEditorModal } from '../actions';
 import * as selectors from '../selectors';
 import BoxList from './BoxList';
-import CreateBoxModal from './CreateBoxModal'; // eslint-disable-line import/no-named-as-default
+import BoxEditorModal from './BoxEditorModal'; // eslint-disable-line import/no-named-as-default
 
 
 export class BoxPage extends React.Component
@@ -15,26 +15,11 @@ export class BoxPage extends React.Component
   constructor (props, context) {
     super(props, context);
 
-    this.state = {
-      showCreateBoxModal: false,
-    };
-
     this.deleteBox = this.deleteBox.bind(this);
-    this.openCreateBoxModal = this.openCreateBoxModal.bind(this);
-    this.closeCreateBoxModal = this.closeCreateBoxModal.bind(this);
   }
 
   componentDidMount () {
     this.props.loadBoxes();
-  }
-
-  openCreateBoxModal (e) {
-    e.preventDefault();
-    this.setState({showCreateBoxModal: true});
-  }
-
-  closeCreateBoxModal () {
-    this.setState({showCreateBoxModal: false});
   }
 
   deleteBox (e, box) {
@@ -43,7 +28,7 @@ export class BoxPage extends React.Component
   }
 
   render () {
-    const {boxes} = this.props;
+    const {boxes, openBoxEditorModal} = this.props;
 
     return (
       <div className="box-page container-fluid">
@@ -53,7 +38,7 @@ export class BoxPage extends React.Component
               <h2>Boxes</h2>
             </div>
             <div className="pull-right">
-              <button className="create-box-button btn btn-success" onClick={this.openCreateBoxModal}>New Box</button>
+              <button className="create-box-button btn btn-success" onClick={() => openBoxEditorModal(null, selectors.getEditor)}>New Box</button>
             </div>
           </div>
         </div>
@@ -62,7 +47,7 @@ export class BoxPage extends React.Component
             <BoxList boxes={boxes} onDelete={this.deleteBox}/> : null
           }
         </div>
-        {/*<CreateBoxModal modalOpen={this.state.showCreateBoxModal} closeCreateBoxModal={this.closeCreateBoxModal}/>*/}
+        <BoxEditorModal/>
       </div>
     );
   }
@@ -72,6 +57,7 @@ BoxPage.propTypes = {
   boxes: PropTypes.array,
   loadBoxes: PropTypes.func.isRequired,
   deleteBox: PropTypes.func.isRequired,
+  openBoxEditorModal: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -80,4 +66,4 @@ const mapStateToProps = (state) => {
   }
 };
 
-export default connect(mapStateToProps, {loadBoxes, deleteBox})(BoxPage);
+export default connect(mapStateToProps, {loadBoxes, deleteBox, openBoxEditorModal})(BoxPage);

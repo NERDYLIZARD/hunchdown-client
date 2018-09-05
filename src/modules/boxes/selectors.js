@@ -14,9 +14,9 @@ export const getAll = createSelector(
   (visibleItems, entitiy) => visibleItems.map(item => entitiy[item])
 );
 
-export const getPaginationData = state => state[NAME].pagination;
+export const getPagination = state => state[NAME].pagination;
 
-export const getSelected = state => state.entities[NAME].editing.box;
+export const getEditor = state => state[NAME].editor;
 
 export const getOptionsForCheckbox = createSelector(
   getAll,

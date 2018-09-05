@@ -8,7 +8,6 @@ import { hunchSchema } from '../../normalizr-schema';
 
 export const loadHunches = (nextPageIsRequested) => ({
   type: types.LOAD_HUNCHES,
-  // todo does it need meta, payload for actions that are not api-concerned
   nextPageIsRequested
 });
 

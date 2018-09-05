@@ -5,5 +5,5 @@
 export BoxPage from './BoxPage';
 export BoxList from './BoxList';
 export BoxItem from './BoxItem';
-export CreateBoxModal from './CreateBoxModal';
-export CreateBoxForm from './CreateBoxForm';
+export BoxEditorModal from './BoxEditorModal';
+export BoxEditorForm from './BoxEditorForm';

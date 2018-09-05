@@ -2,13 +2,13 @@
  * Created on 30-Jul-18.
  */
 import * as types from './actionTypes';
-import { CALL_API } from '../../middlewares/api';
 import { boxSchema } from '../../normalizr-schema';
+import { CALL_API } from '../../middlewares/api';
+import { OPEN_EDITOR_MODAL } from '../../middlewares/editor-modal';
 
 
 export const loadBoxes = (nextPageIsRequested) => ({
   type: types.LOAD_BOXES,
-  // todo does it need meta, payload for actions that are not api-concerned
   nextPageIsRequested
 });
 
@@ -41,5 +41,26 @@ export const deleteBox = (box) => ({
   }
 });
 
-export const openCreateBoxModal = () => ({type: types.EDIT_BOX, editing: {modalOpen: true}});
-export const closeCreateBoxModal = () => ({type: types.EDIT_BOX, editing: {modalOpen: false}});
+export const openBoxEditorModal = (data, editorSelector) => ({
+  [OPEN_EDITOR_MODAL]: {
+    boostEditorType: types.BOOST_BOX_EDITOR,
+    resumeEditorType: types.RESUME_BOX_EDITOR_MODAL,
+    data,
+    editorSelector
+  }
+});
+
+export const openBoxEditor = (data) => ({
+  type: types.BOOST_BOX_EDITOR,
+  withModal: false,
+  data,
+});
+
+export const clearBoxEditor = () => ({
+  type: types.CLEAR_BOX_EDITOR,
+});
+
+export const closeBoxEditorModal = (retainedData) => ({
+  type: types.CLOSE_BOX_EDITOR_MODAL,
+  retainedData
+});

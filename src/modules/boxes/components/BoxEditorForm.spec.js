@@ -4,7 +4,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Field } from 'redux-form';
-import { CreateBoxForm } from './CreateBoxForm'; // eslint-disable-line import/no-named-as-default
+import { BoxEditorForm } from './BoxEditorForm'; // eslint-disable-line import/no-named-as-default
 
 describe('<CreateBoxForm />', () => {
   let props;
@@ -14,7 +14,7 @@ describe('<CreateBoxForm />', () => {
     // otherwise, use the mounted component
     if (!mountedCreateBoxForm) {
       mountedCreateBoxForm = shallow(
-        <CreateBoxForm {...props} />
+        <BoxEditorForm {...props} />
       );
     }
     return mountedCreateBoxForm;

@@ -5,8 +5,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
+import * as selectors from '../selectors';
 
-export const CreateBoxForm = ({handleSubmit}) => {
+export const BoxEditorForm = ({handleSubmit}) => {
 
   return (
     <form onSubmit={handleSubmit}>
@@ -23,17 +24,18 @@ export const CreateBoxForm = ({handleSubmit}) => {
   );
 };
 
-CreateBoxForm.propTypes = {
+BoxEditorForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired
 };
 
-function mapStateToProps() {
+function mapStateToProps(state) {
+  const {props} = selectors.getEditor(state);
   return {
-    initialValues: {}
+    initialValues: props
   };
 }
 
 export default connect(mapStateToProps, null, null, { withRef: true })(
   reduxForm({
-    form: 'create-box'
-  })(CreateBoxForm));
+    form: 'box-editor'
+  })(BoxEditorForm));
