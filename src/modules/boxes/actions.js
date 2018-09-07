@@ -4,14 +4,13 @@
 import * as types from './actionTypes';
 import { boxSchema } from '../../normalizr-schema';
 import { CALL_API } from '../../middlewares/api';
-import {editorActionCreatorFactory} from '../common/factories/action-creators';
+import { editorActionCreatorFactory } from '../common/factories/action-creators';
 
 
 export const loadBoxes = (nextPageIsRequested) => ({
   type: types.LOAD_BOXES,
   nextPageIsRequested
 });
-
 export const fetchBoxes = (url) => ({
   [CALL_API]: {
     types: [types.FETCH_BOXES_REQUEST, types.FETCH_BOXES_SUCCESS, types.FETCH_BOXES_FAILURE],
@@ -20,6 +19,23 @@ export const fetchBoxes = (url) => ({
     method: 'GET',
   }
 });
+export const unloadBoxes = () => ({type: types.UNLOAD_BOXES,});
+
+
+export const loadBox = (id) => ({
+  type: types.LOAD_BOX,
+  id
+});
+export const fetchBox = (id) => ({
+  [CALL_API]: {
+    types: [types.FETCH_BOX_REQUEST, types.FETCH_BOX_SUCCESS, types.FETCH_BOX_FAILURE],
+    schema: boxSchema,
+    endpoint: `/boxes/${id}`,
+    method: 'GET',
+  }
+});
+export const unloadBox = () => ({type: types.UNLOAD_BOX,});
+
 
 export const createBox = (box) => ({
   [CALL_API]: {

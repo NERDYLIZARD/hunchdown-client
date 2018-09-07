@@ -1,4 +1,8 @@
 export const LOAD_HUNCHES = 'LOAD_HUNCHES';
+export const UNLOAD_HUNCHES = 'UNLOAD_HUNCHES';
+
+export const LOAD_HUNCH = 'LOAD_HUNCH';
+export const UNLOAD_HUNCH = 'UNLOAD_HUNCH';
 
 export const FETCH_HUNCHES = 'FETCH_HUNCHES';
 export const FETCH_HUNCHES_REQUEST = 'FETCH_HUNCHES_REQUEST';

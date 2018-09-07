@@ -18,6 +18,16 @@ export const getPagination = state => state[NAME].pagination;
 
 export const getEditor = state => state[NAME].editor;
 
+export const getActive = state => state[NAME].active;
+
+export const getActiveId = state => state[NAME].active.id;
+
+export const getActiveElement = createSelector(
+  getActiveId,
+  getEntity,
+  (activeId, entity) => entity[activeId]
+);
+
 export const getOptionsForCheckbox = createSelector(
   getAll,
   (boxes) => {

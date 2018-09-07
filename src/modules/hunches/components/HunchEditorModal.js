@@ -24,6 +24,10 @@ export class HunchEditorModal extends React.Component
     this.props.loadBoxes();
   }
 
+  componentWillUnmount () {
+    this.props.unloadBoxes();
+  }
+
   submitForm (hunch) {
     const {updateHunch, createHunch} = this.props;
     hunch.id ? updateHunch(hunch) : createHunch(hunch);
@@ -73,7 +77,8 @@ HunchEditorModal.propTypes = {
   createHunch: PropTypes.func.isRequired,
   updateHunch: PropTypes.func.isRequired,
   boxes: PropTypes.array.isRequired,
-  loadBoxes: PropTypes.func.isRequired
+  loadBoxes: PropTypes.func.isRequired,
+  unloadBoxes: PropTypes.func.isRequired
 };
 
 export function mapStateToProps (state) {
@@ -90,6 +95,7 @@ export default connect(mapStateToProps, {
   createHunch,
   updateHunch,
   loadBoxes: boxes.actions.loadBoxes,
+  unloadBoxes: boxes.actions.unloadBoxes,
   closeHunchEditorModal,
   clearHunchEditor
 })(HunchEditorModal);

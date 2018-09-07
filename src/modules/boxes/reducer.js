@@ -5,6 +5,9 @@ import {
   FETCH_BOXES_FAILURE,
   FETCH_BOXES_REQUEST,
   FETCH_BOXES_SUCCESS,
+  FETCH_BOX_FAILURE,
+  FETCH_BOX_REQUEST,
+  FETCH_BOX_SUCCESS,
   CREATE_BOX_FAILURE,
   CREATE_BOX_REQUEST,
   CREATE_BOX_SUCCESS,
@@ -13,20 +16,21 @@ import {
   DELETE_BOX_SUCCESS,
   BOOST_BOX_EDITOR,
   RESUME_BOX_EDITOR_MODAL,
-  CLEAR_BOX_EDITOR, CLOSE_BOX_EDITOR_MODAL,
+  CLEAR_BOX_EDITOR, CLOSE_BOX_EDITOR_MODAL, UNLOAD_BOX, UNLOAD_BOXES, LOAD_BOX,
 } from "./actionTypes";
 import { combineReducers } from 'redux';
-import { createEditorReducer, createPaginationReducer } from '../common/factories/reducers';
-
+import { createEditorReducer, createPaginationReducer, createActiveReducer } from '../common/factories/reducers';
 
 const boxesReducer = combineReducers({
   pagination: createPaginationReducer(
     [FETCH_BOXES_REQUEST, FETCH_BOXES_SUCCESS, FETCH_BOXES_FAILURE],
     [CREATE_BOX_REQUEST, CREATE_BOX_SUCCESS, CREATE_BOX_FAILURE],
-    [DELETE_BOX_REQUEST, DELETE_BOX_SUCCESS, DELETE_BOX_FAILURE]),
-  editor: createEditorReducer(
+    [DELETE_BOX_REQUEST, DELETE_BOX_SUCCESS, DELETE_BOX_FAILURE],
+    UNLOAD_BOXES),
+  editor: createEditorReducer([
     BOOST_BOX_EDITOR, RESUME_BOX_EDITOR_MODAL,
-    CLEAR_BOX_EDITOR, CLOSE_BOX_EDITOR_MODAL),
+    CLEAR_BOX_EDITOR, CLOSE_BOX_EDITOR_MODAL]),
+  active: createActiveReducer([FETCH_BOX_REQUEST, FETCH_BOX_SUCCESS, FETCH_BOX_FAILURE, LOAD_BOX, UNLOAD_BOX])
 });
 
 export default boxesReducer;

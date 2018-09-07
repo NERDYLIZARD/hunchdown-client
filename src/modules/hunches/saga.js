@@ -15,21 +15,20 @@ export const hunchSagaWatchers = [
   takeEvery(types.LOAD_HUNCHES, loadHunches),
 ];
 
-/**
- * Generators
- */
-// call `fetchBox()` if it's the first time call
-// or when it's specifically told to fetch the next page
+/*
+call `fetchBox()` if it's the first time call
+or when it's specifically told to fetch the next page
+*/
 export function* loadHunches (action) {
+  const {boxId, nextPageIsRequested} = action;
   const {
-    nextPageUrl = '/hunches?page=1&perPage=3',
+    nextPageUrl = `/boxes/${boxId}/hunches?page=1&perPage=3`,
     pageCount = 0,
     isFetching
-  } = select(getPagination);
-  const {nextPageIsRequested} = action;
+  } = yield select(getPagination);
 
-  if (pageCount > 0 && !nextPageIsRequested && !isFetching)
+  if ((pageCount > 0 && !nextPageIsRequested) || isFetching) {
     return null;
-
+  }
   yield put(fetchHunches(nextPageUrl));
 }

@@ -6,7 +6,7 @@ import without from 'lodash/without'
 
 // Creates a reducer managing pagination, given the action types to handle,
 // and a function telling how to extract the key from an action.
-export const createPaginationReducer = (fetchTypes, createTypes, deleteTypes) => {
+export const createPaginationReducer = (fetchTypes, createTypes, deleteTypes, unloadType) => {
 
   [fetchTypes, createTypes, deleteTypes].forEach(types => {
 
@@ -18,16 +18,22 @@ export const createPaginationReducer = (fetchTypes, createTypes, deleteTypes) =>
     }
   });
 
+  if (typeof unloadType !== 'string') {
+    throw new Error('Expected types to be strings.')
+  }
+
   const [fetchRequestType, fetchSuccessType, fetchFailureType] = fetchTypes;
   const [createRequestType, createSuccessType, createFailureType] = createTypes;
   const [deleteRequestType, deleteSuccessType, deleteFailureType] = deleteTypes;
 
-  return (state = {
+  const initialState = {
     isFetching: false,
     nextPageUrl: undefined,
     page: 0,
     ids: []
-  }, action) => {
+  };
+
+  return (state = initialState, action) => {
     switch (action.type) {
       case fetchRequestType:
       case createRequestType:
@@ -68,6 +74,9 @@ export const createPaginationReducer = (fetchTypes, createTypes, deleteTypes) =>
           ...state,
           isFetching: false
         };
+
+      case unloadType:
+        return initialState;
 
       default:
         return state

@@ -1,12 +1,15 @@
 /**
  * Created on 05-Sep-18.
  */
-export const createEditorReducer = (boostEditorType, resumeEditorType, clearEditorType, closeEditorType) => {
-  [boostEditorType, resumeEditorType, clearEditorType, closeEditorType].forEach(type => {
-    if (!(typeof type === 'string')) {
-      throw new Error(`Expect ${type} type to be string.`);
-    }
-  });
+export const createEditorReducer = (types) => {
+  if (!Array.isArray(types) || types.length !== 4) {
+    throw new Error('Expected types to be an array of four elements.')
+  }
+  if (!types.every(t => typeof t === 'string')) {
+    throw new Error('Expected types to be strings.')
+  }
+
+  const [boostEditorType, resumeEditorModalType, clearEditorType, closeEditorModalType] = types;
 
   return (state = {
     isOpenedWithModal: false,
@@ -21,7 +24,7 @@ export const createEditorReducer = (boostEditorType, resumeEditorType, clearEdit
           props: action.data,
         };
 
-      case resumeEditorType:
+      case resumeEditorModalType:
         return {
           ...state,
           isOpenedWithModal: true,
@@ -33,7 +36,7 @@ export const createEditorReducer = (boostEditorType, resumeEditorType, clearEdit
           props: null
         };
 
-      case closeEditorType:
+      case closeEditorModalType:
         return {
           ...state,
           isOpenedWithModal: false,

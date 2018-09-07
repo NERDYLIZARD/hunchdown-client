@@ -2,7 +2,9 @@
  * Created on 27-Mar-18.
  */
 import {
-  BOOST_HUNCH_EDITOR, CLEAR_HUNCH_EDITOR, CLOSE_HUNCH_EDITOR_MODAL,
+  BOOST_HUNCH_EDITOR,
+  CLEAR_HUNCH_EDITOR,
+  CLOSE_HUNCH_EDITOR_MODAL,
   CREATE_HUNCH_FAILURE,
   CREATE_HUNCH_REQUEST,
   CREATE_HUNCH_SUCCESS,
@@ -11,20 +13,22 @@ import {
   DELETE_HUNCH_SUCCESS,
   FETCH_HUNCHES_FAILURE,
   FETCH_HUNCHES_REQUEST,
-  FETCH_HUNCHES_SUCCESS, RESUME_HUNCH_EDITOR_MODAL,
+  FETCH_HUNCHES_SUCCESS,
+  RESUME_HUNCH_EDITOR_MODAL, UNLOAD_HUNCHES,
 } from "./actionTypes";
 import { combineReducers } from 'redux';
 import { createEditorReducer, createPaginationReducer } from '../common/factories/reducers';
 
 
-const boxesReducer = combineReducers({
+const hunchesReducer = combineReducers({
   pagination: createPaginationReducer(
     [FETCH_HUNCHES_REQUEST, FETCH_HUNCHES_SUCCESS, FETCH_HUNCHES_FAILURE],
     [CREATE_HUNCH_REQUEST, CREATE_HUNCH_SUCCESS, CREATE_HUNCH_FAILURE],
-    [DELETE_HUNCH_REQUEST, DELETE_HUNCH_SUCCESS, DELETE_HUNCH_FAILURE]),
-  editor: createEditorReducer(
+    [DELETE_HUNCH_REQUEST, DELETE_HUNCH_SUCCESS, DELETE_HUNCH_FAILURE],
+    UNLOAD_HUNCHES),
+  editor: createEditorReducer([
     BOOST_HUNCH_EDITOR, RESUME_HUNCH_EDITOR_MODAL,
-    CLEAR_HUNCH_EDITOR, CLOSE_HUNCH_EDITOR_MODAL),
+    CLEAR_HUNCH_EDITOR, CLOSE_HUNCH_EDITOR_MODAL]),
 });
 
-export default boxesReducer;
+export default hunchesReducer;

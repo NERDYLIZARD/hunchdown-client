@@ -3,11 +3,12 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { deleteHunch, loadHunches, openHunchEditorModal } from '../actions';
 import { connect } from 'react-redux';
-import HunchEditorModal from './HunchEditorModal'; // eslint-disable-line import/no-named-as-default
-import HunchList from './HunchList';
+import { deleteHunch, loadHunches, unloadHunches, openHunchEditorModal } from '../actions';
 import * as selectors from '../selectors';
+import HunchList from './HunchList';
+import HunchEditorModal from './HunchEditorModal'; // eslint-disable-line import/no-named-as-default
+import boxes from '../../boxes';
 
 
 export class HunchPage extends React.Component
@@ -15,13 +16,30 @@ export class HunchPage extends React.Component
   constructor (props, context) {
     super(props, context);
 
+    this.loadData = this.loadData.bind(this);
+    this.unloadData = this.unloadData.bind(this);
     this.createHunch = this.createHunch.bind(this);
     this.deleteHunch = this.deleteHunch.bind(this);
     this.editHunch = this.editHunch.bind(this);
   }
 
   componentDidMount () {
-    this.props.loadHunches();
+    this.loadData();
+  }
+
+  componentWillUnmount () {
+    this.unloadData();
+  }
+
+  loadData () {
+    const boxId = this.props.match.params.id;
+    this.props.loadBox(boxId);
+    this.props.loadHunches(boxId);
+  }
+
+  unloadData () {
+    this.props.unloadBox();
+    this.props.unloadHunches();
   }
 
   createHunch (e) {
@@ -40,13 +58,18 @@ export class HunchPage extends React.Component
   }
 
   render () {
-    const {hunches} = this.props;
+    const {box, hunches} = this.props;
+    if (!box || !hunches) {
+      return (
+        <div>Loading . . .</div>
+      );
+    }
     return (
       <div className="hunch-page container-fluid">
         <div className="row">
           <div className="hunch-page-header clearfix">
             <div className="pull-left">
-              <h2>Hunches</h2>
+              <h2>{box.title}</h2>
             </div>
             <div className="pull-right">
               <button className="create-hunch-button btn btn-success" onClick={this.createHunch}>New Hunch</button>
@@ -69,14 +92,26 @@ export class HunchPage extends React.Component
 HunchPage.propTypes = {
   openHunchEditorModal: PropTypes.func.isRequired,
   loadHunches: PropTypes.func.isRequired,
+  unloadHunches: PropTypes.func.isRequired,
+  loadBox: PropTypes.func.isRequired,
+  unloadBox: PropTypes.func.isRequired,
   deleteHunch: PropTypes.func.isRequired,
+  box: PropTypes.object,
   hunches: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = (state) => {
   return {
-    hunches: selectors.getAll(state)
+    hunches: selectors.getAll(state),
+    box: boxes.selectors.getActiveElement(state)
   }
 };
 
-export default connect(mapStateToProps, {loadHunches, deleteHunch, openHunchEditorModal})(HunchPage);
+export default connect(mapStateToProps, {
+  loadBox: boxes.actions.loadBox,
+  unloadBox: boxes.actions.unloadBox,
+  loadHunches,
+  unloadHunches,
+  deleteHunch,
+  openHunchEditorModal
+})(HunchPage);

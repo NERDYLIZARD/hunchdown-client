@@ -4,7 +4,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { loadBoxes, deleteBox, openBoxEditorModal } from '../actions';
+import { loadBoxes, deleteBox, openBoxEditorModal, unloadBoxes } from '../actions';
 import * as selectors from '../selectors';
 import BoxList from './BoxList';
 import BoxEditorModal from './BoxEditorModal'; // eslint-disable-line import/no-named-as-default
@@ -22,6 +22,10 @@ export class BoxPage extends React.Component
 
   componentDidMount () {
     this.props.loadBoxes();
+  }
+
+  componentWillUnmount () {
+    this.props.unloadBoxes();
   }
 
   deleteBox (e, box) {
@@ -68,6 +72,7 @@ export class BoxPage extends React.Component
 BoxPage.propTypes = {
   boxes: PropTypes.array,
   loadBoxes: PropTypes.func.isRequired,
+  unloadBoxes: PropTypes.func.isRequired,
   deleteBox: PropTypes.func.isRequired,
   openBoxEditorModal: PropTypes.func.isRequired,
 };
@@ -78,4 +83,9 @@ const mapStateToProps = (state) => {
   }
 };
 
-export default connect(mapStateToProps, {loadBoxes, deleteBox, openBoxEditorModal})(BoxPage);
+export default connect(mapStateToProps, {
+  loadBoxes,
+  unloadBoxes,
+  deleteBox,
+  openBoxEditorModal
+})(BoxPage);

@@ -1,9 +1,18 @@
 export const LOAD_BOXES = 'LOAD_BOXES';
+export const UNLOAD_BOXES = 'UNLOAD_BOXES';
+
+export const LOAD_BOX = 'LOAD_BOX';
+export const UNLOAD_BOX = 'UNLOAD_BOX';
 
 export const FETCH_BOXES = 'FETCH_BOXES';
 export const FETCH_BOXES_REQUEST = 'FETCH_BOXES_REQUEST';
 export const FETCH_BOXES_SUCCESS = 'FETCH_BOXES_SUCCESS';
 export const FETCH_BOXES_FAILURE = 'FETCH_BOXES_FAILURE';
+
+export const FETCH_BOX = 'FETCH_BOX';
+export const FETCH_BOX_REQUEST = 'FETCH_BOX_REQUEST';
+export const FETCH_BOX_SUCCESS = 'FETCH_BOX_SUCCESS';
+export const FETCH_BOX_FAILURE = 'FETCH_BOX_FAILURE';
 
 export const CREATE_BOX = 'CREATE_BOX';
 export const CREATE_BOX_REQUEST = 'CREATE_BOX_REQUEST';
