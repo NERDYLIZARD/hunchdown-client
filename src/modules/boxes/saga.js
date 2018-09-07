@@ -21,9 +21,12 @@ call `fetchBox()` if it's the first time call
 or when it's specifically told to fetch the next page.
 */
 export function* loadBoxes (action) {
-  const {nextPageIsRequested} = action;
   const {
-    nextPageUrl = '/boxes?page=1&perPage=3',
+    perPage = 3,
+    nextPageIsRequested = false
+  } = action;
+  const {
+    nextPageUrl = `/boxes?page=1&perPage=${perPage}`,
     pageCount = 0,
     isFetching
   } = yield select(getPagination);
