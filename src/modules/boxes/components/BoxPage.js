@@ -35,12 +35,12 @@ export class BoxPage extends React.Component
 
   createBox (e) {
     e.preventDefault();
-    this.props.openBoxEditorModal(null, selectors.getEditor);
+    this.props.openBoxEditorModal(selectors.getEditor);
   }
 
   editBox (e, box) {
     e.preventDefault();
-    this.props.openBoxEditorModal(box, selectors.getEditor);
+    this.props.openBoxEditorModal(selectors.getEditor, box);
   }
 
   render () {

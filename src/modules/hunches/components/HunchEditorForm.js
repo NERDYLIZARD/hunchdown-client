@@ -18,7 +18,7 @@ export class HunchEditorForm extends React.Component
 
   openBoxEditorModal(e) {
     e.preventDefault();
-    this.props.openBoxEditorModal(null, boxes.selectors.getEditor);
+    this.props.openBoxEditorModal(boxes.selectors.getEditor);
   }
 
   render () {

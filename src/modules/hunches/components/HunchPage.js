@@ -44,12 +44,12 @@ export class HunchPage extends React.Component
 
   createHunch (e) {
     e.preventDefault();
-    this.props.openHunchEditorModal(null, selectors.getEditor);
+    this.props.openHunchEditorModal(selectors.getEditor);
   }
 
   editHunch (e, hunch) {
     e.preventDefault();
-    this.props.openHunchEditorModal(hunch, selectors.getEditor)
+    this.props.openHunchEditorModal(selectors.getEditor, hunch);
   }
 
   deleteHunch (e, hunch) {
