@@ -1,110 +1,203 @@
 /**
  * Created on 03-Aug-18.
  */
-import _ from 'lodash';
 import * as boxActions from './actions';
 import * as types from './actionTypes';
-import { generateBox } from '../../utils/test/mockDataFactory';
+import { CALL_API } from '../../middlewares/api';
+import { boxSchema } from '../../normalizr-schema';
+import { OPEN_EDITOR_MODAL } from '../../middlewares/editor-modal';
 
 
 describe('Box Actions', () => {
-  /**
-   * Load Boxes
-   */
+
   describe('loadBoxes', () => {
-    it(`creates an action typed ${types.LOAD_BOXES} with no payload`, () => {
+    it(`creates an action typed ${types.LOAD_BOXES} with 'perPage' and 'nextPageIsRequested'`, () => {
       const expectedAction = {
         type: types.LOAD_BOXES,
+        perPage: 12,
+        nextPageIsRequested: false,
       };
-      expect(boxActions.loadBoxes()).toEqual(expectedAction);
-    });
-  });
-  describe('loadBoxesSuccess', () => {
-    it(`creates an action typed ${types.LOAD_BOXES_SUCCESS} and having 'boxes' as a payload`, () => {
-      const boxes = [
-        generateBox(),
-        generateBox()
-      ];
-      const expectedAction = {
-        type: types.LOAD_BOXES_SUCCESS,
-        boxes
-      };
-      expect(boxActions.loadBoxesSuccess(boxes)).toEqual(expectedAction);
+      expect(boxActions.loadBoxes(12, false)).toEqual(expectedAction);
     });
   });
 
-  /**
-   * Create Box
-   */
-  describe('createBox', () => {
-    it(`creates an action typed ${types.CREATE_BOX} with a 'box' as a payload`, () => {
-      const box = _.omit(generateBox(), 'id');
+  describe('fetchBoxes', () => {
+    it(`creates an action ${CALL_API} 'GET' method`, () => {
       const expectedAction = {
-        type: types.CREATE_BOX,
-        box
+        [CALL_API]: {
+          types: [types.FETCH_BOXES_REQUEST, types.FETCH_BOXES_SUCCESS, types.FETCH_BOXES_FAILURE],
+          schema: [boxSchema],
+          endpoint: 'next-page.com',
+          method: 'GET'
+        }
+      };
+      expect(boxActions.fetchBoxes('next-page.com')).toEqual(expectedAction);
+    });
+  });
+
+  describe('unloadBoxes', () => {
+    it(`creates an action typed ${types.UNLOAD_BOXES}`, () => {
+      const expectedAction = {
+        type: types.UNLOAD_BOXES,
+      };
+      expect(boxActions.unloadBoxes()).toEqual(expectedAction);
+    });
+  });
+
+  describe('loadBox', () => {
+    it(`creates an action typed ${types.LOAD_BOX} with 'id'`, () => {
+      const expectedAction = {
+        type: types.LOAD_BOX,
+        id: 'id#1',
+      };
+      expect(boxActions.loadBox('id#1')).toEqual(expectedAction);
+    });
+  });
+
+  describe('fetchBox', () => {
+    it(`creates an action ${CALL_API} with 'GET' method`, () => {
+      const boxId = 'id#1';
+      const expectedAction = {
+        [CALL_API]: {
+          types: [types.FETCH_BOX_REQUEST, types.FETCH_BOX_SUCCESS, types.FETCH_BOX_FAILURE],
+          schema: boxSchema,
+          endpoint: `/boxes/${boxId}`,
+          method: 'GET'
+        }
+      };
+      expect(boxActions.fetchBox(boxId)).toEqual(expectedAction);
+    });
+  });
+
+  describe('unloadBox', () => {
+    it(`creates an action typed ${types.UNLOAD_BOX}`, () => {
+      const expectedAction = {
+        type: types.UNLOAD_BOX,
+      };
+      expect(boxActions.unloadBox()).toEqual(expectedAction);
+    });
+  });
+
+  describe('createBox', () => {
+    it(`creates an action ${CALL_API} with 'data' and 'POST' method`, () => {
+      const box = {
+        title: 'foo',
+        description: 'bar',
+      };
+      const expectedAction = {
+        [CALL_API]: {
+          types: [types.CREATE_BOX_REQUEST, types.CREATE_BOX_SUCCESS, types.CREATE_BOX_FAILURE],
+          schema: boxSchema,
+          endpoint: '/boxes',
+          method: 'POST',
+          data: box
+        }
       };
       expect(boxActions.createBox(box)).toEqual(expectedAction);
     });
   });
-  describe('createBoxSuccess', () => {
-    it(`creates an action typed ${types.CREATE_BOX_SUCCESS} and having a 'box' as a payload`, () => {
-      const box = _.omit(generateBox(), 'id');
-      const expectedAction = {
-        type: types.CREATE_BOX_SUCCESS,
-        box
+
+  describe('updateBox', () => {
+    it(`creates an action ${CALL_API} with 'data' and 'PATCH' method`, () => {
+      const box = {
+        id: 'id#1',
+        title: 'foo',
+        description: 'bar',
       };
-      expect(boxActions.createBoxSuccess(box)).toEqual(expectedAction);
+      const expectedAction = {
+        [CALL_API]: {
+          types: [types.UPDATE_BOX_REQUEST, types.UPDATE_BOX_SUCCESS, types.UPDATE_BOX_FAILURE],
+          schema: boxSchema,
+          endpoint: `/boxes/${box.id}`,
+          method: 'PATCH',
+          data: box
+        }
+      };
+      expect(boxActions.updateBox(box)).toEqual(expectedAction);
     });
   });
 
-  /**
-   * Delete Box
-   */
   describe('deleteBox', () => {
-    it(`creates an action typed ${types.DELETE_BOX} with a 'box' as a payload`, () => {
-      const box = generateBox();
+    it(`creates an action ${CALL_API} with 'data' and 'DELETE' method`, () => {
+      const box = {
+        id: 'id#1',
+        title: 'foo',
+        description: 'bar',
+      };
       const expectedAction = {
-        type: types.DELETE_BOX,
-        box
+        [CALL_API]: {
+          types: [types.DELETE_BOX_REQUEST, types.DELETE_BOX_SUCCESS, types.DELETE_BOX_FAILURE],
+          schema: boxSchema,
+          endpoint: `/boxes/${box.id}`,
+          method: 'DELETE',
+          data: box
+        }
       };
       expect(boxActions.deleteBox(box)).toEqual(expectedAction);
     });
   });
-  describe('deleteBoxSuccess', () => {
-    it(`creates an action typed ${types.DELETE_BOX_SUCCESS} and having a 'box' as a payload`, () => {
-      const box = generateBox();
-      const expectedAction = {
-        type: types.DELETE_BOX_SUCCESS,
-        box
+
+  describe('openBoxEditorModal', () => {
+    it('throws an error if `selector` is not a function', () => {
+      const editorSelector = 'notAFunction';
+      expect(() => boxActions.openBoxEditorModal(editorSelector)).toThrow();
+    });
+    it(`creates an action ${OPEN_EDITOR_MODAL}`, () => {
+      const data = {
+        id: 'id#1',
+        title: 'foo',
+        description: 'bar',
       };
-      expect(boxActions.deleteBoxSuccess(box)).toEqual(expectedAction);
+      const editorSelector = jest.fn();
+      const expectedAction = {
+        [OPEN_EDITOR_MODAL]: {
+          boostEditorType: types.BOOST_BOX_EDITOR,
+          resumeEditorType: types.RESUME_BOX_EDITOR_MODAL,
+          data,
+          editorSelector
+        }
+      };
+      expect(boxActions.openBoxEditorModal(editorSelector, data)).toEqual(expectedAction);
     });
   });
 
-
-  describe('openCreateBoxModal', () => {
-    it(`creates an action typed ${types.EDIT_BOX} with 'editing.modelOpen = true' as a payload`, () => {
-      const editing = {
-        modalOpen: true,
+  describe('openBoxModal', () => {
+    it(`creates an action ${types.BOOST_BOX_EDITOR}`, () => {
+      const data = {
+        id: 'id#1',
+        title: 'foo',
+        description: 'bar',
       };
       const expectedAction = {
-        type: types.EDIT_BOX,
-        editing
+        type: types.BOOST_BOX_EDITOR,
+        withModal: false,
+        data,
       };
-      expect(boxActions.openCreateBoxModal()).toEqual(expectedAction);
+      expect(boxActions.openBoxEditor(data)).toEqual(expectedAction);
     });
   });
 
-  describe('closeCreateBoxModal', () => {
-    it(`creates an action typed ${types.EDIT_BOX} with 'editing.modelOpen = false' as a payload`, () => {
-      const editing = {
-        modalOpen: false,
+  describe('clearBoxEditor', () => {
+    it(`creates an action ${types.CLEAR_BOX_EDITOR}`, () => {
+      const expectedAction = {
+        type: types.CLEAR_BOX_EDITOR,
+      };
+      expect(boxActions.clearBoxEditor()).toEqual(expectedAction);
+    });
+  });
+
+  describe('closeBoxEditorModal', () => {
+    it(`creates an action ${types.CLOSE_BOX_EDITOR_MODAL} with 'retainedData'`, () => {
+      const retainedData = {
+        id: 'id#1',
+        title: 'foo',
+        description: 'bar',
       };
       const expectedAction = {
-        type: types.EDIT_BOX,
-        editing
+        type: types.CLOSE_BOX_EDITOR_MODAL,
+        retainedData
       };
-      expect(boxActions.closeCreateBoxModal()).toEqual(expectedAction);
+      expect(boxActions.closeBoxEditorModal(retainedData)).toEqual(expectedAction);
     });
   });
 
