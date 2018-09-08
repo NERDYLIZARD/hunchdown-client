@@ -12,10 +12,6 @@ export const createActiveReducer = (types) => {
 
   const [requestType, successType, failureType, loadType, unloadType] = types;
 
-  const initialState = {
-    id: null,
-    isFetching: false,
-  };
   return (state = initialState, action) => {
     switch (action.type) {
       case requestType:
@@ -40,4 +36,9 @@ export const createActiveReducer = (types) => {
         return state;
     }
   };
+};
+
+export const initialState = {
+  id: null,
+  isFetching: false,
 };

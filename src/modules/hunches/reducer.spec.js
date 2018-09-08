@@ -9,6 +9,75 @@ import { union, without } from 'lodash';
 
 describe('Hunch Reducer', () => {
 
+  describe('editor', () => {
+    const initialState = editorInitialState;
+
+    it('handles unknown action', () => {
+      const action = {type: 'UNKNOWN'};
+      expect(editorReducer(undefined, action)).toEqual(initialState);
+    });
+
+    it(`${types.BOOST_HUNCH_EDITOR} action: updates 'isOpenedWithModal' according to 'action.withModal' and populate 'props' with 'action.data'`, () => {
+      const action = {
+        type: types.BOOST_HUNCH_EDITOR,
+        withModal: true,
+        data: {
+          prop1: 'prop#1',
+          prop2: 'prop#2'
+        }
+      };
+      const expectedState = {
+        ...initialState,
+        isOpenedWithModal: action.withModal,
+        props: action.data,
+      };
+      const newState = editorReducer(initialState, action);
+      expect(newState).toEqual(expectedState);
+    });
+
+    it(`${types.RESUME_HUNCH_EDITOR_MODAL} action: updates 'isOpenedWithModal: true'`, () => {
+      const action = {
+        type: types.RESUME_HUNCH_EDITOR_MODAL,
+      };
+      const expectedState = {
+        ...initialState,
+        isOpenedWithModal: true,
+      };
+      const newState = editorReducer(initialState, action);
+      expect(newState).toEqual(expectedState);
+    });
+
+    it(`${types.CLEAR_HUNCH_EDITOR} action: updates 'props: null'`, () => {
+      const action = {
+        type: types.CLEAR_HUNCH_EDITOR,
+      };
+      const expectedState = {
+        ...initialState,
+        props: null,
+      };
+      const newState = editorReducer(initialState, action);
+      expect(newState).toEqual(expectedState);
+    });
+
+    it(`${types.CLOSE_HUNCH_EDITOR_MODAL} action: updates 'isOpenedWithModal: false' & 'props: action.retainedData`, () => {
+      const action = {
+        type: types.CLOSE_HUNCH_EDITOR_MODAL,
+        retainedData: {
+          prop1: 'prop#1',
+          prop2: 'prop#2'
+        }
+      };
+      const expectedState = {
+        ...initialState,
+        isOpenedWithModal: false,
+        props: action.retainedData,
+      };
+      const newState = editorReducer(initialState, action);
+      expect(newState).toEqual(expectedState);
+    });
+  });
+
+
   describe('pagination', () => {
     const initialState = paginationInitialState;
 
@@ -17,7 +86,7 @@ describe('Hunch Reducer', () => {
       expect(paginationReducer(undefined, action)).toEqual(initialState);
     });
 
-    it(`${types.CREATE_HUNCH_REQUEST}, ${types.DELETE_HUNCH_REQUEST}, ${types.FETCH_HUNCHES_REQUEST}} actions: updates 'isFetching' to 'true'`, () => {
+    it(`${types.CREATE_HUNCH_REQUEST}, ${types.DELETE_HUNCH_REQUEST}, ${types.FETCH_HUNCHES_REQUEST} actions: updates 'isFetching' to 'true'`, () => {
       const requestTypeActions = [
         {type: types.CREATE_HUNCH_REQUEST},
         {type: types.DELETE_HUNCH_REQUEST},
@@ -100,76 +169,6 @@ describe('Hunch Reducer', () => {
       };
       expect(paginationReducer(undefined, action)).toEqual(initialState);
     });
-  });
-
-
-  describe('editor', () => {
-    const initialState = editorInitialState;
-
-    it('handles unknown action', () => {
-      const action = {type: 'UNKNOWN'};
-      expect(editorReducer(undefined, action)).toEqual(initialState);
-    });
-
-    it(`${types.BOOST_HUNCH_EDITOR} action: updates 'isOpenedWithModal' according to 'action.withModal' and populate 'props' with 'action.data'`, () => {
-      const action = {
-        type: types.BOOST_HUNCH_EDITOR,
-        withModal: true,
-        data: {
-          prop1: 'prop#1',
-          prop2: 'prop#2'
-        }
-      };
-      const expectedState = {
-        ...initialState,
-        isOpenedWithModal: action.withModal,
-        props: action.data,
-      };
-      const newState = editorReducer(initialState, action);
-      expect(newState).toEqual(expectedState);
-    });
-
-    it(`${types.RESUME_HUNCH_EDITOR_MODAL} action: updates 'isOpenedWithModal: true'`, () => {
-      const action = {
-        type: types.RESUME_HUNCH_EDITOR_MODAL,
-      };
-      const expectedState = {
-        ...initialState,
-        isOpenedWithModal: true,
-      };
-      const newState = editorReducer(initialState, action);
-      expect(newState).toEqual(expectedState);
-    });
-
-    it(`${types.CLEAR_HUNCH_EDITOR} action: updates 'props: null'`, () => {
-      const action = {
-        type: types.CLEAR_HUNCH_EDITOR,
-      };
-      const expectedState = {
-        ...initialState,
-        props: null,
-      };
-      const newState = editorReducer(initialState, action);
-      expect(newState).toEqual(expectedState);
-    });
-
-    it(`${types.CLOSE_HUNCH_EDITOR_MODAL} action: updates 'isOpenedWithModal: false' & 'props: action.retainedData`, () => {
-      const action = {
-        type: types.CLOSE_HUNCH_EDITOR_MODAL,
-        retainedData: {
-          prop1: 'prop#1',
-          prop2: 'prop#2'
-        }
-      };
-      const expectedState = {
-        ...initialState,
-        isOpenedWithModal: false,
-        props: action.retainedData,
-      };
-      const newState = editorReducer(initialState, action);
-      expect(newState).toEqual(expectedState);
-    });
-
   });
 
 });
