@@ -26,13 +26,6 @@ export const createPaginationReducer = (fetchTypes, createTypes, deleteTypes, un
   const [createRequestType, createSuccessType, createFailureType] = createTypes;
   const [deleteRequestType, deleteSuccessType, deleteFailureType] = deleteTypes;
 
-  const initialState = {
-    isFetching: false,
-    nextPageUrl: undefined,
-    page: 0,
-    ids: []
-  };
-
   return (state = initialState, action) => {
     switch (action.type) {
       case fetchRequestType:
@@ -83,4 +76,11 @@ export const createPaginationReducer = (fetchTypes, createTypes, deleteTypes, un
     }
   }
 
+};
+
+export const initialState = {
+  isFetching: false,
+  nextPageUrl: undefined,
+  page: 0,
+  ids: []
 };

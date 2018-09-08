@@ -11,10 +11,7 @@ export const createEditorReducer = (types) => {
 
   const [boostEditorType, resumeEditorModalType, clearEditorType, closeEditorModalType] = types;
 
-  return (state = {
-    isOpenedWithModal: false,
-    props: null
-  }, action) => {
+  return (state = initialState, action) => {
 
     switch (action.type) {
       case boostEditorType:
@@ -48,4 +45,9 @@ export const createEditorReducer = (types) => {
     }
   };
 
+};
+
+export const initialState = {
+  isOpenedWithModal: false,
+  props: null
 };
