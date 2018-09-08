@@ -1,161 +1,204 @@
 /**
  * Created on 06-Apr-18.
  */
-import _ from 'lodash';
 import * as hunchActions from './actions';
 import * as types from './actionTypes';
-import { generateHunch } from '../../utils/test/mockDataFactory';
+import { CALL_API } from '../../middlewares/api';
+import { hunchSchema } from '../../normalizr-schema';
+import { OPEN_EDITOR_MODAL } from '../../middlewares/editor-modal';
 
 
 describe('Hunch Actions', () => {
-  /**
-   * Load Hunches
-   */
+
   describe('loadHunches', () => {
-    it(`creates an action typed ${types.LOAD_HUNCHES} with no payload`, () => {
+    it(`creates an action typed ${types.LOAD_HUNCHES} with 'perPage' and 'nextPageIsRequested'`, () => {
       const expectedAction = {
         type: types.LOAD_HUNCHES,
+        boxId: 'id#1',
+        perPage: 12,
+        nextPageIsRequested: false,
       };
-      expect(hunchActions.loadHunches()).toEqual(expectedAction);
+      expect(hunchActions.loadHunches('id#1', 12, false)).toEqual(expectedAction);
     });
   });
-  describe('loadHunchesSuccess', () => {
-    it(`creates an action typed ${types.LOAD_HUNCHES_SUCCESS} and having 'hunches' as a payload`, () => {
-      const hunches = [
-        generateHunch(),
-        generateHunch()
-      ];
+
+  describe('fetchHunches', () => {
+    it(`creates an action ${CALL_API} 'GET' method`, () => {
       const expectedAction = {
-        type: types.LOAD_HUNCHES_SUCCESS,
-        hunches
+        [CALL_API]: {
+          types: [types.FETCH_HUNCHES_REQUEST, types.FETCH_HUNCHES_SUCCESS, types.FETCH_HUNCHES_FAILURE],
+          schema: [hunchSchema],
+          endpoint: 'next-page.com',
+          method: 'GET'
+        }
       };
-      expect(hunchActions.loadHunchesSuccess(hunches)).toEqual(expectedAction);
+      expect(hunchActions.fetchHunches('next-page.com')).toEqual(expectedAction);
     });
   });
 
+  describe('unloadHunches', () => {
+    it(`creates an action typed ${types.UNLOAD_HUNCHES}`, () => {
+      const expectedAction = {
+        type: types.UNLOAD_HUNCHES,
+      };
+      expect(hunchActions.unloadHunches()).toEqual(expectedAction);
+    });
+  });
 
-  /**
-   * Load Hunch
-   */
   describe('loadHunch', () => {
-    it(`creates an action typed ${types.LOAD_HUNCH} with no payload`, () => {
+    it.skip(`creates an action typed ${types.LOAD_HUNCH} with 'id'`, () => {
       const expectedAction = {
         type: types.LOAD_HUNCH,
+        id: 'id#1',
       };
-      expect(hunchActions.loadHunch()).toEqual(expectedAction);
+      expect(hunchActions.loadHunch('id#1')).toEqual(expectedAction);
     });
   });
-  describe('loadHunchSuccess', () => {
-    it(`creates an action typed ${types.LOAD_HUNCH_SUCCESS} and having a 'hunch' as a payload`, () => {
-      const hunch = generateHunch();
+
+  describe('fetchHunch', () => {
+    it.skip(`creates an action ${CALL_API} with 'GET' method`, () => {
+      const hunchId = 'id#1';
       const expectedAction = {
-        type: types.LOAD_HUNCH_SUCCESS,
-        hunch
+        [CALL_API]: {
+          types: [types.FETCH_HUNCH_REQUEST, types.FETCH_HUNCH_SUCCESS, types.FETCH_HUNCH_FAILURE],
+          schema: hunchSchema,
+          endpoint: `/hunches/${hunchId}`,
+          method: 'GET'
+        }
       };
-      expect(hunchActions.loadHunchSuccess(hunch)).toEqual(expectedAction);
+      expect(hunchActions.fetchHunch(hunchId)).toEqual(expectedAction);
     });
   });
 
+  describe('unloadHunch', () => {
+    it.skip(`creates an action typed ${types.UNLOAD_HUNCH}`, () => {
+      const expectedAction = {
+        type: types.UNLOAD_HUNCH,
+      };
+      expect(hunchActions.unloadHunch()).toEqual(expectedAction);
+    });
+  });
 
-  /**
-   * Create Hunch
-   */
   describe('createHunch', () => {
-    it(`creates an action typed ${types.CREATE_HUNCH} with a 'hunch' as a payload`, () => {
-      const hunch = _.omit(generateHunch(), 'slug');
+    it(`creates an action ${CALL_API} with 'data' and 'POST' method`, () => {
+      const hunch = {
+        wisdom: 'foo',
+        attritbute: 'bar',
+      };
       const expectedAction = {
-        type: types.CREATE_HUNCH,
-        hunch
+        [CALL_API]: {
+          types: [types.CREATE_HUNCH_REQUEST, types.CREATE_HUNCH_SUCCESS, types.CREATE_HUNCH_FAILURE],
+          schema: hunchSchema,
+          endpoint: '/hunches',
+          method: 'POST',
+          data: hunch
+        }
       };
       expect(hunchActions.createHunch(hunch)).toEqual(expectedAction);
     });
   });
-  describe('createHunchSuccess', () => {
-    it(`creates an action typed ${types.CREATE_HUNCH_SUCCESS} and having a 'hunch' as a payload`, () => {
-      const hunch = _.omit(generateHunch(), 'slug');
-      const expectedAction = {
-        type: types.CREATE_HUNCH_SUCCESS,
-        hunch
-      };
-      expect(hunchActions.createHunchSuccess(hunch)).toEqual(expectedAction);
-    });
-  });
 
-
-  /**
-   * Update Hunch
-   */
   describe('updateHunch', () => {
-    it(`creates an action typed ${types.UPDATE_HUNCH} with a 'hunch' as a payload`, () => {
-      const hunch = generateHunch();
+    it(`creates an action ${CALL_API} with 'data' and 'PATCH' method`, () => {
+      const hunch = {
+        id: 'id#1',
+        wisdom: 'foo',
+        attritbute: 'bar',
+      };
       const expectedAction = {
-        type: types.UPDATE_HUNCH,
-        hunch
+        [CALL_API]: {
+          types: [types.UPDATE_HUNCH_REQUEST, types.UPDATE_HUNCH_SUCCESS, types.UPDATE_HUNCH_FAILURE],
+          schema: hunchSchema,
+          endpoint: `/hunches/${hunch.id}`,
+          method: 'PATCH',
+          data: hunch
+        }
       };
       expect(hunchActions.updateHunch(hunch)).toEqual(expectedAction);
     });
   });
-  describe('updateHunchSuccess', () => {
-    it(`creates an action typed ${types.UPDATE_HUNCH_SUCCESS} and having a 'hunch' as a payload`, () => {
-      const hunch = generateHunch();
-      const expectedAction = {
-        type: types.UPDATE_HUNCH_SUCCESS,
-        hunch
-      };
-      expect(hunchActions.updateHunchSuccess(hunch)).toEqual(expectedAction);
-    });
-  });
 
-  /**
-   * Delete Hunch
-   */
   describe('deleteHunch', () => {
-    it(`creates an action typed ${types.DELETE_HUNCH} with a 'hunch' as a payload`, () => {
-      const hunch = generateHunch();
+    it(`creates an action ${CALL_API} with 'data' and 'DELETE' method`, () => {
+      const hunch = {
+        id: 'id#1',
+        wisdom: 'foo',
+        attritbute: 'bar',
+      };
       const expectedAction = {
-        type: types.DELETE_HUNCH,
-        hunch
+        [CALL_API]: {
+          types: [types.DELETE_HUNCH_REQUEST, types.DELETE_HUNCH_SUCCESS, types.DELETE_HUNCH_FAILURE],
+          schema: hunchSchema,
+          endpoint: `/hunches/${hunch.id}`,
+          method: 'DELETE',
+          data: hunch
+        }
       };
       expect(hunchActions.deleteHunch(hunch)).toEqual(expectedAction);
     });
   });
-  describe('deleteHunchSuccess', () => {
-    it(`creates an action typed ${types.DELETE_HUNCH_SUCCESS} and having a 'hunch' as a payload`, () => {
-      const hunch = generateHunch();
-      const expectedAction = {
-        type: types.DELETE_HUNCH_SUCCESS,
-        hunch
+
+  describe('openHunchEditorModal', () => {
+    it('throws an error if `selector` is not a function', () => {
+      const editorSelector = 'notAFunction';
+      expect(() => hunchActions.openHunchEditorModal(editorSelector)).toThrow();
+    });
+    it(`creates an action ${OPEN_EDITOR_MODAL}`, () => {
+      const data = {
+        id: 'id#1',
+        wisdom: 'foo',
+        attritbute: 'bar',
       };
-      expect(hunchActions.deleteHunchSuccess(hunch)).toEqual(expectedAction);
+      const editorSelector = jest.fn();
+      const expectedAction = {
+        [OPEN_EDITOR_MODAL]: {
+          boostEditorType: types.BOOST_HUNCH_EDITOR,
+          resumeEditorType: types.RESUME_HUNCH_EDITOR_MODAL,
+          data,
+          editorSelector
+        }
+      };
+      expect(hunchActions.openHunchEditorModal(editorSelector, data)).toEqual(expectedAction);
     });
   });
 
-
-  describe('openHunchEditorModal', () => {
-    it(`creates an action typed ${types.EDIT_HUNCH} with 'editing.modelOpen = true' and the being edited 'hunch' as a payload`, () => {
-      const hunch = generateHunch();
-      const editing = {
-        modalOpen: true,
-        hunch
+  describe('openHunchModal', () => {
+    it(`creates an action ${types.BOOST_HUNCH_EDITOR}`, () => {
+      const data = {
+        id: 'id#1',
+        wisdom: 'foo',
+        attritbute: 'bar',
       };
       const expectedAction = {
-        type: types.EDIT_HUNCH,
-        editing
+        type: types.BOOST_HUNCH_EDITOR,
+        withModal: false,
+        data,
       };
-      expect(hunchActions.openHunchEditorModal(hunch)).toEqual(expectedAction);
+      expect(hunchActions.openHunchEditor(data)).toEqual(expectedAction);
+    });
+  });
+
+  describe('clearHunchEditor', () => {
+    it(`creates an action ${types.CLEAR_HUNCH_EDITOR}`, () => {
+      const expectedAction = {
+        type: types.CLEAR_HUNCH_EDITOR,
+      };
+      expect(hunchActions.clearHunchEditor()).toEqual(expectedAction);
     });
   });
 
   describe('closeHunchEditorModal', () => {
-    it(`creates an action typed ${types.EDIT_HUNCH} with 'editing.modelOpen = false' as a payload`, () => {
-      const editing = {
-        modalOpen: false,
+    it(`creates an action ${types.CLOSE_HUNCH_EDITOR_MODAL} with 'retainedData'`, () => {
+      const retainedData = {
+        id: 'id#1',
+        wisdom: 'foo',
+        attritbute: 'bar',
       };
       const expectedAction = {
-        type: types.EDIT_HUNCH,
-        editing
+        type: types.CLOSE_HUNCH_EDITOR_MODAL,
+        retainedData
       };
-      expect(hunchActions.closeHunchEditorModal()).toEqual(expectedAction);
+      expect(hunchActions.closeHunchEditorModal(retainedData)).toEqual(expectedAction);
     });
   });
 
