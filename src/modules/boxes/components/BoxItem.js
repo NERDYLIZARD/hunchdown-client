@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import CustomPropTypes from '../../../utils/customPropTypes';
 
-export const BoxItem = ({ box, onDelete, onEdit, history }) => {
+export const BoxItem = ({ box, onEdit, onDelete, history }) => {
   return (
     <div className="box card">
       <div className="box-header card-header clearfix">

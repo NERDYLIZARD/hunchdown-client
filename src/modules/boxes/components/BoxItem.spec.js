@@ -2,9 +2,8 @@
  * Created on 19-May-18.
  */
 import React from 'react';
-import { mount } from 'enzyme';
-import BoxItem from './BoxItem';
-import { generateBox } from '../../../utils/test/mockDataFactory';
+import { shallow } from 'enzyme';
+import { BoxItem } from './BoxItem';
 
 describe('<BoxItem />', () => {
   let props;
@@ -13,7 +12,7 @@ describe('<BoxItem />', () => {
     // if running new test, mount the component
     // otherwise, use the mounted component
     if (!mountedBoxItem) {
-      mountedBoxItem = mount(
+      mountedBoxItem = shallow(
         <BoxItem {...props} />
       );
     }
@@ -23,8 +22,16 @@ describe('<BoxItem />', () => {
   // reset props before running a new test
   beforeEach(() => {
     props = {
+      box: {
+        id: 'id#1',
+        title: 'A Title',
+        description: 'A Description'
+      },
       onDelete: jest.fn(),
-      box: generateBox(),
+      onEdit: jest.fn(),
+      history: {
+        push: jest.fn()
+      },
     };
     mountedBoxItem = undefined;
   });
@@ -34,11 +41,18 @@ describe('<BoxItem />', () => {
     expect(divs.length).toBeGreaterThan(0);
   });
 
-  it('calls `onDelete()` when `delete` link is clicked', () => {
+  it('calls `onEdit()` with the clicked box when `edit` link is clicked', () => {
+    const deleteButton = boxItem().find('.box-edit-button');
+    deleteButton.simulate('click');
+    // call onEdit with props.box as its second argument
+    expect(props.onEdit).toBeCalledWith(undefined, props.box);
+  });
+
+  it('calls `onDelete()` with the clicked box when `delete` link is clicked', () => {
     const deleteButton = boxItem().find('.box-delete-button');
     deleteButton.simulate('click');
     // call onDelete with props.box as its second argument
-    expect(props.onDelete).toBeCalledWith(expect.anything(), props.box);
+    expect(props.onDelete).toBeCalledWith(undefined, props.box);
   });
 
   it('renders `<p class="box-title">` with `box.title` as its children', () => {
@@ -48,7 +62,10 @@ describe('<BoxItem />', () => {
 
   describe('when `box.description` is defined', () => {
 
-    // box.description is defined from generateBox() in top-level beforeEach()
+    beforeEach(() => {
+      props.box.description = 'A Description';
+    });
+
     it('renders a `<p class="box-description">`', () => {
       expect(boxItem().find('.box-description').length).toBe(1);
     });
@@ -62,7 +79,7 @@ describe('<BoxItem />', () => {
   describe('when `box.description` is undefined', () => {
 
     beforeEach(() => {
-      props.box.description = null;
+      props.box.description = undefined;
     });
 
     it('does not render a `<p class="box-description">`', () => {
