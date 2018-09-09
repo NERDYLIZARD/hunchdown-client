@@ -1,7 +1,6 @@
 /**
  * Created on 30-Jul-18.
  */
-import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import BoxItem from './BoxItem'; // eslint-disable-line import/no-named-as-default
@@ -10,7 +9,7 @@ import BoxItem from './BoxItem'; // eslint-disable-line import/no-named-as-defau
 const BoxList = ({boxes, onEdit, onDelete}) => {
   return (
     <div className="box-list">
-      {_.map(boxes, box =>
+      {boxes.map(box =>
         <div className="col-xs-4" key={box.id}>
           <BoxItem
             box={box}

@@ -2,10 +2,9 @@
  * Created on 03-Aug-18.
  */
 import React from 'react';
-import _ from 'lodash';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import BoxList from './BoxList';
-import { generateBox } from '../../../utils/test/mockDataFactory';
+import BoxItem from './BoxItem';
 
 describe('<BoxList />', () => {
   let props;
@@ -14,7 +13,7 @@ describe('<BoxList />', () => {
     // if running new test, mount the component
     // otherwise, use the mounted component
     if (!mountedBoxList) {
-      mountedBoxList = mount(
+      mountedBoxList = shallow(
         <BoxList {...props} />
       );
     }
@@ -24,11 +23,17 @@ describe('<BoxList />', () => {
   // reset props before running a new test
   beforeEach(() => {
     props = {
+      onEdit: jest.fn(),
       onDelete: jest.fn(),
-      boxes: _.mapKeys([
-        generateBox(),
-        generateBox(),
-      ], 'slug'),
+      boxes: [{
+        id: 'id#1',
+        title: 'A Title',
+        description: 'A Description'
+      }, {
+        id: 'id#2',
+        title: 'A Title',
+        description: 'A Description'
+      }]
     };
     mountedBoxList = undefined;
   });
@@ -38,10 +43,14 @@ describe('<BoxList />', () => {
     expect(divs.length).toBeGreaterThan(0);
   });
 
-  it('always renders `<BoxItem />`s for all boxes passed in as its props', () => {
-    const BoxItems = boxList().find('BoxItem');
-    const numberOfBoxes = Object.keys(props.boxes).length;
+  it('renders `<BoxItem />`s for all boxes passed in as its props as well as setting `onEdit` and `onDelete` for each `<BoxItem/>', () => {
+    const BoxItems = boxList().find(BoxItem);
+    const numberOfBoxes = props.boxes.length;
     expect(BoxItems.length).toBe(numberOfBoxes);
+    BoxItems.forEach(BoxItem => {
+      expect(BoxItem.props().onDelete).toBe(props.onDelete);
+      expect(BoxItem.props().onEdit).toBe(props.onEdit);
+    })
   });
 
 });
