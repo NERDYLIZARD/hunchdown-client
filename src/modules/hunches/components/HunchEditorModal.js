@@ -71,6 +71,7 @@ export class HunchEditorModal extends React.Component
 
 HunchEditorModal.propTypes = {
   hunch: PropTypes.object,
+  formValues: PropTypes.object.isRequired,
   isOpenedWithModal: PropTypes.bool.isRequired,
   closeHunchEditorModal: PropTypes.func.isRequired,
   clearHunchEditor: PropTypes.func.isRequired,

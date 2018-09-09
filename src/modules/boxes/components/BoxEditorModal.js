@@ -70,6 +70,7 @@ BoxEditorModal.propTypes = {
   createBox: PropTypes.func.isRequired,
   updateBox: PropTypes.func.isRequired,
   formValues: PropTypes.object,
+  box: PropTypes.object,
 };
 
 export function mapStateToProps (state) {

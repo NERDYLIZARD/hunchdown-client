@@ -3,6 +3,7 @@
  */
 import axios from 'axios';
 import { normalize } from 'normalizr';
+import { isEmpty } from 'lodash';
 
 // Extracts the next page URL from Github API response.
 const getNextPageUrl = response => {
@@ -39,7 +40,7 @@ const callApi = (endpoint, schema, method, data) => {
     data: method === 'DELETE' ? null : data
   }).then(response => {
     // in case server return empty of object, i.e. status 204, normalize data that passed in
-    const toBeNormalized = _.isEmpty(response.data) ? data : response.data;
+    const toBeNormalized = isEmpty(response.data) ? data : response.data;
     const {entities, result} = normalize(toBeNormalized, schema);
     const json = {
       entities,

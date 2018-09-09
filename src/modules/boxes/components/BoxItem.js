@@ -27,6 +27,7 @@ export const BoxItem = ({ box, onEdit, onDelete, history }) => {
 
 BoxItem.propTypes = {
   box: CustomPropTypes.box.isRequired,
+  onEdit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
 };

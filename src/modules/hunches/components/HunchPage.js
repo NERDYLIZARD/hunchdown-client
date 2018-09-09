@@ -98,6 +98,7 @@ HunchPage.propTypes = {
   deleteHunch: PropTypes.func.isRequired,
   box: PropTypes.object,
   hunches: PropTypes.array.isRequired,
+  match: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => {
