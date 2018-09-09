@@ -31,7 +31,10 @@ export function* loadHunches (action) {
     isFetching
   } = yield select(getPagination);
 
-  if ((pageCount > 0 && !nextPageIsRequested) || isFetching) {
+  if (isFetching) {
+    return null;
+  }
+  if (pageCount > 0 && !nextPageIsRequested) {
     return null;
   }
   yield put(fetchHunches(nextPageUrl));

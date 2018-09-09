@@ -1,127 +1,77 @@
 /**
  * Created on 14-May-18.
  */
-import _ from 'lodash';
 import faker from 'faker';
-import { call, put } from 'redux-saga/effects';
+import { put, select } from 'redux-saga/effects';
 import { cloneableGenerator } from 'redux-saga/utils';
-import Services from './services';
-import { generateHunch } from '../../utils/test/mockDataFactory';
-import { createHunch, deleteHunch, loadHunch, loadHunches, updateHunch } from './saga';
-import {
-  createHunchSuccess,
-  deleteHunchSuccess,
-  loadHunchesSuccess,
-  loadHunchSuccess,
-  updateHunchSuccess
-} from './actions';
+import { getPagination } from './selectors';
+import { fetchHunches } from './actions';
 
 
 describe('Hunch Sagas', () => {
 
-  /**
-   * Load Hunches
-   */
   describe('loadHunches', () => {
-    const generator = cloneableGenerator(loadHunches)();
+    const action = {
+      boxId: faker.random.uuid(),
+      perPage: 3,
+      nextPageIsRequested: false,
+    };
+    describe('when `action.nextPageIsRequested` is `false`', () => {
+      action.nextPageIsRequested = false;
+      const generator = cloneableGenerator(loadHunches)(action);
+      expect(generator.next().value).toEqual(select(getPagination));
 
-    it('should call api to fetch `hunches`', () => {
-      expect(generator.next().value).toEqual(call(Services.find));
+      describe('when `isFetching` is `true`', () => {
+        it ('exits the function', () => {
+          const clone = generator.clone();
+          const pagination = {
+            isFetching: true,
+          };
+          expect(clone.next(pagination).done).toEqual(true);
+        });
+      });
+
+      describe('when `isFetching` is `false` & it is an initial load i.e. `page === 0`', () => {
+        it ('call `fetchBoxes`', () => {
+          const clone = generator.clone();
+          const pagination = {
+            nextPageUrl: 'next',
+            page: 0,
+            isFetching: false,
+          };
+          expect(clone.next(pagination).value).toEqual(put(fetchHunches(pagination.nextPageUrl)));
+          expect(clone.next().done).toEqual(true);
+        });
+      });
     });
 
-    it('should dispatch `loadHunchesSuccess()` with the fetched `hunches` as its argument', () => {
-      const clone = generator.clone();
-      const hunches = [generateHunch(), generateHunch()];
-      expect(clone.next(hunches).value).toEqual(put(loadHunchesSuccess(hunches)));
-      expect(clone.next().done).toBe(true);
+    describe('when `action.nextPageIsRequested` is `true`', () => {
+      action.nextPageIsRequested = true;
+      const generator = cloneableGenerator(loadHunches)(action);
+      expect(generator.next().value).toEqual(select(getPagination));
+
+      describe('when `isFetching` is `true`', () => {
+        it ('exits the function', () => {
+          const clone = generator.clone();
+          const pagination = {
+            isFetching: true,
+          };
+          expect(clone.next(pagination).done).toEqual(true);
+        });
+      });
+
+      describe('when `isFetching` is `false` & it is not an initial load i.e. `page > 0`', () => {
+        it ('call `fetchHunches`', () => {
+          const clone = generator.clone();
+          const pagination = {
+            nextPageUrl: 'next',
+            page: 1,
+            isFetching: false,
+          };
+          expect(clone.next(pagination).value).toEqual(put(fetchHunches(pagination.nextPageUrl)));
+          expect(clone.next().done).toEqual(true);
+        });
+      });
     });
-    // it('should call api to fetch hunches and dispatch loadHunchesSuccess with the fetched hunches', () => {
-    //   const clone = generator.clone;
-    //   const error = { message: 'later' };
-    // expect(clone.throw(error).value).toEqual(put(loadHunchesFailed(hunch)));
-    // expect(clone.next().done).toBe(true);
-    // });
   });
-
-
-  /**
-   * Load Hunch
-   */
-  describe('loadHunch', () => {
-    const action = {id: faker.random.uuid()};
-    const generator = cloneableGenerator(loadHunch)(action);
-
-    it('should call api to fetch a `hunch` by id', () => {
-      expect(generator.next().value).toEqual(call(Services.get, action.id));
-    });
-    it('should dispatch `loadHunchSuccess()` with the fetched `hunch` as its argument', () => {
-      const clone = generator.clone();
-      const hunch = generateHunch();
-      expect(clone.next(hunch).value).toEqual(put(loadHunchSuccess(hunch)));
-      expect(clone.next().done).toBe(true);
-    });
-    // error case (later)
-  });
-
-
-  /**
-   * Create Hunch
-   */
-  describe('createHunch', () => {
-    const action = {hunch: _.omit(generateHunch(), 'id')};
-    const generator = cloneableGenerator(createHunch)(action);
-
-    it('should call api to create a `hunch` with a `hunch` object as its argument', () => {
-      expect(generator.next().value).toEqual(call(Services.create, action.hunch));
-    });
-    it('should dispatch `createHunchSuccess()` with the created `hunch` as its argument', () => {
-      const clone = generator.clone();
-      const hunch = {
-        ...action.hunch,
-        id: faker.random.uuid(),
-      };
-      expect(clone.next(hunch).value).toEqual(put(createHunchSuccess(hunch)));
-      expect(clone.next().done).toBe(true);
-    });
-    // error case (later)
-  });
-
-
-  /**
-   * Update Hunch
-   */
-  describe('updateHunch', () => {
-    const action = {hunch: generateHunch()};
-    const generator = cloneableGenerator(updateHunch)(action);
-
-    it('should call api to update a `hunch` with a `hunch` object as its argument', () => {
-      expect(generator.next().value).toEqual(call(Services.update, action.hunch));
-    });
-    it('should dispatch `updateHunchSuccess()` with the updated `hunch` as its argument', () => {
-      const clone = generator.clone();
-      const hunch = action.hunch;
-      expect(clone.next(hunch).value).toEqual(put(updateHunchSuccess(hunch)));
-      expect(clone.next().done).toBe(true);
-    });
-    // error case (later)
-  });
-
-
-  /**
-   * Delete Hunch
-   */
-  describe('deleteHunch', () => {
-    const action = {hunch: generateHunch()};
-    const generator = cloneableGenerator(deleteHunch)(action);
-    it('should call api to delete a `hunch` with a `hunch` object as its argument', () => {
-      expect(generator.next().value).toEqual(call(Services.delete, action.hunch));
-    });
-    it('should dispatch `deleteHunchSuccess()` with the hunch that has been passed in `deleteHunch()` as it argument', () => {
-      const clone = generator.clone();
-      expect(clone.next().value).toEqual(put(deleteHunchSuccess(action.hunch)));
-      expect(clone.next().done).toBe(true);
-    });
-    // error case (later)
-  });
-
 });
