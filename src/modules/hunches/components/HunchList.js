@@ -1,16 +1,14 @@
 /**
  * Created on 18-May-18.
  */
-import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import HunchItem from './HunchItem'; // eslint-disable-line import/no-named-as-default
 
-
 const HunchList = ({ hunches, onEdit, onDelete }) => {
   return (
     <div className="hunch-list">
-      {_.map(hunches, hunch =>
+      {hunches.map(hunch =>
         <HunchItem
           key={hunch.id}
           hunch={hunch}

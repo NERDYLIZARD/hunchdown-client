@@ -45,8 +45,7 @@ describe('<BoxList />', () => {
 
   it('renders `<BoxItem />`s for all boxes passed in as its props as well as setting `onEdit` and `onDelete` for each `<BoxItem/>', () => {
     const BoxItems = boxList().find(BoxItem);
-    const numberOfBoxes = props.boxes.length;
-    expect(BoxItems.length).toBe(numberOfBoxes);
+    expect(BoxItems.length).toBe(props.boxes.length);
     BoxItems.forEach(BoxItem => {
       expect(BoxItem.props().onDelete).toBe(props.onDelete);
       expect(BoxItem.props().onEdit).toBe(props.onEdit);

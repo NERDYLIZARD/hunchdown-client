@@ -2,10 +2,9 @@
  * Created on 19-May-18.
  */
 import React from 'react';
-import _ from 'lodash';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import HunchList from './HunchList';
-import { generateHunch } from '../../../utils/test/mockDataFactory';
+import HunchItem from './HunchItem';
 
 describe('<HunchList />', () => {
   let props;
@@ -14,7 +13,7 @@ describe('<HunchList />', () => {
     // if running new test, mount the component
     // otherwise, use the mounted component
     if (!mountedHunchList) {
-      mountedHunchList = mount(
+      mountedHunchList = shallow(
         <HunchList {...props} />
       );
     }
@@ -26,10 +25,15 @@ describe('<HunchList />', () => {
     props = {
       onEdit: jest.fn(),
       onDelete: jest.fn(),
-      hunches: _.mapKeys([
-        generateHunch(),
-        generateHunch(),
-      ], 'slug'),
+      hunches: [{
+        id: 'id#1',
+        wisdom: 'A Wisdom',
+        attribute: 'A Attribute'
+      }, {
+        id: 'id#2',
+        wisdom: 'A Wisdom',
+        attribute: 'A Attribute'
+      }]
     };
     mountedHunchList = undefined;
   });
@@ -38,22 +42,14 @@ describe('<HunchList />', () => {
     const divs = hunchList().find('div');
     expect(divs.length).toBeGreaterThan(0);
   });
-  describe('the rendered div', () => {
-    it('contains everything else that gets rendered', () => {
-      const divs = hunchList().find('div');
-      // When using .find, enzyme arranges the nodes in order such
-      // that the outermost node is first in the list. So we can
-      // use .first() to get the outermost div.
-      const wrappingDiv = divs.first();
-      expect(wrappingDiv.children()).toEqual(hunchList().children().children());
-    });
-  });
 
-
-  it('always renders `<HunchItem />`s for all hunches passed in as its props', () => {
-    const HunchItems = hunchList().find('HunchItem');
-    const numberOfHunches = Object.keys(props.hunches).length;
-    expect(HunchItems.length).toBe(numberOfHunches);
+  it('renders `<HunchItem />`s for all boxes passed in as its props as well as setting `onEdit` and `onDelete` for each `<HunchItem/>', () => {
+    const HunchItems = hunchList().find(HunchItem);
+    expect(HunchItems.length).toBe(props.hunches.length);
+    HunchItems.forEach(HunchItem => {
+      expect(HunchItem.props().onDelete).toBe(props.onDelete);
+      expect(HunchItem.props().onEdit).toBe(props.onEdit);
+    })
   });
 
 });
