@@ -6,6 +6,7 @@ import { put, select } from 'redux-saga/effects';
 import { cloneableGenerator } from 'redux-saga/utils';
 import { getPagination } from './selectors';
 import { fetchHunches } from './actions';
+import { loadHunches } from './saga';
 
 
 describe('Hunch Sagas', () => {

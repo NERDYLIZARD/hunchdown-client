@@ -31,7 +31,10 @@ export function* loadBoxes (action) {
     isFetching
   } = yield select(getPagination);
 
-  if ((pageCount > 0 && !nextPageIsRequested) || isFetching) {
+  if (isFetching) {
+    return null;
+  }
+  if (pageCount > 0 && !nextPageIsRequested) {
     return null;
   }
   yield put(fetchBoxes(nextPageUrl));
@@ -43,13 +46,18 @@ export function* loadBoxes (action) {
 * or that entity doesn't contain the required fields.
 * */
 export function* loadBox (action) {
-  const {id, requiredFields = []} = action;
+
   const {isFetching} = yield select(getActive);
+  if (isFetching) {
+    return null;
+  }
+
+  const {id, requiredFields = []} = action;
   const boxEntities = yield select(getEntity);
   const box = boxEntities[id];
 
-  if ((box && requiredFields.every(key => box.hasOwnProperty(key))) || isFetching) {
-    return null
+  if (box && requiredFields.every(key => box.hasOwnProperty(key))) {
+    return null;
   }
   yield put(fetchBox(id));
 }

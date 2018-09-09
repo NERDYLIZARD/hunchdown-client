@@ -1,83 +1,138 @@
 /**
  * Created on 03-Aug-18.
  */
-import _ from 'lodash';
-import faker from 'faker';
-import { call, put } from 'redux-saga/effects';
+import { put, select } from 'redux-saga/effects';
 import { cloneableGenerator } from 'redux-saga/utils';
-import { generateBox } from '../../utils/test/mockDataFactory';
-import { createBox, deleteBox, loadBoxes } from './saga';
-import {
-  createBoxSuccess,
-  deleteBoxSuccess,
-  loadBoxesSuccess,
-} from './actions';
+import { getActive, getEntity, getPagination } from './selectors';
+import { fetchBox, fetchBoxes } from './actions';
+import { loadBox, loadBoxes } from './saga';
 
 
 describe('Box Sagas', () => {
-  /**
-   * Load Boxes
-   */
+
   describe('loadBoxes', () => {
-    const generator = cloneableGenerator(loadBoxes)();
+    const action = {
+      perPage: 3,
+      nextPageIsRequested: false,
+    };
+    describe('when `action.nextPageIsRequested` is `false`', () => {
+      action.nextPageIsRequested = false;
+      const generator = cloneableGenerator(loadBoxes)(action);
+      expect(generator.next().value).toEqual(select(getPagination));
 
-    it('should call api to fetch `boxes`', () => {
-      expect(generator.next().value).toEqual(call(Services.find));
+      describe('when `isFetching` is `true`', () => {
+        it('exits the function', () => {
+          const clone = generator.clone();
+          const pagination = {
+            isFetching: true,
+          };
+          expect(clone.next(pagination).done).toEqual(true);
+        });
+      });
+
+      describe('when `isFetching` is `false` & it is an initial load i.e. `page === 0`', () => {
+        it('call `fetchBoxes`', () => {
+          const clone = generator.clone();
+          const pagination = {
+            nextPageUrl: 'next',
+            page: 0,
+            isFetching: false,
+          };
+          expect(clone.next(pagination).value).toEqual(put(fetchBoxes(pagination.nextPageUrl)));
+          expect(clone.next().done).toEqual(true);
+        });
+      });
     });
 
-    it('should dispatch `loadBoxesSuccess()` with the fetched `boxes` as its argument', () => {
-      const clone = generator.clone();
-      const boxes = [generateBox(), generateBox()];
-      expect(clone.next(boxes).value).toEqual(put(loadBoxesSuccess(boxes)));
-      expect(clone.next().done).toBe(true);
+    describe('when `action.nextPageIsRequested` is `true`', () => {
+      action.nextPageIsRequested = true;
+      const generator = cloneableGenerator(loadBoxes)(action);
+      expect(generator.next().value).toEqual(select(getPagination));
+
+      describe('when `isFetching` is `true`', () => {
+        it('exits the function', () => {
+          const clone = generator.clone();
+          const pagination = {
+            isFetching: true,
+          };
+          expect(clone.next(pagination).done).toEqual(true);
+        });
+      });
+
+      describe('when `isFetching` is `false` & it is not an initial load i.e. `page > 0`', () => {
+        it('call `fetchBoxes`', () => {
+          const clone = generator.clone();
+          const pagination = {
+            nextPageUrl: 'next',
+            page: 1,
+            isFetching: false,
+          };
+          expect(clone.next(pagination).value).toEqual(put(fetchBoxes(pagination.nextPageUrl)));
+          expect(clone.next().done).toEqual(true);
+        });
+      });
     });
-    // it('should call api to fetch boxes and dispatch loadBoxesSuccess with the fetched boxes', () => {
-    //   const clone = generator.clone;
-    //   const error = { message: 'later' };
-    // expect(clone.throw(error).value).toEqual(put(loadBoxesFailed(box)));
-    // expect(clone.next().done).toBe(true);
-    // });
   });
 
 
-  /**
-   * Create Box
-   */
-  describe('createBox', () => {
-    const action = {box: _.omit(generateBox(), 'id')};
-    const generator = cloneableGenerator(createBox)(action);
+  describe('loadBox', () => {
+    const action = {
+      id: 'id#1',
+      requiredFields: ['mustHaveField'],
+    };
+    const generator = cloneableGenerator(loadBox)(action);
+    expect(generator.next().value).toEqual(select(getActive));
 
-    it('should call api to create a `box` with a `box` object as its argument', () => {
-      expect(generator.next().value).toEqual(call(Services.create, action.box));
+    describe('when `isFetching` is `true`', () => {
+      it('exits the function', () => {
+        const clone = generator.clone();
+        expect(clone.next({isFetching: true}).done).toBe(true);
+      });
     });
-    it('should dispatch `createBoxSuccess()` with the created `box` as its argument', () => {
+
+    describe('when `isFetching` is `false`', () => {
       const clone = generator.clone();
-      const box = {
-        ...action.box,
-        id: faker.random.uuid(),
-      };
-      expect(clone.next(box).value).toEqual(put(createBoxSuccess(box)));
-      expect(clone.next().done).toBe(true);
-    });
-    // error case (later)
-  });
+      expect(clone.next({isFetching: false}).value).toEqual(select(getEntity));
 
+      describe('when `box` is not cached in `entity`', () => {
+        it('calls `fetchBox()`', () => {
+          const _clone = clone.clone();
+          const entity = {
+            'id#2': {
+              id: 'id#2',
+            }
+          };
+          expect(_clone.next(entity).value).toEqual(put(fetchBox(action.id)));
+        });
+      });
 
-  /**
-   * Delete Box
-   */
-  describe('deleteBox', () => {
-    const action = {box: generateBox()};
-    const generator = cloneableGenerator(deleteBox)(action);
-    it('should call api to delete a `box` with a `box` object as its argument', () => {
-      expect(generator.next().value).toEqual(call(Services.delete, action.box));
+      describe('when `box` is cached in `entity` without all `requiredFields`', () => {
+        it('calls `fetchBox()`', () => {
+          const _clone = clone.clone();
+          const entity = {
+            'id#1': {
+              id: 'id#1',
+              notMustHaveField: 'available'
+            }
+          };
+          expect(_clone.next(entity).value).toEqual(put(fetchBox(action.id)));
+        });
+      });
+
+      describe('when `box` is cached in `entity` with all `requiredFields`', () => {
+        it('exits the function', () => {
+          const _clone = clone.clone();
+          const entity = {
+            'id#1': {
+              id: 'id#1',
+              mustHaveField: 'available'
+            }
+          };
+          expect(_clone.next(entity).done).toBe(true);
+        });
+      });
+
     });
-    it('should dispatch `deleteBoxSuccess()` with the box that has been passed in `deleteBox()` as it argument', () => {
-      const clone = generator.clone();
-      expect(clone.next().value).toEqual(put(deleteBoxSuccess(action.box)));
-      expect(clone.next().done).toBe(true);
-    });
-    // error case (later)
   });
 
 });
