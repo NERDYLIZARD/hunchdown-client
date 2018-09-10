@@ -2,9 +2,13 @@
  * Created on 15-Aug-18.
  */
 import merge from 'lodash/merge';
-import initialState from '../../initialState';
 
-export default function entitiesReducer(state = initialState.entities, action) {
+export const initialState = {
+  boxes: {},
+  hunches: {},
+};
+
+export default function entitiesReducer(state = initialState, action) {
   if (action.payload && action.payload.entities) {
     return merge({}, state, action.payload.entities);
   }

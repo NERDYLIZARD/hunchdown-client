@@ -58,34 +58,44 @@ export class HunchPage extends React.Component
   }
 
   render () {
-    const {box, hunches} = this.props;
-    if (!box || !hunches) {
-      return (
-        <div>Loading . . .</div>
-      );
-    }
+    const {isFetchingBox, isFetchingHunches, box, hunches} = this.props;
     return (
-      <div className="hunch-page container-fluid">
-        <div className="row">
-          <div className="hunch-page-header clearfix">
-            <div className="pull-left">
-              <h2>{box.title}</h2>
-            </div>
-            <div className="pull-right">
-              <button className="create-hunch-button btn btn-success" onClick={this.createHunch}>New Hunch</button>
+      <div className="hunch-page">
+        <div className="container-fluid">
+          <div className="hunch-page__header">
+            <div className="row">
+              {isFetchingBox &&
+              <div className="hunch-page__box-loading">Loading . . .</div>}
+              {!box ?
+                <div className="hunch-page__box-not-found">Box Not Found</div> :
+                <div className="clearfix">
+                  <div className="pull-left">
+                    <h2 className="hunch-page__box-title">{box.title}</h2>
+                  </div>
+                  <div className="pull-right">
+                    <button className="hunch-page__add-hunch-button btn btn-success" onClick={this.createHunch}>Add
+                      Hunch
+                    </button>
+                  </div>
+                </div>}
             </div>
           </div>
+          {box &&
+          <div className="hunch-page__body">
+            <div className="row">
+              {isFetchingHunches && <div className="hunch-page__hunches-loading">Loading . . .</div>}
+              {!hunches ?
+                <div className="hunch-page__hunches-not-found">No Hunch in the Box</div> :
+                <div className="row">
+                  <div className="col-xs-offset-4 col-xs-4">
+                    <HunchList hunches={hunches} onEdit={this.editHunch} onDelete={this.deleteHunch}/>
+                  </div>
+                </div>}
+              <HunchEditorModal/>
+            </div>
+          </div>}
         </div>
-        <div className="row">
-          <div className="col-xs-offset-4 col-xs-4">
-            {hunches ?
-              <HunchList hunches={hunches} onEdit={this.editHunch} onDelete={this.deleteHunch}/> : null
-            }
-          </div>
-        </div>
-        <HunchEditorModal/>
-      </div>
-    );
+      </div>);
   }
 }
 
@@ -96,14 +106,20 @@ HunchPage.propTypes = {
   loadBox: PropTypes.func.isRequired,
   unloadBox: PropTypes.func.isRequired,
   deleteHunch: PropTypes.func.isRequired,
+  isFetchingBox: PropTypes.bool.isRequired,
   box: PropTypes.object,
-  hunches: PropTypes.array.isRequired,
+  isFetchingHunches: PropTypes.bool.isRequired,
+  hunches: PropTypes.array,
   match: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => {
+  const {isFetching: isFetchingHunches} = selectors.getPagination(state);
+  const {isFetching: isFetchingBox} = boxes.selectors.getActive(state);
   return {
+    isFetchingHunches,
     hunches: selectors.getAll(state),
+    isFetchingBox,
     box: boxes.selectors.getActiveElement(state)
   }
 };
