@@ -9,14 +9,16 @@ import BoxItem from './BoxItem'; // eslint-disable-line import/no-named-as-defau
 const BoxList = ({boxes, onEdit, onDelete}) => {
   return (
     <div className="box-list">
-      {boxes.map(box =>
-        <div className="col-xs-4" key={box.id}>
-          <BoxItem
-            box={box}
-            onDelete={onDelete}
-            onEdit={onEdit}
-          />
-        </div>)}
+      <div className="row">
+        {boxes.map(box =>
+          <div className="col-xs-4" key={box.id}>
+            <BoxItem
+              box={box}
+              onDelete={onDelete}
+              onEdit={onEdit}
+            />
+          </div>)}
+      </div>
     </div>
   );
 };

@@ -4,6 +4,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { isEmpty } from 'lodash';
 import { loadBoxes, deleteBox, openBoxEditorModal, unloadBoxes } from '../actions';
 import * as selectors from '../selectors';
 import BoxList from './BoxList';
@@ -28,11 +29,6 @@ export class BoxPage extends React.Component
     this.props.unloadBoxes();
   }
 
-  deleteBox (e, box) {
-    e.preventDefault();
-    this.props.deleteBox(box);
-  }
-
   createBox (e) {
     e.preventDefault();
     this.props.openBoxEditorModal(selectors.getEditor);
@@ -43,27 +39,38 @@ export class BoxPage extends React.Component
     this.props.openBoxEditorModal(selectors.getEditor, box);
   }
 
+  deleteBox (e, box) {
+    e.preventDefault();
+    this.props.deleteBox(box);
+  }
+
   render () {
-    const {boxes} = this.props;
+    const {boxes, isFetchingBoxes} = this.props;
 
     return (
-      <div className="box-page container-fluid">
-        <div className="row">
-          <div className="box-page-header clearfix">
-            <div className="pull-left">
-              <h2>Boxes</h2>
+      <div className="box-page">
+        <div className="container-fluid">
+          <div className="row">
+            <div className="box-page-header clearfix">
+              <div className="pull-left">
+                <h2>Boxes</h2>
+              </div>
+              <div className="pull-right">
+                <button className="create-box-button btn btn-success" onClick={this.createBox}>New Box</button>
+              </div>
             </div>
-            <div className="pull-right">
-              <button className="create-box-button btn btn-success" onClick={this.createBox}>New Box</button>
+          </div>
+          <div className="row">
+            <div className="box-page__body">
+              {isFetchingBoxes ?
+                <div className="box-page__boxes-loading">Loading . . .</div> :
+                isEmpty(boxes) ?
+                  <div className="box-page__boxes-not-found">No Box, Create a New Box</div> :
+                  <BoxList boxes={boxes} onEdit={this.editBox} onDelete={this.deleteBox}/>}
+              <BoxEditorModal/>
             </div>
           </div>
         </div>
-        <div className="row">
-          {boxes ?
-            <BoxList boxes={boxes} onEdit={this.editBox} onDelete={this.deleteBox}/> : null
-          }
-        </div>
-        <BoxEditorModal/>
       </div>
     );
   }
@@ -71,6 +78,7 @@ export class BoxPage extends React.Component
 
 BoxPage.propTypes = {
   boxes: PropTypes.array,
+  isFetchingBoxes: PropTypes.bool.isRequired,
   loadBoxes: PropTypes.func.isRequired,
   unloadBoxes: PropTypes.func.isRequired,
   deleteBox: PropTypes.func.isRequired,
@@ -78,8 +86,10 @@ BoxPage.propTypes = {
 };
 
 const mapStateToProps = (state) => {
+  const {isFetching: isFetchingBoxes} = selectors.getPagination(state);
   return {
-    boxes: selectors.getAll(state)
+    isFetchingBoxes,
+    boxes: selectors.getAll(state),
   }
 };
 

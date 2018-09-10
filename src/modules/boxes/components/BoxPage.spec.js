@@ -1,20 +1,21 @@
 /**
  * Created on 03-Aug-18.
  */
-import _ from 'lodash';
 import React from 'react';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import { BoxPage } from './BoxPage';
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
-import initialState from '../../../initialState';
-import { generateBox } from '../../../utils/test/mockDataFactory';
+import BoxEditorModal from './BoxEditorModal';
+import BoxList from './BoxList';
+import * as selectors from '../selectors';
 
 
 describe('<BoxPage />', () => {
 
-  jest.spyOn(BoxPage.prototype, 'openCreateBoxModal');
   jest.spyOn(BoxPage.prototype, 'componentDidMount');
+  jest.spyOn(BoxPage.prototype, 'componentWillUnmount');
+  jest.spyOn(BoxPage.prototype, 'createBox');
+  jest.spyOn(BoxPage.prototype, 'editBox');
+  jest.spyOn(BoxPage.prototype, 'deleteBox');
 
   let props;
   let mountedBoxPage;
@@ -23,11 +24,8 @@ describe('<BoxPage />', () => {
     // if running new test, mount the component
     // otherwise, use the mounted component
     if (!mountedBoxPage) {
-      const store = configureMockStore()(initialState);
-      mountedBoxPage = mount(
-        <Provider store={store}>
-          <BoxPage {...props} />
-        </Provider>
+      mountedBoxPage = shallow(
+        <BoxPage {...props} />
       );
     }
     return mountedBoxPage;
@@ -38,15 +36,18 @@ describe('<BoxPage />', () => {
   beforeEach(() => {
     props = {
       loadBoxes: jest.fn(),
+      unloadBoxes: jest.fn(),
       deleteBox: jest.fn(),
+      openBoxEditorModal: jest.fn(),
+      isFetchingBoxes: false,
       boxes: undefined,
     };
     mountedBoxPage = undefined;
   });
 
   it('always renders a div as wrapper', () => {
-    const divs = boxPage().find('div');
-    expect(divs.length).toBeGreaterThan(0);
+    const divs = boxPage().find('.box-page');
+    expect(divs.length).toBe(1);
   });
 
   it('calls `loadBoxes()` on `ComponentDidMount()`', () => {
@@ -55,46 +56,99 @@ describe('<BoxPage />', () => {
     expect(props.loadBoxes).toBeCalled();
   });
 
+  it('calls `unloadBoxes()` on `ComponentWillUnmount()`', () => {
+    boxPage().unmount();
+    expect(BoxPage.prototype.componentWillUnmount).toBeCalled();
+    expect(props.unloadBoxes).toBeCalled();
+  });
+
   it('always renders the `New Box` button', () => {
     const createBoxButton = boxPage().find('.create-box-button');
     expect(createBoxButton.length).toBe(1);
   });
 
-  describe.skip('when the `New Box` button is clicked`', () => {
-    it('dispatches `openCreateBoxModal()` action creator in `openCreateBoxModal()` method', () => {
+  describe('when the `New Box` button is clicked`', () => {
+    it('call `createBox` that dispatches `openBoxEditorModal()`', () => {
       const createBoxButton = boxPage().find('.create-box-button');
-      createBoxButton.simulate('click');
-      expect(BoxPage.prototype.openCreateBoxModal).toBeCalled();
+      const e = {preventDefault: jest.fn()};
+      createBoxButton.simulate('click', e);
+      expect(BoxPage.prototype.createBox).toBeCalledWith(e);
+      expect(props.openBoxEditorModal).toBeCalled();
     });
   });
 
-  describe('when `boxes` is passed', () => {
+  describe('when `isFetchingBoxes` is true', () => {
     beforeEach(() => {
-      props.boxes = _.mapKeys([
-        generateBox(),
-        generateBox(),
-      ], 'id');
+      props.isFetchingBoxes = true;
     });
-    it('renders `<BoxList />`', () => {
-      expect(boxPage().find('BoxList').length).toBe(1);
-    });
-    it('passes `boxes` as `boxes` property of `<BoxList />`', () => {
-      const BoxList = boxPage().find('BoxList');
-      expect(BoxList.props().boxes).toEqual(props.boxes);
+    it('renders loading message', () => {
+      expect(boxPage().find('.box-page__boxes-loading').length).toBe(1);
     });
   });
 
-  describe('when `boxes` is not passed', () => {
+  describe('when `isFetchingBoxes` is false', () => {
     beforeEach(() => {
-      props.boxes = undefined;
+      props.isFetchingBoxes = false;
     });
-    it('does not render `<BoxList />`', () => {
-      expect(boxPage().find('BoxList').length).toBe(0);
+
+    describe('when `boxes` is not available', () => {
+      beforeEach(() => {
+        props.boxes = undefined;
+      });
+      it('does not render `<BoxList />`', () => {
+        expect(boxPage().find(BoxList).length).toBe(0);
+      });
+      it('renders not-found message', () => {
+        expect(boxPage().find('.box-page__boxes-not-found').length).toBe(1);
+      });
+    });
+
+    describe('when `boxes` is available', () => {
+      beforeEach(() => {
+        props.boxes = [{
+          id: 'id#1',
+          title: 'A Title',
+        }, {
+          id: 'id#2',
+          title: 'A Title',
+        }];
+      });
+      it('renders `<BoxList />`', () => {
+        expect(boxPage().find(BoxList).length).toBe(1);
+      });
+
+      describe('the rendered `<BoxList />`', () => {
+        let BoxList;
+        let selectedBox;
+        const e = {preventDefault: jest.fn()};
+
+        beforeEach(() => {
+          BoxList = boxPage().find('BoxList');
+          selectedBox = props.boxes[0];
+        });
+
+        it('has `boxes` as its prop', () => {
+          const BoxList = boxPage().find('BoxList');
+          expect(BoxList.props().boxes).toEqual(props.boxes);
+        });
+
+        it('`onEdit` event, calls `editBox()` that dispatches `props.openBoxEditorModal()`', () => {
+          BoxList.props().onEdit(e, selectedBox);
+          expect(BoxPage.prototype.editBox).toBeCalledWith(e, selectedBox);
+          expect(props.openBoxEditorModal).toBeCalledWith(selectors.getEditor, selectedBox);
+        });
+
+        it('`onDelete` event, calls `deleteBox()` that dispatches `props.deleteBox()`', () => {
+          BoxList.props().onDelete(e, selectedBox);
+          expect(BoxPage.prototype.deleteBox).toBeCalledWith(e, selectedBox);
+          expect(props.deleteBox).toBeCalledWith(selectedBox);
+        });
+      });
     });
   });
 
-  it('always renders a `<CreateBoxModal />`', () => {
-    expect(boxPage().find('CreateBoxModal').length).toBe(1);
+  it('always renders a `<BoxEditorModal />`', () => {
+    expect(boxPage().find(BoxEditorModal).length).toBe(1);
   });
 
 });
