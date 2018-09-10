@@ -7,7 +7,7 @@ import CustomPropTypes from '../../../utils/customPropTypes';
 
 const HunchItem = ({ hunch, onEdit, onDelete }) => {
   return (
-    <div className="hunch card">
+    <div className="hunch-item hunch card">
       <div className="card-header hunch-header clearfix">
         <div className="hunch-actions pull-right">
           <a className="hunch-edit-button" href="#" onClick={e => onEdit(e, hunch)}><i className="fa fa-edit"></i></a>

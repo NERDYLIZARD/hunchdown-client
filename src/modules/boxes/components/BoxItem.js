@@ -8,7 +8,7 @@ import CustomPropTypes from '../../../utils/customPropTypes';
 
 export const BoxItem = ({ box, onEdit, onDelete, history }) => {
   return (
-    <div className="box card">
+    <div className="box-item box card">
       <div className="box-header card-header clearfix">
         <div className="box-actions pull-right">
           <a className="box-edit-button" href="#" onClick={e => onEdit(e, box)}><i className="fa fa-edit"></i></a>

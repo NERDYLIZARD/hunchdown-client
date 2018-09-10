@@ -39,7 +39,7 @@ describe('<HunchEditorForm />', () => {
 
   it('always renders a form as wrapper', () => {
     const form = hunchEditorForm().find('form');
-    expect(form.length).toBeGreaterThan(0);
+    expect(form.length).toBe(1);
   });
 
   it('always renders the `hidden` field `id`', () => {

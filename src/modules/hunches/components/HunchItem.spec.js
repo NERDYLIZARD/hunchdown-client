@@ -2,9 +2,8 @@
  * Created on 19-May-18.
  */
 import React from 'react';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import HunchItem from './HunchItem';
-import { generateHunch } from '../../../utils/test/mockDataFactory';
 
 describe('<HunchItem />', () => {
   let props;
@@ -13,7 +12,7 @@ describe('<HunchItem />', () => {
     // if running new test, mount the component
     // otherwise, use the mounted component
     if (!mountedHunchItem) {
-      mountedHunchItem = mount(
+      mountedHunchItem = shallow(
         <HunchItem {...props} />
       );
     }
@@ -25,41 +24,31 @@ describe('<HunchItem />', () => {
     props = {
       onEdit: jest.fn(),
       onDelete: jest.fn(),
-      hunch: generateHunch(),
+      hunch: {
+        id: 'id#1',
+        wisdom: 'A Wisdom',
+      },
     };
     mountedHunchItem = undefined;
   });
 
   it('always renders a div as wrapper', () => {
-    const divs = hunchItem().find('div');
-    expect(divs.length).toBeGreaterThan(0);
-  });
-
-  describe('the rendered div', () => {
-    it('contains everything else that gets rendered', () => {
-      const divs = hunchItem().find('div');
-      // When using .find, enzyme arranges the nodes in order such
-      // that the outermost node is first in the list. So we can
-      // use .first() to get the outermost div.
-      const wrappingDiv = divs.first();
-
-      // hunchItem().children === outermost div
-      expect(wrappingDiv.children()).toEqual(hunchItem().children().children());
-    });
+    const divs = hunchItem().find('.hunch-item');
+    expect(divs.length).toBe(1);
   });
 
   it('calls `onEdit()` when edit link is clicked', () => {
     const editButton = hunchItem().find('.hunch-edit-button');
-    editButton.simulate('click');
-    // call onEdit with props.hunch as its second argument
-    expect(props.onEdit).toBeCalledWith(expect.anything(), props.hunch);
+    const e = {preventDefault: jest.fn()};
+    editButton.simulate('click', e);
+    expect(props.onEdit).toBeCalledWith(e, props.hunch);
   });
 
   it('calls `onDelete()` when `delete` link is clicked', () => {
     const deleteButton = hunchItem().find('.hunch-delete-button');
-    deleteButton.simulate('click');
-    // call onDelete with props.hunch as its second argument
-    expect(props.onDelete).toBeCalledWith(expect.anything(), props.hunch);
+    const e = {preventDefault: jest.fn()};
+    deleteButton.simulate('click', e);
+    expect(props.onDelete).toBeCalledWith(e, props.hunch);
   });
 
   it('renders `<p class="hunch-wisdom">` with `hunch.wisdom` as its children', () => {
@@ -68,12 +57,12 @@ describe('<HunchItem />', () => {
   });
 
   describe('when `hunch.attribute` is defined', () => {
-
-    // hunch.attribute is defined from generateHunch() in top-level beforeEach()
+    beforeEach(() => {
+      props.hunch.attribute = 'An Attribute';
+    });
     it('renders a `<p class="hunch-attribute">`', () => {
       expect(hunchItem().find('.hunch-attribute').length).toBe(1);
     });
-
     it('passes `hunch.attribute` to the rendered `<p class="hunch-attribute">`', () => {
       const attribute = hunchItem().find('.hunch-attribute');
       expect(attribute.props().children).toContain(props.hunch.attribute);
@@ -81,11 +70,9 @@ describe('<HunchItem />', () => {
   });
 
   describe('when `hunch.attribute` is undefined', () => {
-
     beforeEach(() => {
-      props.hunch.attribute = null;
+      props.hunch.attribute = undefined;
     });
-
     it('does not render a `<p class="hunch-attribute">`', () => {
       expect(hunchItem().find('.hunch-attribute').length).toBe(0);
     });

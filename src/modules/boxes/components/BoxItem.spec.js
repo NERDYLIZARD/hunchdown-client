@@ -37,8 +37,8 @@ describe('<BoxItem />', () => {
   });
 
   it('always renders a div as wrapper', () => {
-    const divs = boxItem().find('div');
-    expect(divs.length).toBeGreaterThan(0);
+    const divs = boxItem().find('.box-item');
+    expect(divs.length).toBe(1);
   });
 
   it('calls `onEdit()` with the clicked box when `edit` link is clicked', () => {
