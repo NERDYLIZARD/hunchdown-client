@@ -6,11 +6,12 @@ import { Field } from 'redux-form';
 import { shallow } from 'enzyme';
 import { HunchEditorForm } from './HunchEditorForm'; // eslint-disable-line import/no-named-as-default
 import CheckboxGroup from '../../common/CheckboxGroup';
+import BoxEditorModal from '../../boxes/components/BoxEditorModal';
 
 
 describe('<HunchEditorForm />', () => {
 
-  jest.spyOn(HunchEditorForm.prototype, 'openCreateBoxModal');
+  jest.spyOn(HunchEditorForm.prototype, 'openBoxEditorModal');
 
   let props;
   let mountedHunchEditorForm;
@@ -29,6 +30,7 @@ describe('<HunchEditorForm />', () => {
   beforeEach(() => {
     props = {
       handleSubmit: jest.fn(),
+      openBoxEditorModal: jest.fn(),
       boxOptions: [
         {label: 'Life', value: 'id#1'},
         {label: 'Inspiration', value: 'id#2'},
@@ -48,12 +50,12 @@ describe('<HunchEditorForm />', () => {
     expect(hiddenIdField.props().type).toBe('hidden');
   });
 
-  it('always renders the `input` field for `wisdom`', () => {
+  it('always renders the `textarea` field for `wisdom`', () => {
     const wisdomInput = hunchEditorForm().find(Field).filter({name: 'wisdom'});
     expect(wisdomInput.length).toBe(1);
   });
 
-  it('always renders the `textarea` field for `attribute`', () => {
+  it('always renders the `input` field for `attribute`', () => {
     const attributeTextArea = hunchEditorForm().find(Field).filter({name: 'attribute'});
     expect(attributeTextArea.length).toBe(1);
   });
@@ -63,10 +65,7 @@ describe('<HunchEditorForm />', () => {
 
     expect(checkboxGroup.length).toBe(1);
     expect(checkboxGroup.props().name).toBe('boxes');
-    expect(checkboxGroup.props().options).toEqual([
-      {label: 'Life', value: 'id#1'},
-      {label: 'Inspiration', value: 'id#2'},
-    ]);
+    expect(checkboxGroup.props().options).toEqual(props.boxOptions);
   });
 
   it('calls `handleSubmit()` when submitting the form', () => {
@@ -76,8 +75,14 @@ describe('<HunchEditorForm />', () => {
 
   it('calls `prop.openCreateBoxModal()` when `New Box` button is clicked', () => {
     const newBoxButton = hunchEditorForm().find('#hunch-editor-new-box');
-    newBoxButton.simulate('click', { preventDefault: jest.fn()});
-    expect(HunchEditorForm.prototype.openCreateBoxModal).toBeCalled();
+    const e = {preventDefault: jest.fn()};
+    newBoxButton.simulate('click', e);
+    expect(HunchEditorForm.prototype.openBoxEditorModal).toBeCalledWith(e);
+    expect(props.openBoxEditorModal).toBeCalled();
+  });
+
+  it('renders `<BoxEditorModal/>', () => {
+    expect(hunchEditorForm().find(BoxEditorModal).length).toBe(1);
   });
 
 });
