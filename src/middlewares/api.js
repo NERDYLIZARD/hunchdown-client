@@ -5,8 +5,8 @@ import axios from 'axios';
 import { normalize } from 'normalizr';
 import { isEmpty } from 'lodash';
 
-// Extracts the next page URL from Github API response.
-const getNextPageUrl = response => {
+// Extracts the next page URL
+export const getNextPageUrl = response => {
   const link = response.headers.link;
   if (!link) {
     return null;
@@ -30,13 +30,13 @@ const API_ROOT = 'http://localhost:3002';
 
 // Fetches an API response and normalizes the result JSON according to schema.
 // This makes every API response have the same shape, regardless of how nested it was.
-const callApi = (endpoint, schema, method, data) => {
+export const callApi = (endpoint, schema, method, data) => {
   const url = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint;
 
   return axios({
     url,
     method,
-    // for deletion, we don't want to send data, but we still need data to return as action's payload
+    // for deletion, we don't want to send data, but we still need data to return as action's payload.
     data: method === 'DELETE' ? null : data
   }).then(response => {
     // in case server return empty of object, i.e. status 204, normalize data that passed in
