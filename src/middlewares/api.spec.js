@@ -7,7 +7,7 @@ import { normalize } from 'normalizr';
 import axios from 'axios';
 
 jest.mock('axios');
-const {API_ROOT, callApi, getNextPageUrl} = apiMiddleware;
+const {API_ROOT, CALL_API, default: middleware, callApi, getNextPageUrl} = apiMiddleware;
 
 describe('Api Middleware', () => {
 
@@ -40,6 +40,7 @@ describe('Api Middleware', () => {
       });
     });
   });
+
 
   describe('callApi()', () => {
     const endpoint = '/endpoint';
@@ -160,7 +161,89 @@ describe('Api Middleware', () => {
 
 
   describe('apiMiddleware', () => {
+    const store = {getState: jest.fn()};
+    const next = jest.fn();
+    const requestType = 'REQUEST';
+    const successType = 'SUCCESS';
+    const failureType = 'FAILURE';
+    let action;
+
+    beforeEach(() => {
+      // clear the result of the previous calls
+      next.mockClear();
+      action = {
+        [CALL_API]: {
+          endpoint: '/hunch/id',
+          method: 'POST',
+          schema: {},
+          types: [requestType, successType, failureType]
+        }
+      };
+    });
+
+    it(`ignores the action that does not have property '${CALL_API}'`, () => {
+      const action = {type: 'NO CALL_API PROPERTY'};
+      middleware(store)(next)(action);
+      expect(next).toBeCalledWith(action);
+    });
+
+    describe('when `endpoint` is a selector', () => {
+      const endpoint = jest.fn().mockImplementation(() => 'endpointString');
+      it('calls `endpoint()` to obtain string `endpoint`', () => {
+        action[CALL_API].endpoint = endpoint;
+        middleware(store)(next)(action);
+        expect(endpoint).toBeCalledWith(store.getState());
+      });
+
+    });
+
+    it('throws an error when `endpoint` is not a string', () => {
+      action[CALL_API].endpoint = undefined;
+      expect(() => middleware(store)(next)(action)).toThrowError('Specify a string endpoint URL.');
+    });
+
+    it('throws an error when `method` is not a string', () => {
+      action[CALL_API].method = undefined;
+      expect(() => middleware(store)(next)(action)).toThrowError('Specify a string method.');
+    });
+
+    it('throws an error when no `schema` is passed', () => {
+      action[CALL_API].schema = undefined;
+      expect(() => middleware(store)(next)(action)).toThrowError('Specify one of the exported Schemas.');
+    });
+
+    it('throws an error when length of `types` is not 3', () => {
+      action[CALL_API].types = ['SUCCESS', 'FAILURE'];
+      expect(() => middleware(store)(next)(action)).toThrowError('Expected an array of three action types.');
+    });
+
+    it('throws an error when `types` are not a string', () => {
+      action[CALL_API].types = [1, 'SUCCESS', 'FAILURE'];
+      expect(() => middleware(store)(next)(action)).toThrowError('Expected action types to be strings.');
+    });
+
+    it('dispatches `requestType` action', () => {
+      middleware(store)(next)(action);
+      expect(next).toBeCalledWith({type: requestType})
+    });
+
+    describe.skip('when `callApi` returns `response`', () => {
+
+      it('dispatches `successType` action with `payload = response`', () => {
+        const response = {foo: 'bar'};
+
+        const callApi = jest.spyOn(apiMiddleware, 'callApi');
+        callApi.mockReturnValue(Promise.resolve(response));
+
+        // bug: middleware calls the actual callApi() instead of the mock version
+        middleware(store)(next)(action);
+        expect(next.mock.calls).toEqual([
+          {type: requestType},
+          {type: successType, payload: response}
+        ]);
+      });
+    });
+
 
   });
-
 });
