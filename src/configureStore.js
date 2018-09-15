@@ -6,7 +6,7 @@ import createHistory from 'history/createBrowserHistory';
 import { routerMiddleware } from 'react-router-redux';
 import reducers from './reducers';
 import saga from './sagas';
-import apiMiddleware from './middlewares/api';
+import apiMiddleware from './middlewares/api/index';
 import editorModalMiddleware from './middlewares/editor-modal';
 
 export const history = createHistory();

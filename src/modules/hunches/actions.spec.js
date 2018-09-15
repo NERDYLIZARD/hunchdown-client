@@ -3,7 +3,7 @@
  */
 import * as hunchActions from './actions';
 import * as types from './actionTypes';
-import { CALL_API } from '../../middlewares/api';
+import { CALL_API } from '../../middlewares/api/index';
 import { hunchSchema } from '../../normalizr-schema';
 import { OPEN_EDITOR_MODAL } from '../../middlewares/editor-modal';
 

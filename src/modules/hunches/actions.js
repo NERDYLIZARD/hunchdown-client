@@ -2,7 +2,7 @@
  * Created on 27-Mar-18.
  */
 import * as types from './actionTypes';
-import { CALL_API } from '../../middlewares/api';
+import { CALL_API } from '../../middlewares/api/index';
 import { hunchSchema } from '../../normalizr-schema';
 import { editorActionCreatorFactory } from '../common/factories/action-creators';
 

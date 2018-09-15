@@ -3,7 +3,7 @@
  */
 import * as boxActions from './actions';
 import * as types from './actionTypes';
-import { CALL_API } from '../../middlewares/api';
+import { CALL_API } from '../../middlewares/api/index';
 import { boxSchema } from '../../normalizr-schema';
 import { OPEN_EDITOR_MODAL } from '../../middlewares/editor-modal';
 
