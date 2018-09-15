@@ -21,7 +21,7 @@ export default store => next => action => {
     throw new Error('Specify a string resumeEditorType.')
   }
   if (typeof editorSelector !== 'function') {
-    throw new Error('editorSelector must be a function');
+    throw new Error('editorSelector must be a function.');
   }
 
   const editor = editorSelector(store.getState());
