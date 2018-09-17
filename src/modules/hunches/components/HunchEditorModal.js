@@ -8,8 +8,8 @@ import { clearHunchEditor, closeHunchEditorModal, createHunch, updateHunch } fro
 import boxes from '../../boxes';
 import * as selectors from '../selectors';
 import HunchEditorForm from './HunchEditorForm'; // eslint-disable-line import/no-named-as-default
-import { Modal } from 'react-bootstrap';
 import { getFormValues } from 'redux-form';
+import Modal from 'react-bootstrap/lib/Modal';
 
 export class HunchEditorModal extends React.Component
 {
@@ -51,6 +51,7 @@ export class HunchEditorModal extends React.Component
     const {isOpenedWithModal, hunch} = this.props;
     return (
       <Modal show={isOpenedWithModal}
+             centered
              keyboard={false}
              onHide={(e) => {e ? this.close() : this.suspend()}}
              id="hunch-editor-modal">

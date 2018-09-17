@@ -6,9 +6,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createBox, closeBoxEditorModal, clearBoxEditor, updateBox } from '../actions';
 import * as selectors from '../selectors';
-import CreateBoxForm from './BoxEditorForm'; // eslint-disable-line import/no-named-as-default
+import BoxEditorForm from './BoxEditorForm'; // eslint-disable-line import/no-named-as-default
 import { getFormValues } from 'redux-form';
-import { Modal } from 'react-bootstrap';
+
+import Modal from 'react-bootstrap/lib/Modal';
 
 export class BoxEditorModal extends Component
 {
@@ -43,6 +44,7 @@ export class BoxEditorModal extends Component
 
     return (
       <Modal show={isOpenedWithModal}
+             centered
              keyboard={false}
              onHide={(e) => {
                e ? this.close() : this.suspend()
@@ -52,7 +54,7 @@ export class BoxEditorModal extends Component
           <Modal.Title id="box-editor-modal-title">{box ? 'Edit Box' : 'New Box'}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <CreateBoxForm ref={f => this.editForm = f} onSubmit={box => this.submitForm(box)}/>
+          <BoxEditorForm ref={f => this.editForm = f} onSubmit={box => this.submitForm(box)}/>
         </Modal.Body>
         <Modal.Footer>
           <button id="box-editor-modal-save" className="btn btn-primary" onClick={this.handleSave}>Create</button>

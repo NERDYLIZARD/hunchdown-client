@@ -22,7 +22,7 @@ or when it's specifically told to fetch the next page
 export function* loadHunches (action) {
   const {
     boxId,
-    perPage = 3,
+    perPage,
     nextPageIsRequested = false
   } = action;
   const {

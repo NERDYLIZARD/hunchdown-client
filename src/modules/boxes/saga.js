@@ -22,7 +22,7 @@ or when it's specifically told to fetch the next page.
 */
 export function* loadBoxes (action) {
   const {
-    perPage = 3,
+    perPage,
     nextPageIsRequested = false
   } = action;
   const {

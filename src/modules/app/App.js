@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
-import NavigationBar from './NavigationBar'
+import NavigationBar from './NavigationBar';
 import HomePage from '../pages/HomePage';
 import HunchPage from '../hunches/components/HunchPage';
 import NotFoundPage from '../pages/NotFoundPage';

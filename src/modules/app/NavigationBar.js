@@ -3,34 +3,28 @@
  */
 /* eslint-disable import/no-named-as-default */
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { Nav, Navbar, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import Navbar from 'react-bootstrap/lib/Navbar';
+import Nav from 'react-bootstrap/lib/Nav';
 
 
-class NavigationBar extends React.Component {
-
-  render() {
+class NavigationBar extends React.Component
+{
+  render () {
     return (
-      <Navbar inverse collapseOnSelect>
-        <Navbar.Header>
-          <Navbar.Brand>
-            <NavLink to='/' activeClassName="active">Hunch Down</NavLink>
-          </Navbar.Brand>
-          <Navbar.Toggle/>
-        </Navbar.Header>
+      <Navbar collapseOnSelect expand="sm" bg="dark" variant="dark">
+        <LinkContainer to="/" activeClassName="active">
+          <Navbar.Brand>HunchDown</Navbar.Brand>
+        </LinkContainer>
 
-        <Navbar.Collapse>
-          <Nav>
-            <LinkContainer to="/hunches" activeClassName="active">
-              <NavItem eventKey={1}>
-                Hunches
-              </NavItem>
-            </LinkContainer>
+        <Navbar.Toggle aria-controls="main-navigation-bar"/>
+        <Navbar.Collapse id="main-navigation-bar">
+          <Nav className="mr-auto">
             <LinkContainer to="/boxes" activeClassName="active">
-              <NavItem eventKey={2}>
-                Boxes
-              </NavItem>
+              <Nav.Link>Boxes</Nav.Link>
+            </LinkContainer>
+            <LinkContainer to="/about" activeClassName="active">
+              <Nav.Link>About</Nav.Link>
             </LinkContainer>
           </Nav>
         </Navbar.Collapse>
