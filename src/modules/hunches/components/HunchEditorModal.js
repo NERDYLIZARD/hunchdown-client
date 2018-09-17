@@ -53,6 +53,7 @@ export class HunchEditorModal extends React.Component
       <Modal show={isOpenedWithModal}
              centered
              keyboard={false}
+             // TODO: bug, no distinction between close button click and backdrop click.
              onHide={(e) => {e ? this.close() : this.suspend()}}
              id="hunch-editor-modal">
         <Modal.Header closeButton>

@@ -63,11 +63,18 @@ HunchEditorForm.propTypes = {
 };
 
 function mapStateToProps (state) {
-  const {props} = selectors.getEditor(state);
+  const {props: existingHunch} = selectors.getEditor(state);
+  const activeBoxId = boxes.selectors.getActiveId(state);
+
+  // if it's a new hunch in the active box => populate the active box into the form.
+  // else if it's a new hunch i.e. when the form the called from `feed` not `box`, populate nothing.
+  // else it's editing an existing hunch, populate all data of the hunch.
+  const initialValues = (!existingHunch && activeBoxId) ? {boxes: [activeBoxId]} : existingHunch;
+
   const boxOptions = boxes.selectors.getOptionsForCheckbox(state);
   return {
     boxOptions,
-    initialValues: props,
+    initialValues,
   };
 }
 

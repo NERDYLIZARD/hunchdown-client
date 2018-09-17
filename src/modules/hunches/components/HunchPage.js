@@ -73,7 +73,10 @@ export class HunchPage extends React.Component
                     <h2 className="hunch-page__box-title">{box.title}</h2>
                   </div>
                   <div className="pull-right">
-                    <button className="hunch-page__add-hunch-button btn btn-success" onClick={this.createHunch}>Add
+                    <button className="hunch-page__add-hunch-button btn btn-success" onClick={this.createHunch}>New
+                      Hunch
+                    </button>
+                    <button className="hunch-page__add-hunch-button btn btn-primary" onClick={() => {}}>Existing
                       Hunch
                     </button>
                   </div>
