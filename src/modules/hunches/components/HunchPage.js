@@ -61,41 +61,35 @@ export class HunchPage extends React.Component
     const {isFetchingBox, isFetchingHunches, box, hunches} = this.props;
     return (
       <div className="hunch-page">
-        <div className="container-fluid">
-          <div className="hunch-page__header">
-            <div className="row">
-              {isFetchingBox &&
-              <div className="hunch-page__box-loading">Loading . . .</div>}
-              {!box ?
-                <div className="hunch-page__box-not-found">Box Not Found</div> :
-                <div className="clearfix">
-                  <div className="pull-left">
-                    <h2 className="hunch-page__box-title">{box.title}</h2>
-                  </div>
-                  <div className="pull-right">
-                    <button className="hunch-page__add-hunch-button btn btn-success" onClick={this.createHunch}>New
-                      Hunch
-                    </button>
-                    <button className="hunch-page__add-hunch-button btn btn-primary" onClick={() => {}}>Existing
-                      Hunch
-                    </button>
-                  </div>
-                </div>}
-            </div>
+        <div className="container">
+          <div className="hunch-page__header pt-3 pb-3">
+            {isFetchingBox &&
+            <div className="hunch-page__box-loading">Loading . . .</div>}
+            {!box ?
+              <div className="hunch-page__box-not-found">Box Not Found</div> :
+              <div className="clearfix">
+                <div className="float-left">
+                  <h2 className="hunch-page__box-title">{box.title}</h2>
+                </div>
+                <div className="float-right">
+                  <button className="hunch-page__add-hunch-button btn btn-success mr-2" onClick={this.createHunch}>New
+                    Hunch
+                  </button>
+                  <button className="hunch-page__add-hunch-button btn btn-primary" onClick={() => {
+                  }}>Existing
+                    Hunch
+                  </button>
+                </div>
+              </div>}
           </div>
           {box &&
           <div className="hunch-page__body">
-            <div className="row">
-              {isFetchingHunches && <div className="hunch-page__hunches-loading">Loading . . .</div>}
-              {!hunches ?
-                <div className="hunch-page__hunches-not-found">No Hunch in the Box</div> :
-                <div className="row">
-                  <div className="col-xs-offset-4 col-xs-4">
-                    <HunchList hunches={hunches} onEdit={this.editHunch} onDelete={this.deleteHunch}/>
-                  </div>
-                </div>}
-              <HunchEditorModal/>
-            </div>
+            {isFetchingHunches && <div className="hunch-page__hunches-loading">Loading . . .</div>}
+            {!hunches ?
+              <div className="hunch-page__hunches-not-found">No Hunch in the Box</div> :
+              <HunchList hunches={hunches} onEdit={this.editHunch} onDelete={this.deleteHunch}/>
+            }
+            <HunchEditorModal/>
           </div>}
         </div>
       </div>);

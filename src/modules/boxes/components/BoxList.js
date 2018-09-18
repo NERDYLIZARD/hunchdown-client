@@ -11,7 +11,7 @@ const BoxList = ({boxes, onEdit, onDelete}) => {
     <div className="box-list">
       <div className="row">
         {boxes.map(box =>
-          <div className="col-xs-4" key={box.id}>
+          <div className="col-sm-12 col-md-6 col-lg-4 col-xl-3" key={box.id}>
             <BoxItem
               box={box}
               onDelete={onDelete}

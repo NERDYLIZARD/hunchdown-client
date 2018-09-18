@@ -5,16 +5,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import HunchItem from './HunchItem'; // eslint-disable-line import/no-named-as-default
 
-const HunchList = ({ hunches, onEdit, onDelete }) => {
+const HunchList = ({hunches, onEdit, onDelete}) => {
   return (
     <div className="hunch-list">
-      {hunches.map(hunch =>
-        <HunchItem
-          key={hunch.id}
-          hunch={hunch}
-          onEdit={onEdit}
-          onDelete={onDelete}
-        />)}
+      <div className="row">
+        {hunches.map(hunch =>
+          <div className="col-sm-12 col-md-6 col-lg-4 col-xl-3" key={hunch.id}>
+            <HunchItem
+              hunch={hunch}
+              onEdit={onEdit}
+              onDelete={onDelete}
+            />
+          </div>)}
+      </div>
     </div>
   );
 };

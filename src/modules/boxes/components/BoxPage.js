@@ -49,26 +49,24 @@ export class BoxPage extends React.Component
 
     return (
       <div className="box-page">
-        <div className="container-fluid">
-          <div className="row">
-            <div className="box-page-header clearfix">
-              <div className="pull-left">
-                <h2>Boxes</h2>
-              </div>
-              <div className="pull-right">
-                <button className="create-box-button btn btn-success" onClick={this.createBox}>New Box</button>
-              </div>
+        <div className="container">
+
+          <div className="box-page__header clearfix pt-3 pb-3">
+            <div className="float-left">
+              <h2>Boxes</h2>
+            </div>
+            <div className="float-right">
+              <button className="create-box-button btn btn-success" onClick={this.createBox}>New Box</button>
             </div>
           </div>
-          <div className="row">
-            <div className="box-page__body">
+
+          <div className="box-page__body">
               {isFetchingBoxes ?
                 <div className="box-page__boxes-loading">Loading . . .</div> :
                 isEmpty(boxes) ?
                   <div className="box-page__boxes-not-found">No Box, Create a New Box</div> :
                   <BoxList boxes={boxes} onEdit={this.editBox} onDelete={this.deleteBox}/>}
               <BoxEditorModal/>
-            </div>
           </div>
         </div>
       </div>
