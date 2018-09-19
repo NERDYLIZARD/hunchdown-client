@@ -7,6 +7,7 @@ import { BoxPage } from './BoxPage';
 import BoxEditorModal from './BoxEditorModal';
 import BoxList from './BoxList';
 import * as selectors from '../selectors';
+import InfiniteScroll from '../../common/InfiniteScroll';
 
 
 describe('<BoxPage />', () => {
@@ -77,6 +78,71 @@ describe('<BoxPage />', () => {
     });
   });
 
+  describe('when `isFetchingBoxes` is false & `boxes` is not available', () => {
+    beforeEach(() => {
+      props.isFetchingBoxes = false;
+      props.boxes = undefined;
+    });
+    it('renders not-found message', () => {
+      expect(boxPage().find('.box-page__boxes-not-found').length).toBe(1);
+    });
+  });
+
+  it('renders `<InfiniteScroll />`', () => {
+    expect(boxPage().find(InfiniteScroll).length).toBe(1);
+  });
+  describe('the rendered `<InfiniteScroll />`', () => {
+    it('has `[true]` passed to `args` props', () => {
+      const infiniteScroll = boxPage().find(InfiniteScroll);
+      expect(infiniteScroll.props().args).toEqual([true]);
+    });
+    it('has `loadBoxes` passed to `onScroll` props', () => {
+      const infiniteScroll = boxPage().find(InfiniteScroll);
+      expect(infiniteScroll.props().onScroll).toEqual(props.loadBoxes);
+    });
+    it('has `<BoxList/>` as its child', () => {
+      const infiniteScroll = boxPage().find(InfiniteScroll);
+      expect(infiniteScroll.find(BoxList).length).toBe(1);
+    });
+  });
+
+  it('renders `<BoxList />`', () => {
+    expect(boxPage().find(BoxList).length).toBe(1);
+  });
+  describe('the rendered `<BoxList />`', () => {
+    let BoxList;
+    let selectedBox;
+    const e = {preventDefault: jest.fn()};
+
+    beforeEach(() => {
+      props.boxes = [{
+        id: 'id#1',
+        title: 'A Title',
+      }, {
+        id: 'id#2',
+        title: 'A Title',
+      }];
+      BoxList = boxPage().find('BoxList');
+      selectedBox = props.boxes[0];
+    });
+
+    it('has `boxes` as its prop', () => {
+      expect(BoxList.props().boxes).toEqual(props.boxes);
+    });
+
+    it('`onEdit` event, calls `editBox()` that dispatches `props.openBoxEditorModal()`', () => {
+      BoxList.props().onEdit(e, selectedBox);
+      expect(BoxPage.prototype.editBox).toBeCalledWith(e, selectedBox);
+      expect(props.openBoxEditorModal).toBeCalledWith(selectors.getEditor, selectedBox);
+    });
+
+    it('`onDelete` event, calls `deleteBox()` that dispatches `props.deleteBox()`', () => {
+      BoxList.props().onDelete(e, selectedBox);
+      expect(BoxPage.prototype.deleteBox).toBeCalledWith(e, selectedBox);
+      expect(props.deleteBox).toBeCalledWith(selectedBox);
+    });
+  });
+
   describe('when `isFetchingBoxes` is true', () => {
     beforeEach(() => {
       props.isFetchingBoxes = true;
@@ -86,69 +152,9 @@ describe('<BoxPage />', () => {
     });
   });
 
-  describe('when `isFetchingBoxes` is false', () => {
-    beforeEach(() => {
-      props.isFetchingBoxes = false;
-    });
-
-    describe('when `boxes` is not available', () => {
-      beforeEach(() => {
-        props.boxes = undefined;
-      });
-      it('does not render `<BoxList />`', () => {
-        expect(boxPage().find(BoxList).length).toBe(0);
-      });
-      it('renders not-found message', () => {
-        expect(boxPage().find('.box-page__boxes-not-found').length).toBe(1);
-      });
-    });
-
-    describe('when `boxes` is available', () => {
-      beforeEach(() => {
-        props.boxes = [{
-          id: 'id#1',
-          title: 'A Title',
-        }, {
-          id: 'id#2',
-          title: 'A Title',
-        }];
-      });
-      it('renders `<BoxList />`', () => {
-        expect(boxPage().find(BoxList).length).toBe(1);
-      });
-
-      describe('the rendered `<BoxList />`', () => {
-        let BoxList;
-        let selectedBox;
-        const e = {preventDefault: jest.fn()};
-
-        beforeEach(() => {
-          BoxList = boxPage().find('BoxList');
-          selectedBox = props.boxes[0];
-        });
-
-        it('has `boxes` as its prop', () => {
-          const BoxList = boxPage().find('BoxList');
-          expect(BoxList.props().boxes).toEqual(props.boxes);
-        });
-
-        it('`onEdit` event, calls `editBox()` that dispatches `props.openBoxEditorModal()`', () => {
-          BoxList.props().onEdit(e, selectedBox);
-          expect(BoxPage.prototype.editBox).toBeCalledWith(e, selectedBox);
-          expect(props.openBoxEditorModal).toBeCalledWith(selectors.getEditor, selectedBox);
-        });
-
-        it('`onDelete` event, calls `deleteBox()` that dispatches `props.deleteBox()`', () => {
-          BoxList.props().onDelete(e, selectedBox);
-          expect(BoxPage.prototype.deleteBox).toBeCalledWith(e, selectedBox);
-          expect(props.deleteBox).toBeCalledWith(selectedBox);
-        });
-      });
-    });
-  });
-
   it('always renders a `<BoxEditorModal />`', () => {
     expect(boxPage().find(BoxEditorModal).length).toBe(1);
   });
 
 });
+

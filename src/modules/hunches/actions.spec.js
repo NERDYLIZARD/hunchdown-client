@@ -15,10 +15,10 @@ describe('Hunch Actions', () => {
       const expectedAction = {
         type: types.LOAD_HUNCHES,
         boxId: 'id#1',
-        perPage: 12,
         nextPageIsRequested: false,
+        perPage: 12,
       };
-      expect(hunchActions.loadHunches('id#1', 12, false)).toEqual(expectedAction);
+      expect(hunchActions.loadHunches('id#1', false, 12)).toEqual(expectedAction);
     });
   });
 

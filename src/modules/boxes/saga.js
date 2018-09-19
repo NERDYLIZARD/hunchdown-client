@@ -22,8 +22,8 @@ or when it's specifically told to fetch the next page.
 */
 export function* loadBoxes (action) {
   const {
-    perPage,
-    nextPageIsRequested = false
+    nextPageIsRequested,
+    perPage
   } = action;
   const {
     nextPageUrl = `/boxes?page=1&perPage=${perPage}`,

@@ -14,10 +14,10 @@ describe('Box Actions', () => {
     it(`creates an action typed ${types.LOAD_BOXES} with 'perPage' and 'nextPageIsRequested'`, () => {
       const expectedAction = {
         type: types.LOAD_BOXES,
-        perPage: 12,
         nextPageIsRequested: false,
+        perPage: 12
       };
-      expect(boxActions.loadBoxes(12, false)).toEqual(expectedAction);
+      expect(boxActions.loadBoxes(false)).toEqual(expectedAction);
     });
   });
 

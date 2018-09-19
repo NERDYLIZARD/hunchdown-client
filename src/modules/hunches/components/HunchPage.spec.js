@@ -7,6 +7,7 @@ import { HunchPage } from './HunchPage';
 import * as selectors from '../selectors';
 import HunchList from './HunchList';
 import HunchEditorModal from './HunchEditorModal';
+import InfiniteScroll from '../../common/InfiniteScroll';
 
 
 describe('<HunchPage />', () => {
@@ -59,7 +60,7 @@ describe('<HunchPage />', () => {
     expect(HunchPage.prototype.loadData).toBeCalled();
     const boxId = props.match.params.id;
     expect(props.loadBox).toBeCalledWith(boxId);
-    expect(props.loadHunches).toBeCalledWith(boxId);
+    expect(props.loadHunches).toBeCalledWith(boxId, false, 12);
   });
 
   it('unload data on `ComponentWillUnmount()`', () => {
@@ -70,7 +71,7 @@ describe('<HunchPage />', () => {
     expect(props.unloadHunches).toBeCalled();
   });
 
-  describe('when `isFetchingBox`', () => {
+  describe('when loading a box`', () => {
     beforeEach(() => {
       props.isFetchingBox = true;
     });
@@ -79,8 +80,9 @@ describe('<HunchPage />', () => {
     });
   });
 
-  describe('when `box` is not available', () => {
+  describe('when finish loading a `box` and `box` is not available', () => {
     beforeEach(() => {
+      props.isFetchingBox = false;
       props.box = undefined;
     });
     it('renders not found message', () => {
@@ -121,28 +123,43 @@ describe('<HunchPage />', () => {
       });
     });
 
-    describe('when `isFetchingHunches`', () => {
-      beforeEach(() => {
-        props.isFetchingHunches = true;
-      });
-      it('renders loading message', () => {
-        expect(hunchPage().find('.hunch-page__hunches-loading').length).toBe(1);
-      });
-    });
 
-    describe('when `hunches` is not available', () => {
+    describe('when finish loading `hunches` and `hunches` are not available', () => {
       beforeEach(() => {
+        props.isFetchingHunches = false;
         props.hunches = undefined;
-      });
-      it('does not render `<HunchList />`', () => {
-        expect(hunchPage().find('HunchList').length).toBe(0);
       });
       it('renders not-found message', () => {
         expect(hunchPage().find('.hunch-page__hunches-not-found').length).toBe(1);
       });
     });
 
-    describe('when `hunches` is available', () => {
+    it('renders `<InfiniteScroll />`', () => {
+      expect(hunchPage().find(InfiniteScroll).length).toBe(1);
+    });
+    describe('the rendered `<InfiniteScroll />`', () => {
+      it('has `[true]` passed to `args` props', () => {
+        const infiniteScroll = hunchPage().find(InfiniteScroll);
+        expect(infiniteScroll.props().args).toEqual([props.match.params.id, true]);
+      });
+      it('has `loadBoxes` passed to `onScroll` props', () => {
+        const infiniteScroll = hunchPage().find(InfiniteScroll);
+        expect(infiniteScroll.props().onScroll).toEqual(props.loadHunches);
+      });
+      it('has `<HunchList/>` as its child', () => {
+        const infiniteScroll = hunchPage().find(InfiniteScroll);
+        expect(infiniteScroll.find(HunchList).length).toBe(1);
+      });
+    });
+
+    it('renders `<HunchList />`', () => {
+      expect(hunchPage().find(HunchList).length).toBe(1);
+    });
+    describe('the rendered `<HunchList />`', () => {
+      let HunchList;
+      let selectedHunch;
+      const e = {preventDefault: jest.fn()};
+
       beforeEach(() => {
         const boxId = props.match.params.id;
         props.hunches = [{
@@ -154,36 +171,33 @@ describe('<HunchPage />', () => {
           wisdom: 'A Wisdom',
           boxes: [boxId]
         }];
+        selectedHunch = props.hunches[0];
+        HunchList = hunchPage().find('HunchList');
       });
 
-      it('renders `<HunchList />`', () => {
-        expect(hunchPage().find(HunchList).length).toBe(1);
+      it('has `hunches` as its props', () => {
+        expect(HunchList.props().hunches).toEqual(props.hunches);
       });
-      describe('the rendered `<HunchList />`', () => {
-        let HunchList;
-        let selectedHunch;
-        const e = {preventDefault: jest.fn()};
 
-        beforeEach(() => {
-          HunchList = hunchPage().find('HunchList');
-          selectedHunch = props.hunches[0];
-        });
+      it('`onEdit` event, calls `editHunch()` that dispatches `props.openHunchEditorModal()`', () => {
+        HunchList.props().onEdit(e, selectedHunch);
+        expect(HunchPage.prototype.editHunch).toBeCalledWith(e, selectedHunch);
+        expect(props.openHunchEditorModal).toBeCalledWith(selectors.getEditor, selectedHunch);
+      });
 
-        it('has `hunches` as its props', () => {
-          expect(HunchList.props().hunches).toEqual(props.hunches);
-        });
+      it('`onDelete` event, calls `deleteHunch()` that dispatches `props.deleteHunch()`', () => {
+        HunchList.props().onDelete(e, selectedHunch);
+        expect(HunchPage.prototype.deleteHunch).toBeCalledWith(e, selectedHunch);
+        expect(props.deleteHunch).toBeCalledWith(selectedHunch);
+      });
+    });
 
-        it('`onEdit` event, calls `editHunch()` that dispatches `props.openHunchEditorModal()`', () => {
-          HunchList.props().onEdit(e, selectedHunch);
-          expect(HunchPage.prototype.editHunch).toBeCalledWith(e, selectedHunch);
-          expect(props.openHunchEditorModal).toBeCalledWith(selectors.getEditor, selectedHunch);
-        });
-
-        it('`onDelete` event, calls `deleteHunch()` that dispatches `props.deleteHunch()`', () => {
-          HunchList.props().onDelete(e, selectedHunch);
-          expect(HunchPage.prototype.deleteHunch).toBeCalledWith(e, selectedHunch);
-          expect(props.deleteHunch).toBeCalledWith(selectedHunch);
-        });
+    describe('when fetching hunches`', () => {
+      beforeEach(() => {
+        props.isFetchingHunches = true;
+      });
+      it('renders loading message', () => {
+        expect(hunchPage().find('.hunch-page__hunches-loading').length).toBe(1);
       });
     });
 
@@ -191,5 +205,4 @@ describe('<HunchPage />', () => {
       expect(hunchPage().find(HunchEditorModal).length).toBe(1);
     });
   });
-
 });

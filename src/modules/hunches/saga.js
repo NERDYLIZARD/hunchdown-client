@@ -22,8 +22,8 @@ or when it's specifically told to fetch the next page
 export function* loadHunches (action) {
   const {
     boxId,
-    perPage,
-    nextPageIsRequested = false
+    nextPageIsRequested,
+    perPage
   } = action;
   const {
     nextPageUrl = `/boxes/${boxId}/hunches?page=1&perPage=${perPage}`,

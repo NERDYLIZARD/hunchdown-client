@@ -7,10 +7,10 @@ import { CALL_API } from '../../middlewares/api/index';
 import { editorActionCreatorFactory } from '../common/factories/action-creators';
 
 
-export const loadBoxes = (perPage = 12, nextPageIsRequested) => ({
+export const loadBoxes = (nextPageIsRequested = false, perPage = 12) => ({
   type: types.LOAD_BOXES,
+  nextPageIsRequested,
   perPage,
-  nextPageIsRequested
 });
 export const fetchBoxes = (url) => ({
   [CALL_API]: {

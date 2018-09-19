@@ -8,7 +8,8 @@ import { isEmpty } from 'lodash';
 import { loadBoxes, deleteBox, openBoxEditorModal, unloadBoxes } from '../actions';
 import * as selectors from '../selectors';
 import BoxList from './BoxList';
-import BoxEditorModal from './BoxEditorModal'; // eslint-disable-line import/no-named-as-default
+import BoxEditorModal from './BoxEditorModal';
+import InfiniteScroll from '../../common/InfiniteScroll'; // eslint-disable-line import/no-named-as-default
 
 
 export class BoxPage extends React.Component
@@ -22,7 +23,7 @@ export class BoxPage extends React.Component
   }
 
   componentDidMount () {
-    this.props.loadBoxes();
+    this.props.loadBoxes(12, false);
   }
 
   componentWillUnmount () {
@@ -61,12 +62,15 @@ export class BoxPage extends React.Component
           </div>
 
           <div className="box-page__body">
-              {isFetchingBoxes ?
-                <div className="box-page__boxes-loading">Loading . . .</div> :
-                isEmpty(boxes) ?
-                  <div className="box-page__boxes-not-found">No Box, Create a New Box</div> :
-                  <BoxList boxes={boxes} onEdit={this.editBox} onDelete={this.deleteBox}/>}
-              <BoxEditorModal/>
+            {!isFetchingBoxes && isEmpty(boxes) && <div className="box-page__boxes-not-found">No Box, Create a New Box</div>}
+            <InfiniteScroll args={[true]} onScroll={this.props.loadBoxes}>
+              <BoxList
+                boxes={boxes}
+                onEdit={this.editBox}
+                onDelete={this.deleteBox}/>
+              {isFetchingBoxes && <div className="box-page__boxes-loading">Loading . . .</div>}
+            </InfiniteScroll>
+            <BoxEditorModal/>
           </div>
         </div>
       </div>

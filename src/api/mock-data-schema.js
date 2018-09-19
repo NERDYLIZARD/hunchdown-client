@@ -6,8 +6,8 @@ export default {
   "properties": {
     "hunches": {
       "type": "array",
-      "minItems": 5,
-      "maxItems": 8,
+      "minItems": 50,
+      "maxItems": 100,
       "items": {
         "type": "object",
         "properties": {
@@ -41,8 +41,8 @@ export default {
     },
     "boxes": {
       "type": "array",
-      "minItems": 5,
-      "maxItems": 8,
+      "minItems": 50,
+      "maxItems": 100,
       "items": {
         "type": "object",
         "properties": {

@@ -21,7 +21,7 @@ export class HunchEditorModal extends React.Component
   }
 
   componentDidMount () {
-    this.props.loadBoxes(12);
+    this.props.loadBoxes(false, 12);
   }
 
   componentWillUnmount () {

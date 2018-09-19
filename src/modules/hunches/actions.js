@@ -7,11 +7,11 @@ import { hunchSchema } from '../../normalizr-schema';
 import { editorActionCreatorFactory } from '../common/factories/action-creators';
 
 
-export const loadHunches = (boxId, perPage = 12, nextPageIsRequested) => ({
+export const loadHunches = (boxId, nextPageIsRequested = false, perPage = 12) => ({
   type: types.LOAD_HUNCHES,
   boxId,
-  perPage,
   nextPageIsRequested,
+  perPage
 });
 export const fetchHunches = (url) => ({
   [CALL_API]: {
