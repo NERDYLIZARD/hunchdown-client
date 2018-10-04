@@ -3,7 +3,7 @@
  */
 import axios from 'axios';
 import { normalize } from 'normalizr';
-import { boxSchema as schema } from '../../normalizr-schema';
+import { boxSchema as schema } from '../../utils/normalizr-schema';
 import * as getNextPageUrl from './getNextPageUrl';
 import callApi, { API_ROOT } from './callApi';
 

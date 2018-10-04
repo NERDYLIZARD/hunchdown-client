@@ -11,7 +11,7 @@ import fs from 'fs';
 import faker from 'faker';
 import slug from 'slug';
 import jsf from 'json-schema-faker';
-import mockDataSchema from '../src/api/mock-data-schema';
+import mockDataSchema from '../src/utils/api/mock-data-schema';
 import { chalkError, chalkSuccess } from './chalkConfig';
 
 
