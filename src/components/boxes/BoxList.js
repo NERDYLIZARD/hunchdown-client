@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import BoxItem from './BoxItem'; // eslint-disable-line import/no-named-as-default
+import BoxPreview from './preview/BoxPreview'; // eslint-disable-line import/no-named-as-default
 
 
 const BoxList = ({boxes, onEdit, onDelete}) => {
@@ -12,7 +12,7 @@ const BoxList = ({boxes, onEdit, onDelete}) => {
       <div className="row">
         {boxes.map(box =>
           <div className="col-sm-12 col-md-6 col-lg-4 col-xl-3" key={box.id}>
-            <BoxItem
+            <BoxPreview
               box={box}
               onDelete={onDelete}
               onEdit={onEdit}

@@ -3,8 +3,9 @@
  */
 import React from 'react';
 import { shallow } from 'enzyme';
-import BoxList from './BoxList'; /* eslint-disable import/no-named-as-default */
-import BoxItem from './BoxItem';
+/* eslint-disable import/no-named-as-default */
+import BoxList from './BoxList';
+import BoxPreview from './preview/BoxPreview';
 
 describe('<BoxList />', () => {
   let props;
@@ -43,12 +44,12 @@ describe('<BoxList />', () => {
     expect(divs.length).toBeGreaterThan(0);
   });
 
-  it('renders `<BoxItem />`s for all boxes passed in as its props as well as setting `onEdit` and `onDelete` for each `<BoxItem/>', () => {
-    const BoxItems = boxList().find(BoxItem);
+  it('renders `<BoxPreview />`s for all boxes passed in as its props as well as setting `onEdit` and `onDelete` for each `<BoxPreview/>', () => {
+    const BoxItems = boxList().find(BoxPreview);
     expect(BoxItems.length).toBe(props.boxes.length);
-    BoxItems.forEach(BoxItem => {
-      expect(BoxItem.props().onDelete).toBe(props.onDelete);
-      expect(BoxItem.props().onEdit).toBe(props.onEdit);
+    BoxItems.forEach(BoxPreview => {
+      expect(BoxPreview.props().onDelete).toBe(props.onDelete);
+      expect(BoxPreview.props().onEdit).toBe(props.onEdit);
     })
   });
 

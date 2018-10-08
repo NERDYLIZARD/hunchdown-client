@@ -17,7 +17,7 @@ export default {
       }
     }
   },
-
+  
   boxes: {
     visible: [],
     active: '',
