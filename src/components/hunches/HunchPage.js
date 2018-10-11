@@ -6,8 +6,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { deleteHunch, loadHunches, unloadHunches, openHunchEditorModal } from '../../actions/hunches';
 import { loadBox, unloadBox } from '../../actions/boxes';
+import { showModal } from '../../actions/modal';
 import * as selectors from '../../selectors/hunches';
 import * as boxSelectors from '../../selectors/boxes';
+import * as modalTypes from '../../constants/modal';
 import { isEmpty } from 'lodash';
 /* eslint-disable import/no-named-as-default */
 import HunchList from './HunchList';
@@ -22,6 +24,7 @@ export class HunchPage extends React.Component
 
     this.loadData = this.loadData.bind(this);
     this.unloadData = this.unloadData.bind(this);
+    this.addHunch = this.addHunch.bind(this);
     this.createHunch = this.createHunch.bind(this);
     this.deleteHunch = this.deleteHunch.bind(this);
     this.editHunch = this.editHunch.bind(this);
@@ -44,6 +47,11 @@ export class HunchPage extends React.Component
   unloadData () {
     this.props.unloadBox();
     this.props.unloadHunches();
+  }
+
+  addHunch (e) {
+    e.preventDefault();
+    this.props.showModal(modalTypes.HUNCH_SELECTOR_MODAL);
   }
 
   createHunch (e) {
@@ -78,13 +86,12 @@ export class HunchPage extends React.Component
               </div>
               <div className="float-right">
                 <button
-                  className="hunch-page__add-hunch-button btn btn-success mr-2"
+                  className="hunch-page__create-hunch-button btn btn-success mr-2"
                   onClick={this.createHunch}>New Hunch
                 </button>
                 <button
-                  className="hunch-page__existing-hunch-button btn btn-primary"
-                  onClick={() => {
-                  }}>Existing Hunch
+                  className="hunch-page__add-hunch-button btn btn-primary"
+                  onClick={this.addHunch}>Existing Hunch
                 </button>
               </div>
             </div>}
@@ -115,6 +122,7 @@ HunchPage.propTypes = {
   openHunchEditorModal: PropTypes.func.isRequired,
   loadHunches: PropTypes.func.isRequired,
   unloadHunches: PropTypes.func.isRequired,
+  showModal: PropTypes.func.isRequired,
   loadBox: PropTypes.func.isRequired,
   unloadBox: PropTypes.func.isRequired,
   deleteHunch: PropTypes.func.isRequired,
@@ -142,5 +150,6 @@ export default connect(mapStateToProps, {
   loadHunches,
   unloadHunches,
   deleteHunch,
-  openHunchEditorModal
+  openHunchEditorModal,
+  showModal,
 })(HunchPage);

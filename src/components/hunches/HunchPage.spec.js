@@ -4,6 +4,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import * as selectors from '../../selectors/hunches';
+import * as modalTypes from '../../constants/modal';
 import { HunchPage } from './HunchPage';
 /* eslint-disable import/no-named-as-default */
 import HunchList from './HunchList';
@@ -17,6 +18,7 @@ describe('<HunchPage />', () => {
   jest.spyOn(HunchPage.prototype, 'componentWillUnmount');
   jest.spyOn(HunchPage.prototype, 'loadData');
   jest.spyOn(HunchPage.prototype, 'unloadData');
+  jest.spyOn(HunchPage.prototype, 'addHunch');
   jest.spyOn(HunchPage.prototype, 'createHunch');
   jest.spyOn(HunchPage.prototype, 'editHunch');
   jest.spyOn(HunchPage.prototype, 'deleteHunch');
@@ -42,6 +44,7 @@ describe('<HunchPage />', () => {
       unloadHunches: jest.fn(),
       deleteHunch: jest.fn(),
       openHunchEditorModal: jest.fn(),
+      showModal: jest.fn(),
       isFetchingHunches: false,
       hunches: undefined,
       isFetchingBox: false,
@@ -109,18 +112,31 @@ describe('<HunchPage />', () => {
       expect(boxTitle.text()).toBe(props.box.title);
     });
 
-    it('renders the `Add Hunch` button', () => {
-      expect(hunchPage().find('.hunch-page__add-hunch-button').length).toBe(1);
+    it('renders the `New Hunch` button', () => {
+      expect(hunchPage().find('.hunch-page__create-hunch-button').length).toBe(1);
     });
-
-    describe('when the `Add Hunch` button is clicked`', () => {
+    describe('when the `New Hunch` button is clicked`', () => {
       it('calls `createHunch()` that dispatches `openHunchEditorModal()`', () => {
-        const addHunchButton = hunchPage().find('.hunch-page__add-hunch-button');
+        const addHunchButton = hunchPage().find('.hunch-page__create-hunch-button');
         addHunchButton.simulate('click', {
           preventDefault: jest.fn()
         });
         expect(HunchPage.prototype.createHunch).toBeCalled();
         expect(props.openHunchEditorModal).toBeCalledWith(selectors.getEditor);
+      });
+    });
+
+    it('renders the `Existing Hunch` button', () => {
+      expect(hunchPage().find('.hunch-page__add-hunch-button').length).toBe(1);
+    });
+    describe('when the `Existing Hunch` button is clicked`', () => {
+      it(`calls 'addHunch()' that dispatches 'showModal(${modalTypes.HUNCH_SELECTOR_MODAL})'`, () => {
+        const addHunchButton = hunchPage().find('.hunch-page__add-hunch-button');
+        addHunchButton.simulate('click', {
+          preventDefault: jest.fn()
+        });
+        expect(HunchPage.prototype.addHunch).toBeCalled();
+        expect(props.showModal).toBeCalledWith(modalTypes.HUNCH_SELECTOR_MODAL);
       });
     });
 
