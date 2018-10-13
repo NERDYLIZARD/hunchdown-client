@@ -51,7 +51,9 @@ export class HunchPage extends React.Component
 
   addHunch (e) {
     e.preventDefault();
-    this.props.showModal(modalTypes.HUNCH_SELECTOR_MODAL);
+    const {box} = this.props;
+    const boxId = box && box.id ? box.id : this.props.match.params.id;
+    this.props.showModal(modalTypes.HUNCH_SELECTOR_MODAL, {boxId});
   }
 
   createHunch (e) {
