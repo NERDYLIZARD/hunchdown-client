@@ -5,12 +5,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { isEmpty } from 'lodash';
-import { loadBoxes, deleteBox, openBoxEditorModal, unloadBoxes } from '../../actions/boxes';
+import { deleteBox, loadBoxes, openBoxEditorModal, unloadBoxes } from '../../actions/boxes';
 import * as selectors from '../../selectors/boxes';
 /* eslint-disable import/no-named-as-default */
-import BoxList from './BoxList';
 import BoxEditorModal from './BoxEditorModal';
 import InfiniteScroll from '../common/InfiniteScroll';
+import Grid from '../common/Grid';
+import BoxPreviewWithRouter from './preview/BoxPreview';
 
 
 export class BoxPage extends React.Component
@@ -63,12 +64,19 @@ export class BoxPage extends React.Component
           </div>
 
           <div className="box-page__body">
-            {!isFetchingBoxes && isEmpty(boxes) && <div className="box-page__boxes-not-found">No Box, Create a New Box</div>}
+            {!isFetchingBoxes && isEmpty(boxes) &&
+            <div className="box-page__boxes-not-found">No Box, Create a New Box</div>}
             <InfiniteScroll args={[true]} onScroll={this.props.loadBoxes}>
-              <BoxList
-                boxes={boxes}
-                onEdit={this.editBox}
-                onDelete={this.deleteBox}/>
+              <Grid
+                className="box-list"
+                items={boxes}
+                render={(box) =>
+                  <BoxPreviewWithRouter
+                    box={box}
+                    onDelete={this.deleteBox}
+                    onEdit={this.editBox}
+                  />
+                }/>
               {isFetchingBoxes && <div className="box-page__boxes-loading">Loading . . .</div>}
             </InfiniteScroll>
             <BoxEditorModal/>

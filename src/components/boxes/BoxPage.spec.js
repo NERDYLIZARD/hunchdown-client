@@ -4,11 +4,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { BoxPage } from './BoxPage';
-import * as selectors from '../../selectors/boxes';
 /* eslint-disable import/no-named-as-default */
-import BoxList from './BoxList';
 import BoxEditorModal from './BoxEditorModal';
 import InfiniteScroll from '../common/InfiniteScroll';
+import Grid from '../common/Grid';
 
 
 describe('<BoxPage />', () => {
@@ -101,19 +100,18 @@ describe('<BoxPage />', () => {
       const infiniteScroll = boxPage().find(InfiniteScroll);
       expect(infiniteScroll.props().onScroll).toEqual(props.loadBoxes);
     });
-    it('has `<BoxList/>` as its child', () => {
+    it('has `<Grid/>` as its child', () => {
       const infiniteScroll = boxPage().find(InfiniteScroll);
-      expect(infiniteScroll.find(BoxList).length).toBe(1);
+      expect(infiniteScroll.find(Grid).length).toBe(1);
     });
   });
 
-  it('renders `<BoxList />`', () => {
-    expect(boxPage().find(BoxList).length).toBe(1);
+  it('renders `<Grid />`', () => {
+    expect(boxPage().find(Grid).length).toBe(1);
   });
-  describe('the rendered `<BoxList />`', () => {
-    let BoxList;
-    let selectedBox;
-    const e = {preventDefault: jest.fn()};
+  describe('the rendered `<Grid />`', () => {
+    let grid;
+    let BoxPage;
 
     beforeEach(() => {
       props.boxes = [{
@@ -123,24 +121,40 @@ describe('<BoxPage />', () => {
         id: 'id#2',
         title: 'A Title',
       }];
-      BoxList = boxPage().find('BoxList');
-      selectedBox = props.boxes[0];
+      BoxPage = boxPage();
+      grid = BoxPage.find(Grid);
     });
 
-    it('has `boxes` as its prop', () => {
-      expect(BoxList.props().boxes).toEqual(props.boxes);
+    it('has `boxes` as its `items`', () => {
+      expect(grid.props().items).toEqual(props.boxes);
     });
 
-    it('`onEdit` event, calls `editBox()` that dispatches `props.openBoxEditorModal()`', () => {
-      BoxList.props().onEdit(e, selectedBox);
-      expect(BoxPage.prototype.editBox).toBeCalledWith(e, selectedBox);
-      expect(props.openBoxEditorModal).toBeCalledWith(selectors.getEditor, selectedBox);
+    it('has `box-list` as its `className`', () => {
+      expect(grid.props().className).toBe('box-list');
     });
 
-    it('`onDelete` event, calls `deleteBox()` that dispatches `props.deleteBox()`', () => {
-      BoxList.props().onDelete(e, selectedBox);
-      expect(BoxPage.prototype.deleteBox).toBeCalledWith(e, selectedBox);
-      expect(props.deleteBox).toBeCalledWith(selectedBox);
+    it('defines `render` prop', () => {
+      expect(typeof grid.props().render).toBe('function');
+    });
+    describe('the `render` prop', () => {
+      let BoxPreview;
+      const box = {id: 'id#1'};
+      beforeEach(() => {
+        const BoxPreviewWithRouter = shallow(grid.props().render(box));
+        BoxPreview = BoxPreviewWithRouter.props().render();
+      });
+
+      it('has `box` as its `box` props', () => {
+        expect(BoxPreview.props.box).toEqual(box);
+      });
+
+      it('has `BoxPage.deleteBox` as its `onDelete` props', () => {
+        expect(BoxPreview.props.onDelete).toEqual(BoxPage.instance().deleteBox);
+      });
+
+      it('has `BoxPage.editBox` as its `onEdit` props', () => {
+        expect(BoxPreview.props.onEdit).toEqual(BoxPage.instance().editBox);
+      });
     });
   });
 

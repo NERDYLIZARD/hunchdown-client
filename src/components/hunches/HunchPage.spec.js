@@ -136,7 +136,7 @@ describe('<HunchPage />', () => {
           preventDefault: jest.fn()
         });
         expect(HunchPage.prototype.addHunch).toBeCalled();
-        expect(props.showModal).toBeCalledWith(modalTypes.HUNCH_SELECTOR_MODAL);
+        expect(props.showModal).toBeCalledWith(modalTypes.HUNCH_SELECTOR_MODAL, {boxId: 'boxId#1'});
       });
     });
 
@@ -173,9 +173,9 @@ describe('<HunchPage />', () => {
       expect(hunchPage().find(HunchList).length).toBe(1);
     });
     describe('the rendered `<HunchList />`', () => {
+      let HunchPage;
       let HunchList;
       let selectedHunch;
-      const e = {preventDefault: jest.fn()};
 
       beforeEach(() => {
         const boxId = props.match.params.id;
@@ -189,23 +189,18 @@ describe('<HunchPage />', () => {
           boxes: [boxId]
         }];
         selectedHunch = props.hunches[0];
-        HunchList = hunchPage().find('HunchList');
+        HunchPage = hunchPage();
+        HunchList = HunchPage.find('HunchList');
       });
 
       it('has `hunches` as its props', () => {
         expect(HunchList.props().hunches).toEqual(props.hunches);
       });
-
-      it('`onEdit` event, calls `editHunch()` that dispatches `props.openHunchEditorModal()`', () => {
-        HunchList.props().onEdit(e, selectedHunch);
-        expect(HunchPage.prototype.editHunch).toBeCalledWith(e, selectedHunch);
-        expect(props.openHunchEditorModal).toBeCalledWith(selectors.getEditor, selectedHunch);
+      it('has `props.deleteHunch()` as its `onDelete` prop', () => {
+        expect(HunchList.props().onDelete).toEqual(HunchPage.instance().deleteHunch);
       });
-
-      it('`onDelete` event, calls `deleteHunch()` that dispatches `props.deleteHunch()`', () => {
-        HunchList.props().onDelete(e, selectedHunch);
-        expect(HunchPage.prototype.deleteHunch).toBeCalledWith(e, selectedHunch);
-        expect(props.deleteHunch).toBeCalledWith(selectedHunch);
+      it('has `props.editHunch()` as its `onEdit` prop', () => {
+        expect(HunchList.props().onEdit).toEqual(HunchPage.instance().editHunch);
       });
     });
 

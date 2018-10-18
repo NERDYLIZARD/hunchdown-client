@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 
 const defaultProps = {
   args: [],
-  className: '',
+  className: 'infinite-scroll',
 };
 
 const propTypes = {

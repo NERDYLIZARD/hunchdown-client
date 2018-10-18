@@ -34,7 +34,7 @@ BoxPreview.propTypes = {
   box: CustomPropTypes.box.isRequired,
   onEdit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
-  history: PropTypes.object.isRequired,
+  history: PropTypes.object,
 };
 
 export default withRouter(BoxPreview);
