@@ -8,6 +8,7 @@ import { BoxPage } from './BoxPage';
 import BoxEditorModal from './BoxEditorModal';
 import InfiniteScroll from '../common/InfiniteScroll';
 import Grid from '../common/Grid';
+import BoxPreviewWithRouter from './preview/BoxPreview';
 
 
 describe('<BoxPage />', () => {
@@ -133,28 +134,15 @@ describe('<BoxPage />', () => {
       expect(grid.props().className).toBe('box-list');
     });
 
-    it('defines `render` prop', () => {
-      expect(typeof grid.props().render).toBe('function');
-    });
-    describe('the `render` prop', () => {
-      let BoxPreview;
+    it('has `render` prop callback that returns `<BoxPreviewWithRouter/>`', () => {
       const box = {id: 'id#1'};
-      beforeEach(() => {
-        const BoxPreviewWithRouter = shallow(grid.props().render(box));
-        BoxPreview = BoxPreviewWithRouter.props().render();
-      });
-
-      it('has `box` as its `box` props', () => {
-        expect(BoxPreview.props.box).toEqual(box);
-      });
-
-      it('has `BoxPage.deleteBox` as its `onDelete` props', () => {
-        expect(BoxPreview.props.onDelete).toEqual(BoxPage.instance().deleteBox);
-      });
-
-      it('has `BoxPage.editBox` as its `onEdit` props', () => {
-        expect(BoxPreview.props.onEdit).toEqual(BoxPage.instance().editBox);
-      });
+      const renderProp = grid.props().render;
+      expect(typeof grid.props().render).toBe('function');
+      expect(renderProp(box)).toEqual(
+        <BoxPreviewWithRouter
+          box={box}
+          onDelete={BoxPage.instance().deleteBox}
+          onEdit={BoxPage.instance().editBox}/>);
     });
   });
 
