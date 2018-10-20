@@ -3,14 +3,11 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 const Grid = ({items, render, className}) => {
-  let _className = 'grid';
-  if (className)
-    _className = `${_className} ${className}`;
-
   return (
-    <div className={_className}>
+    <div className={classnames('grid', className)}>
       <div className="row">
         {items.map(item =>
           <div className="grid__item col-sm-12 col-md-6 col-lg-4 col-xl-3" key={item.id}>
