@@ -6,18 +6,18 @@ import { shallow } from 'enzyme';
 import { Field } from 'redux-form';
 import { BoxEditorForm } from './BoxEditorForm'; // eslint-disable-line import/no-named-as-default
 
-describe('<CreateBoxForm />', () => {
+describe('<BoxEditorForm />', () => {
   let props;
-  let mountedCreateBoxForm;
-  const createBoxForm = () => {
+  let mountedBoxEditorForm;
+  const renderBoxEditorForm = () => {
     // if running new test, mount the component
     // otherwise, use the mounted component
-    if (!mountedCreateBoxForm) {
-      mountedCreateBoxForm = shallow(
+    if (!mountedBoxEditorForm) {
+      mountedBoxEditorForm = shallow(
         <BoxEditorForm {...props} />
       );
     }
-    return mountedCreateBoxForm;
+    return mountedBoxEditorForm;
   };
 
   // reset props before running a new test
@@ -25,30 +25,30 @@ describe('<CreateBoxForm />', () => {
     props = {
       handleSubmit: jest.fn(),
     };
-    mountedCreateBoxForm = undefined;
+    mountedBoxEditorForm = undefined;
   });
 
   it('always renders a form as wrapper', () => {
-    const form = createBoxForm().find('form');
+    const form = renderBoxEditorForm().find('form');
     expect(form.length).toBeGreaterThan(0);
   });
 
   it('always renders the `hidden` field `id`', () => {
-    const hiddenIdField = createBoxForm().find(Field).filter({name: 'id'});
+    const hiddenIdField = renderBoxEditorForm().find(Field).filter({name: 'id'});
     expect(hiddenIdField.length).toBe(1);
     expect(hiddenIdField.props().type).toBe('hidden');
   });
 
   it('always renders the `input` field `title`', () => {
-    expect(createBoxForm().find(Field).filter({name: 'title'}).length).toBe(1);
+    expect(renderBoxEditorForm().find(Field).filter({name: 'title'}).length).toBe(1);
   });
 
   it('always renders the `textarea` field `description`', () => {
-    expect(createBoxForm().find(Field).filter({name: 'description'}).length).toBe(1);
+    expect(renderBoxEditorForm().find(Field).filter({name: 'description'}).length).toBe(1);
   });
 
   it('calls `handleSubmit()` when submitting the form', () => {
-    createBoxForm().simulate('submit');
+    renderBoxEditorForm().simulate('submit');
     expect(props.handleSubmit).toBeCalled();
   });
 

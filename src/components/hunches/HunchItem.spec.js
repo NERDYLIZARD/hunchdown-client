@@ -8,7 +8,7 @@ import HunchItem from './HunchItem';
 describe('<HunchItem />', () => {
   let props;
   let mountedHunchItem;
-  const hunchItem = () => {
+  const renderHunchItem = () => {
     // if running new test, mount the component
     // otherwise, use the mounted component
     if (!mountedHunchItem) {
@@ -32,27 +32,27 @@ describe('<HunchItem />', () => {
     mountedHunchItem = undefined;
   });
 
-  it('always renders a div as wrapper', () => {
-    const divs = hunchItem().find('.hunch-item');
+  it('always renders a `div.hunch-item` as wrapper', () => {
+    const divs = renderHunchItem().find('.hunch-item');
     expect(divs.length).toBe(1);
   });
 
   it('calls `onEdit()` when edit link is clicked', () => {
-    const editButton = hunchItem().find('.hunch-edit-button');
+    const editButton = renderHunchItem().find('.hunch-edit-button');
     const e = {preventDefault: jest.fn()};
     editButton.simulate('click', e);
     expect(props.onEdit).toBeCalledWith(e, props.hunch);
   });
 
   it('calls `onDelete()` when `delete` link is clicked', () => {
-    const deleteButton = hunchItem().find('.hunch-delete-button');
+    const deleteButton = renderHunchItem().find('.hunch-delete-button');
     const e = {preventDefault: jest.fn()};
     deleteButton.simulate('click', e);
     expect(props.onDelete).toBeCalledWith(e, props.hunch);
   });
 
   it('renders `<p class="hunch-wisdom">` with `hunch.wisdom` as its children', () => {
-    const wisdom = hunchItem().find('.hunch-wisdom');
+    const wisdom = renderHunchItem().find('.hunch-wisdom');
     expect(wisdom.props().children).toBe(props.hunch.wisdom);
   });
 
@@ -61,10 +61,10 @@ describe('<HunchItem />', () => {
       props.hunch.attribute = 'An Attribute';
     });
     it('renders a `<p class="hunch-attribute">`', () => {
-      expect(hunchItem().find('.hunch-attribute').length).toBe(1);
+      expect(renderHunchItem().find('.hunch-attribute').length).toBe(1);
     });
     it('passes `hunch.attribute` to the rendered `<p class="hunch-attribute">`', () => {
-      const attribute = hunchItem().find('.hunch-attribute');
+      const attribute = renderHunchItem().find('.hunch-attribute');
       expect(attribute.props().children).toContain(props.hunch.attribute);
     });
   });
@@ -74,7 +74,7 @@ describe('<HunchItem />', () => {
       props.hunch.attribute = undefined;
     });
     it('does not render a `<p class="hunch-attribute">`', () => {
-      expect(hunchItem().find('.hunch-attribute').length).toBe(0);
+      expect(renderHunchItem().find('.hunch-attribute').length).toBe(0);
     });
   });
 

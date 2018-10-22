@@ -16,7 +16,7 @@ describe('<HunchEditorForm />', () => {
 
   let props;
   let mountedHunchEditorForm;
-  const hunchEditorForm = () => {
+  const renderHunchEditorForm = () => {
     // if running new test, mount the component
     // otherwise, use the mounted component
     if (!mountedHunchEditorForm) {
@@ -41,28 +41,28 @@ describe('<HunchEditorForm />', () => {
   });
 
   it('always renders a form as wrapper', () => {
-    const form = hunchEditorForm().find('form');
+    const form = renderHunchEditorForm().find('form');
     expect(form.length).toBe(1);
   });
 
   it('always renders the `hidden` field `id`', () => {
-    const hiddenIdField = hunchEditorForm().find(Field).filter({name: 'id'});
+    const hiddenIdField = renderHunchEditorForm().find(Field).filter({name: 'id'});
     expect(hiddenIdField.length).toBe(1);
     expect(hiddenIdField.props().type).toBe('hidden');
   });
 
   it('always renders the `textarea` field for `wisdom`', () => {
-    const wisdomInput = hunchEditorForm().find(Field).filter({name: 'wisdom'});
+    const wisdomInput = renderHunchEditorForm().find(Field).filter({name: 'wisdom'});
     expect(wisdomInput.length).toBe(1);
   });
 
   it('always renders the `input` field for `attribute`', () => {
-    const attributeTextArea = hunchEditorForm().find(Field).filter({name: 'attribute'});
+    const attributeTextArea = renderHunchEditorForm().find(Field).filter({name: 'attribute'});
     expect(attributeTextArea.length).toBe(1);
   });
 
   it('always renders the `checkbox` for `boxes` with props `name` & `boxOptions`', () => {
-    const checkboxGroup = hunchEditorForm().find(CheckboxGroup);
+    const checkboxGroup = renderHunchEditorForm().find(CheckboxGroup);
 
     expect(checkboxGroup.length).toBe(1);
     expect(checkboxGroup.props().name).toBe('boxes');
@@ -70,12 +70,12 @@ describe('<HunchEditorForm />', () => {
   });
 
   it('calls `handleSubmit()` when submitting the form', () => {
-    hunchEditorForm().simulate('submit');
+    renderHunchEditorForm().simulate('submit');
     expect(props.handleSubmit).toBeCalled();
   });
 
   it('calls `prop.openCreateBoxModal()` when `New Box` button is clicked', () => {
-    const newBoxButton = hunchEditorForm().find('#hunch-editor-new-box');
+    const newBoxButton = renderHunchEditorForm().find('#hunch-editor-new-box');
     const e = {preventDefault: jest.fn()};
     newBoxButton.simulate('click', e);
     expect(HunchEditorForm.prototype.openBoxEditorModal).toBeCalledWith(e);
@@ -83,7 +83,7 @@ describe('<HunchEditorForm />', () => {
   });
 
   it('renders `<BoxEditorModal/>', () => {
-    expect(hunchEditorForm().find(BoxEditorModal).length).toBe(1);
+    expect(renderHunchEditorForm().find(BoxEditorModal).length).toBe(1);
   });
 
 });

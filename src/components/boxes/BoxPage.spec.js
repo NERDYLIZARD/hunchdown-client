@@ -22,7 +22,7 @@ describe('<BoxPage />', () => {
   let props;
   let mountedBoxPage;
 
-  const boxPage = () => {
+  const renderBoxPage = () => {
     // if running new test, mount the component
     // otherwise, use the mounted component
     if (!mountedBoxPage) {
@@ -48,30 +48,30 @@ describe('<BoxPage />', () => {
   });
 
   it('always renders a div as wrapper', () => {
-    const divs = boxPage().find('.box-page');
+    const divs = renderBoxPage().find('.box-page');
     expect(divs.length).toBe(1);
   });
 
   it('calls `loadBoxes()` on `ComponentDidMount()`', () => {
-    boxPage();
+    renderBoxPage();
     expect(BoxPage.prototype.componentDidMount).toBeCalled();
     expect(props.loadBoxes).toBeCalled();
   });
 
   it('calls `unloadBoxes()` on `ComponentWillUnmount()`', () => {
-    boxPage().unmount();
+    renderBoxPage().unmount();
     expect(BoxPage.prototype.componentWillUnmount).toBeCalled();
     expect(props.unloadBoxes).toBeCalled();
   });
 
   it('always renders the `New Box` button', () => {
-    const createBoxButton = boxPage().find('.create-box-button');
+    const createBoxButton = renderBoxPage().find('.create-box-button');
     expect(createBoxButton.length).toBe(1);
   });
 
   describe('when the `New Box` button is clicked`', () => {
     it('call `createBox` that dispatches `openBoxEditorModal()`', () => {
-      const createBoxButton = boxPage().find('.create-box-button');
+      const createBoxButton = renderBoxPage().find('.create-box-button');
       const e = {preventDefault: jest.fn()};
       createBoxButton.simulate('click', e);
       expect(BoxPage.prototype.createBox).toBeCalledWith(e);
@@ -85,34 +85,34 @@ describe('<BoxPage />', () => {
       props.boxes = undefined;
     });
     it('renders not-found message', () => {
-      expect(boxPage().find('.box-page__boxes-not-found').length).toBe(1);
+      expect(renderBoxPage().find('.box-page__boxes-not-found').length).toBe(1);
     });
   });
 
   it('renders `<InfiniteScroll />`', () => {
-    expect(boxPage().find(InfiniteScroll).length).toBe(1);
+    expect(renderBoxPage().find(InfiniteScroll).length).toBe(1);
   });
   describe('the rendered `<InfiniteScroll />`', () => {
     it('has `[true]` passed to `args` props', () => {
-      const infiniteScroll = boxPage().find(InfiniteScroll);
+      const infiniteScroll = renderBoxPage().find(InfiniteScroll);
       expect(infiniteScroll.props().args).toEqual([true]);
     });
     it('has `loadBoxes` passed to `onScroll` props', () => {
-      const infiniteScroll = boxPage().find(InfiniteScroll);
+      const infiniteScroll = renderBoxPage().find(InfiniteScroll);
       expect(infiniteScroll.props().onScroll).toEqual(props.loadBoxes);
     });
     it('has `<Grid/>` as its child', () => {
-      const infiniteScroll = boxPage().find(InfiniteScroll);
+      const infiniteScroll = renderBoxPage().find(InfiniteScroll);
       expect(infiniteScroll.find(Grid).length).toBe(1);
     });
   });
 
   it('renders `<Grid />`', () => {
-    expect(boxPage().find(Grid).length).toBe(1);
+    expect(renderBoxPage().find(Grid).length).toBe(1);
   });
   describe('the rendered `<Grid />`', () => {
     let grid;
-    let BoxPage;
+    let boxPage;
 
     beforeEach(() => {
       props.boxes = [{
@@ -122,8 +122,8 @@ describe('<BoxPage />', () => {
         id: 'id#2',
         title: 'A Title',
       }];
-      BoxPage = boxPage();
-      grid = BoxPage.find(Grid);
+      boxPage = renderBoxPage();
+      grid = boxPage.find(Grid);
     });
 
     it('has `boxes` as its `items`', () => {
@@ -141,8 +141,8 @@ describe('<BoxPage />', () => {
       expect(renderProp(box)).toEqual(
         <BoxPreviewWithRouter
           box={box}
-          onDelete={BoxPage.instance().deleteBox}
-          onEdit={BoxPage.instance().editBox}/>);
+          onDelete={boxPage.instance().deleteBox}
+          onEdit={boxPage.instance().editBox}/>);
     });
   });
 
@@ -151,12 +151,12 @@ describe('<BoxPage />', () => {
       props.isFetchingBoxes = true;
     });
     it('renders loading message', () => {
-      expect(boxPage().find('.box-page__boxes-loading').length).toBe(1);
+      expect(renderBoxPage().find('.box-page__boxes-loading').length).toBe(1);
     });
   });
 
   it('always renders a `<BoxEditorModal />`', () => {
-    expect(boxPage().find(BoxEditorModal).length).toBe(1);
+    expect(renderBoxPage().find(BoxEditorModal).length).toBe(1);
   });
 
 });

@@ -10,7 +10,7 @@ import CheckboxGroup, { CheckboxGroupComponent } from './CheckboxGroup';
 describe('<CheckboxGroup />', () => {
   let props;
   let mountedCheckboxGroup;
-  const checkboxGroup = () => {
+  const renderCheckboxGroup = () => {
     if (!mountedCheckboxGroup) {
       mountedCheckboxGroup = shallow(
         <CheckboxGroup {...props} />
@@ -31,7 +31,7 @@ describe('<CheckboxGroup />', () => {
   });
 
   it('renders `CheckboxGroupComponent` with `name` and `options` props', () => {
-    const checkboxGroupComponent = checkboxGroup().find(Field).filter({name: 'boxes'});
+    const checkboxGroupComponent = renderCheckboxGroup().find(Field).filter({name: 'boxes'});
     expect(checkboxGroupComponent.length).toBe(1);
     expect(checkboxGroupComponent.props().options).toBe(props.options);
   });
@@ -41,7 +41,7 @@ describe('<CheckboxGroup />', () => {
 describe('<CheckboxGroupComponent />', () => {
   let props;
   let mountedCheckboxGroupComponent;
-  const checkboxGroupComponent = () => {
+  const renderCheckboxGroupComponent = () => {
     // if running new test, mount the component
     // otherwise, use the mounted component
     if (!mountedCheckboxGroupComponent) {
@@ -74,13 +74,13 @@ describe('<CheckboxGroupComponent />', () => {
   });
 
   it('always renders a `div` as wrapper', () => {
-    const divWrapper = checkboxGroupComponent().find('div');
-    expect(divWrapper.length).toBeGreaterThan(0);
+    const wrapperDiv = renderCheckboxGroupComponent().find('div');
+    expect(wrapperDiv.length).toBeGreaterThan(0);
   });
 
   describe('when `touched = false` and `error = null`', function () {
     it('does not render `error`', () => {
-      expect(checkboxGroupComponent().find('.error').length).toBe(0);
+      expect(renderCheckboxGroupComponent().find('.error').length).toBe(0);
     });
   });
 
@@ -90,14 +90,14 @@ describe('<CheckboxGroupComponent />', () => {
       props.meta.error = 'Something went wrong.';
     });
     it('renders `error`', () => {
-      const error = checkboxGroupComponent().find('.error');
+      const error = renderCheckboxGroupComponent().find('.error');
       expect(error.length).toBe(1);
       expect(error.props().children).toBe('Something went wrong.');
     });
   });
 
   it('renders number of `input[type="checkbox"]` as per number of `options`', () => {
-    const checkboxes = checkboxGroupComponent().find('input[type="checkbox"]');
+    const checkboxes = renderCheckboxGroupComponent().find('input[type="checkbox"]');
     expect(checkboxes.length).toBe(props.options.length);
   });
 
@@ -106,10 +106,10 @@ describe('<CheckboxGroupComponent />', () => {
       props.input.value = ['id#1']
     });
     it('the rendered `input[type="checkbox"]` matching that `value` is checked', () => {
-      const unCheckedCheckboxes = checkboxGroupComponent().find('input[type="checkbox"]').filter({value: 'id#2'});
+      const unCheckedCheckboxes = renderCheckboxGroupComponent().find('input[type="checkbox"]').filter({value: 'id#2'});
       expect(unCheckedCheckboxes.props().checked).toBe(false);
 
-      const checkedCheckboxes = checkboxGroupComponent().find('input[type="checkbox"]').filter({value: 'id#1'});
+      const checkedCheckboxes = renderCheckboxGroupComponent().find('input[type="checkbox"]').filter({value: 'id#1'});
       expect(checkedCheckboxes.props().checked).toBe(true);
     });
   });
@@ -124,8 +124,8 @@ describe('<CheckboxGroupComponent />', () => {
 
     it('calls `props.onChange` with an array containing the checked value', () => {
       const checkedCheckbox = { value: 'id#2' };
-      const CheckboxGroupComponent = checkboxGroupComponent();
-      const checkbox = CheckboxGroupComponent.find('input[type="checkbox"]').filter({value: checkedCheckbox.value});
+      const checkboxGroupComponent = renderCheckboxGroupComponent();
+      const checkbox = checkboxGroupComponent.find('input[type="checkbox"]').filter({value: checkedCheckbox.value});
       checkbox.simulate('change', {
         target: {
           value: checkedCheckbox.value,
@@ -137,8 +137,8 @@ describe('<CheckboxGroupComponent />', () => {
 
     it('calls `props.onChange` with an array not containing the unchecked value', () => {
       const uncheckedCheckbox = { value: 'id#1' };
-      const CheckboxGroupComponent = checkboxGroupComponent();
-      const checkbox = CheckboxGroupComponent.find('input[type="checkbox"]').filter({value: uncheckedCheckbox.value});
+      const checkboxGroupComponent = renderCheckboxGroupComponent();
+      const checkbox = checkboxGroupComponent.find('input[type="checkbox"]').filter({value: uncheckedCheckbox.value});
       checkbox.simulate('change', {
         target: {
           value: uncheckedCheckbox.value,
