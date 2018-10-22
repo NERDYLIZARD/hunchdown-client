@@ -9,7 +9,8 @@ import { deleteBox, loadBoxes, openBoxEditorModal, unloadBoxes } from '../../act
 import * as selectors from '../../selectors/boxes';
 /* eslint-disable import/no-named-as-default */
 import BoxEditorModal from './BoxEditorModal';
-import InfiniteScroll from '../common/InfiniteScroll';
+import InfiniteScroll from 'react-infinite-scroller';
+// import InfiniteScroll from '../common/InfiniteScroll';
 import Grid from '../common/Grid';
 import BoxPreviewWithRouter from './preview/BoxPreview';
 
@@ -66,7 +67,11 @@ export class BoxPage extends React.Component
           <div className="box-page__body">
             {!isFetchingBoxes && isEmpty(boxes) &&
             <div className="box-page__boxes-not-found">No Box, Create a New Box</div>}
-            <InfiniteScroll args={[true]} onScroll={this.props.loadBoxes}>
+
+            <InfiniteScroll
+              loadMore={() => this.props.loadBoxes(true)}
+              hasMore={!!this.props.nextPageUrl}
+              loader={<div className="box-page__boxes-loading">Loading . . .</div>}>
               <Grid
                 className="box-list"
                 items={boxes}
@@ -77,8 +82,8 @@ export class BoxPage extends React.Component
                     onEdit={this.editBox}
                   />
                 }/>
-              {isFetchingBoxes && <div className="box-page__boxes-loading">Loading . . .</div>}
             </InfiniteScroll>
+
             <BoxEditorModal/>
           </div>
         </div>
@@ -90,6 +95,7 @@ export class BoxPage extends React.Component
 BoxPage.propTypes = {
   boxes: PropTypes.array,
   isFetchingBoxes: PropTypes.bool.isRequired,
+  nextPageUrl: PropTypes.string,
   loadBoxes: PropTypes.func.isRequired,
   unloadBoxes: PropTypes.func.isRequired,
   deleteBox: PropTypes.func.isRequired,
@@ -97,9 +103,10 @@ BoxPage.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  const {isFetching: isFetchingBoxes} = selectors.getPagination(state);
+  const {isFetching: isFetchingBoxes, nextPageUrl} = selectors.getPagination(state);
   return {
     isFetchingBoxes,
+    nextPageUrl,
     boxes: selectors.getAll(state),
   }
 };

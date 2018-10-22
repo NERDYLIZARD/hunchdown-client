@@ -6,7 +6,7 @@ import { shallow } from 'enzyme';
 import { BoxPage } from './BoxPage';
 /* eslint-disable import/no-named-as-default */
 import BoxEditorModal from './BoxEditorModal';
-import InfiniteScroll from '../common/InfiniteScroll';
+import InfiniteScroll from 'react-infinite-scroller';
 import Grid from '../common/Grid';
 import BoxPreviewWithRouter from './preview/BoxPreview';
 
@@ -42,6 +42,7 @@ describe('<BoxPage />', () => {
       deleteBox: jest.fn(),
       openBoxEditorModal: jest.fn(),
       isFetchingBoxes: false,
+      nextPageUrl: 'api/boxes/page=2',
       boxes: undefined,
     };
     mountedBoxPage = undefined;
@@ -93,13 +94,14 @@ describe('<BoxPage />', () => {
     expect(renderBoxPage().find(InfiniteScroll).length).toBe(1);
   });
   describe('the rendered `<InfiniteScroll />`', () => {
-    it('has `[true]` passed to `args` props', () => {
+    it('calls `loadBoxes(true)` on `loadMore`', () => {
       const infiniteScroll = renderBoxPage().find(InfiniteScroll);
-      expect(infiniteScroll.props().args).toEqual([true]);
+      infiniteScroll.props().loadMore();
+      expect(props.loadBoxes).toBeCalledWith(true);
     });
-    it('has `loadBoxes` passed to `onScroll` props', () => {
+    it('has `hasMore` props determined by ``nextPageUrl`', () => {
       const infiniteScroll = renderBoxPage().find(InfiniteScroll);
-      expect(infiniteScroll.props().onScroll).toEqual(props.loadBoxes);
+      expect(infiniteScroll.props().hasMore).toBe(!!props.nextPageUrl);
     });
     it('has `<Grid/>` as its child', () => {
       const infiniteScroll = renderBoxPage().find(InfiniteScroll);
@@ -143,15 +145,6 @@ describe('<BoxPage />', () => {
           box={box}
           onDelete={boxPage.instance().deleteBox}
           onEdit={boxPage.instance().editBox}/>);
-    });
-  });
-
-  describe('when `isFetchingBoxes` is true', () => {
-    beforeEach(() => {
-      props.isFetchingBoxes = true;
-    });
-    it('renders loading message', () => {
-      expect(renderBoxPage().find('.box-page__boxes-loading').length).toBe(1);
     });
   });
 
