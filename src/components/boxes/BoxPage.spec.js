@@ -8,7 +8,7 @@ import { BoxPage } from './BoxPage';
 import BoxEditorModal from './BoxEditorModal';
 import InfiniteScroll from 'react-infinite-scroller';
 import Grid from '../common/Grid';
-import BoxPreviewWithRouter from './preview/BoxPreview';
+import { BoxPreview } from './preview/BoxPreview';
 
 
 describe('<BoxPage />', () => {
@@ -136,13 +136,14 @@ describe('<BoxPage />', () => {
       expect(grid.props().className).toBe('box-list');
     });
 
-    it('has `render` prop callback that returns `<BoxPreviewWithRouter/>`', () => {
+    it('has `render` prop callback that returns `<BoxPreview/>`', () => {
       const box = {id: 'id#1'};
       const renderProp = grid.props().render;
       expect(typeof grid.props().render).toBe('function');
       expect(renderProp(box)).toEqual(
-        <BoxPreviewWithRouter
+        <BoxPreview
           box={box}
+          onBodyClick={boxPage.instance().navigateToBoxDetail}
           onDelete={boxPage.instance().deleteBox}
           onEdit={boxPage.instance().editBox}/>);
     });

@@ -75,14 +75,14 @@ BoxEditorModal.propTypes = {
   box: PropTypes.object,
 };
 
-export function mapStateToProps (state) {
+const mapStateToProps = (state) => {
   const {isOpenedWithModal, props} = selectors.getEditor(state);
   return {
     box: props,
     isOpenedWithModal,
     formValues: getFormValues('box-editor')(state)
   };
-}
+};
 
 export default connect(mapStateToProps, {
   createBox,

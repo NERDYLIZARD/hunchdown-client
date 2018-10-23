@@ -9,8 +9,6 @@ import { BoxPreviewBody } from './BoxPreviewBody';
 
 describe('<BoxPreview />', () => {
 
-  jest.spyOn(BoxPreview.prototype, 'navigateToBoxDetail');
-
   let props;
   let mountedBoxPreview;
   const renderBoxPreview = () => {
@@ -30,11 +28,9 @@ describe('<BoxPreview />', () => {
         title: 'A Title',
         description: 'A Description'
       },
+      onBodyClick: jest.fn(),
       onDelete: jest.fn(),
       onEdit: jest.fn(),
-      history: {
-        push: jest.fn()
-      },
     };
     mountedBoxPreview = undefined;
   });
@@ -70,10 +66,9 @@ describe('<BoxPreview />', () => {
       const boxPreviewBody = renderBoxPreview().find(BoxPreviewBody);
       expect(boxPreviewBody.props().box).toEqual(props.box);
     });
-    it('has `navigateToBoxDetail` passed to `onClick` props', () => {
+    it('has `onBodyClick` passed to `onClick` props', () => {
       const boxPreviewBody = renderBoxPreview().find(BoxPreviewBody);
-      boxPreviewBody.simulate('click');
-      expect(BoxPreview.prototype.navigateToBoxDetail).toBeCalled();
+      expect(boxPreviewBody.props().onClick).toEqual(props.onBodyClick);
     });
   });
 

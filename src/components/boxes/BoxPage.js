@@ -10,9 +10,8 @@ import * as selectors from '../../selectors/boxes';
 /* eslint-disable import/no-named-as-default */
 import BoxEditorModal from './BoxEditorModal';
 import InfiniteScroll from 'react-infinite-scroller';
-// import InfiniteScroll from '../common/InfiniteScroll';
 import Grid from '../common/Grid';
-import BoxPreviewWithRouter from './preview/BoxPreview';
+import { BoxPreview } from './preview/BoxPreview';
 
 
 export class BoxPage extends React.Component
@@ -20,9 +19,10 @@ export class BoxPage extends React.Component
   constructor (props, context) {
     super(props, context);
 
-    this.deleteBox = this.deleteBox.bind(this);
     this.createBox = this.createBox.bind(this);
+    this.deleteBox = this.deleteBox.bind(this);
     this.editBox = this.editBox.bind(this);
+    this.navigateToBoxDetail = this.navigateToBoxDetail.bind(this);
   }
 
   componentDidMount () {
@@ -38,14 +38,16 @@ export class BoxPage extends React.Component
     this.props.openBoxEditorModal(selectors.getEditor);
   }
 
-  editBox (e, box) {
-    e.preventDefault();
+  editBox (box) {
     this.props.openBoxEditorModal(selectors.getEditor, box);
   }
 
-  deleteBox (e, box) {
-    e.preventDefault();
+  deleteBox (box) {
     this.props.deleteBox(box);
+  }
+
+  navigateToBoxDetail (box) {
+    this.props.history.push(`/boxes/${box.id}`);
   }
 
   render () {
@@ -76,10 +78,11 @@ export class BoxPage extends React.Component
                 className="box-list"
                 items={boxes}
                 render={(box) =>
-                  <BoxPreviewWithRouter
+                  <BoxPreview
                     box={box}
                     onDelete={this.deleteBox}
                     onEdit={this.editBox}
+                    onBodyClick={this.navigateToBoxDetail}
                   />
                 }/>
             </InfiniteScroll>
@@ -93,6 +96,7 @@ export class BoxPage extends React.Component
 }
 
 BoxPage.propTypes = {
+  history: PropTypes.object,
   boxes: PropTypes.array,
   isFetchingBoxes: PropTypes.bool.isRequired,
   nextPageUrl: PropTypes.string,

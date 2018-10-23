@@ -40,14 +40,14 @@ describe('<BoxPreviewHeader />', () => {
     const deleteButton = renderBoxPreviewHeader().find('.box-preview__header__edit-button');
     deleteButton.simulate('click');
     // call onEdit with props.box as its second argument
-    expect(props.onEdit).toBeCalledWith(undefined, props.box);
+    expect(props.onEdit).toBeCalledWith(props.box);
   });
 
   it('calls `onDelete()` with the clicked box when `delete` link is clicked', () => {
     const deleteButton = renderBoxPreviewHeader().find('.box-preview__header__delete-button');
     deleteButton.simulate('click');
     // call onDelete with props.box as its second argument
-    expect(props.onDelete).toBeCalledWith(undefined, props.box);
+    expect(props.onDelete).toBeCalledWith(props.box);
   });
 
 });

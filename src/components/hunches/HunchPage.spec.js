@@ -175,7 +175,7 @@ describe('<HunchPage />', () => {
     describe('the rendered `<HunchList />`', () => {
       let hunchPage;
       let hunchList;
-      let selectedHunch;
+      // let selectedHunch;
 
       beforeEach(() => {
         const boxId = props.match.params.id;
@@ -188,7 +188,7 @@ describe('<HunchPage />', () => {
           wisdom: 'A Wisdom',
           boxes: [boxId]
         }];
-        selectedHunch = props.hunches[0];
+        // selectedHunch = props.hunches[0];
         hunchPage = renderHunchPage();
         hunchList = hunchPage.find(HunchList);
       });
