@@ -12,6 +12,7 @@ import BoxEditorModal from './BoxEditorModal';
 import InfiniteScroll from 'react-infinite-scroller';
 import Grid from '../common/Grid';
 import { BoxPreview } from './preview/BoxPreview';
+import Spinner from '../common/Spinner';
 
 
 export class BoxPage extends React.Component
@@ -38,12 +39,12 @@ export class BoxPage extends React.Component
     this.props.openBoxEditorModal(selectors.getEditor);
   }
 
-  editBox (box) {
-    this.props.openBoxEditorModal(selectors.getEditor, box);
-  }
-
   deleteBox (box) {
     this.props.deleteBox(box);
+  }
+
+  editBox (box) {
+    this.props.openBoxEditorModal(selectors.getEditor, box);
   }
 
   navigateToBoxDetail (box) {
@@ -72,8 +73,10 @@ export class BoxPage extends React.Component
 
             <InfiniteScroll
               loadMore={() => this.props.loadBoxes(true)}
-              hasMore={!!this.props.nextPageUrl}
-              loader={<div className="box-page__boxes-loading">Loading . . .</div>}>
+              loader={<div className="box-page__boxes-loading my-4">
+                <Spinner/>
+              </div>}
+              hasMore={!!this.props.nextPageUrl}>
               <Grid
                 className="box-list"
                 items={boxes}
