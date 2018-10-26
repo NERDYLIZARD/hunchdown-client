@@ -3,20 +3,27 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import CustomPropTypes from '../../../utils/custom-proptypes';
+import { BoxPreviewContextConsumer } from './BoxPreview';
 
-export const BoxPreviewBody = ({box, onClick}) => {
+export const BoxPreviewBody = ({onClick}) => {
   return (
-    <div className="box-preview__body card-body" onClick={() => onClick(box)}>
-      <p className="box-preview__body__title card-title">{box.title}</p>
-      {box.description ?
-        <p className="box-preview__body__description card-description">{box.description}</p> : null
+    <BoxPreviewContextConsumer>
+      {({box}) =>
+        <div className="box-preview__body card-body" onClick={() => onClick(box)}>
+          <p className="box-preview__body__title card-title">{box.title}</p>
+          {box.description &&
+          <p className="box-preview__body__description card-description">{box.description}</p>}
+        </div>
       }
-    </div>
+    </BoxPreviewContextConsumer>
+
+    // <BoxPreviewContextConsumer>
+    // {context => <BoxPreviewBodyPure ...context ...props/>}
+    // </BoxPreviewContextConsumer>
+
   );
 };
 
 BoxPreviewBody.propTypes = {
-  box: CustomPropTypes.box.isRequired,
   onClick: PropTypes.func.isRequired,
 };

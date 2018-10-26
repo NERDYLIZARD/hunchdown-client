@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import CustomPropTypes from '../../utils/custom-proptypes';
+import CustomPropTypes from '../../constants/custom-proptypes';
 
 const HunchItem = ({ hunch, onEdit, onDelete }) => {
   return (

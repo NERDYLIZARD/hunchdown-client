@@ -2,23 +2,48 @@
  * Created on 30-Jul-18.
  */
 import React from 'react';
-import PropTypes from 'prop-types';
-import CustomPropTypes from '../../../utils/custom-proptypes';
+import CustomPropTypes from '../../../constants/custom-proptypes';
 import { BoxPreviewHeader } from './BoxPreviewHeader';
 import { BoxPreviewBody } from './BoxPreviewBody';
 
-export const BoxPreview = ({box, onBodyClick, onEdit, onDelete}) => {
+const BoxPreviewContext = React.createContext();
+
+export class BoxPreview extends React.Component
+{
+  static Header = BoxPreviewHeader;
+  static Body = BoxPreviewBody;
+
+  // prevent unintentional re-render of Context's consumer.
+  state = {
+    box: this.props.box
+  };
+
+  render () {
+    return (
+      <BoxPreviewContext.Provider value={this.state}>
+        <div className="box-preview card">
+          {this.props.children}
+        </div>
+      </BoxPreviewContext.Provider>
+    );
+  }
+}
+
+const ComponentName = BoxPreview.displayName;
+
+export const BoxPreviewContextConsumer = (props) => {
   return (
-    <div className="box-preview card">
-      <BoxPreviewHeader box={box} onEdit={onEdit} onDelete={onDelete}/>
-      <BoxPreviewBody box={box} onClick={onBodyClick}/>
-    </div>
+    <BoxPreviewContext.Consumer {...props}>
+      {context => {
+        if (!context) {
+          throw new Error('BoxPreview compound components cannot be rendered outside the BoxPreview component');
+        }
+        return props.children(context);
+      }}
+    </BoxPreviewContext.Consumer>
   );
 };
 
 BoxPreview.propTypes = {
   box: CustomPropTypes.box.isRequired,
-  onBodyClick: PropTypes.func.isRequired,
-  onEdit: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
 };
