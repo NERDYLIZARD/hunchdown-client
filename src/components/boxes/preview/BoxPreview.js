@@ -5,6 +5,7 @@ import React from 'react';
 import CustomPropTypes from '../../../constants/custom-proptypes';
 import { BoxPreviewHeader } from './BoxPreviewHeader';
 import { BoxPreviewBody } from './BoxPreviewBody';
+import withValidation from '../../HOC/withContextConsumerValidation';
 
 const BoxPreviewContext = React.createContext();
 
@@ -29,20 +30,7 @@ export class BoxPreview extends React.Component
   }
 }
 
-const ComponentName = BoxPreview.displayName;
-
-export const BoxPreviewContextConsumer = (props) => {
-  return (
-    <BoxPreviewContext.Consumer {...props}>
-      {context => {
-        if (!context) {
-          throw new Error('BoxPreview compound components cannot be rendered outside the BoxPreview component');
-        }
-        return props.children(context);
-      }}
-    </BoxPreviewContext.Consumer>
-  );
-};
+export const BoxPreviewContextConsumer = withValidation(BoxPreview.displayName, BoxPreviewContext.Consumer);
 
 BoxPreview.propTypes = {
   box: CustomPropTypes.box.isRequired,
