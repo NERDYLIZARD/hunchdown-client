@@ -5,28 +5,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 /**
- * Wrap ContextConsumer and return it with validation layer.
- * The validation throws error if the compound component's components is rendering without context i.e. outside the compound component.
+ * Accept ContextConsumer and return it with Compound Component validator. The validator throws error if the compound component's components is rendering without context i.e. outside the compound component.
+ * @param ContextConsumer The ContextConsumer to be wrapped with validator
+ * @returns The ContextConsumer wrapped with validator
  */
-const withContextConsumerValidation = (componentName, ContextConsumer) => {
+const withContextConsumerValidation = (ContextConsumer) => {
   function Wrapper ({children}) {
     return (
       <ContextConsumer>
         {context => {
           if (!context) {
-            throw new Error(`${componentName} compound components cannot be rendered outside the ${componentName} component`);
+            throw new Error(`Compound components cannot be rendered as a standalone component.`);
           }
           return children(context);
         }}
       </ContextConsumer>
     );
   }
-  Wrapper.displayName = `${componentName}ContextConsumer`;
+
+  Wrapper.propTypes = {children: PropTypes.func.isRequired};
+  Wrapper.displayName = 'withContextConsumerValidation';
   return Wrapper;
 };
 
 withContextConsumerValidation.propTypes = {
-  componentName: PropTypes.string.isRequired,
   ContextConsumer: PropTypes.node.isRequired,
 };
 
