@@ -16,10 +16,11 @@ const withContextConsumer = (Component, ContextConsumer, omittedContext = []) =>
   function Wrapper (props) {
     return (
       <ContextConsumer>{(context) =>
-        <Component {...props} {...omit(context, omittedContext)}/>
-      }</ContextConsumer>
+        <Component {...props} {...omit(context, omittedContext)}/>}
+      </ContextConsumer>
     );
   }
+
   Wrapper.displayName = `withContextConsumer(${Component.displayName || Component.name})`;
   return Wrapper;
 };

@@ -9,9 +9,9 @@ export const BoxPreviewHeader = ({box, onEdit, onDelete}) => {
     <div className="box-preview__header card-header clearfix">
       <div className="box-preview__header__actions pull-right">
         <a className="box-preview__header__edit-button" href="#" onClick={() => onEdit(box)}><i
-          className="fa fa-edit"></i></a>
+          className="fa fa-edit"/></a>
         <a className="box-preview__header__delete-button" href="#" onClick={() => onDelete(box)}><i
-          className="fa fa-trash"></i></a>
+          className="fa fa-trash"/></a>
       </div>
     </div>
   );
