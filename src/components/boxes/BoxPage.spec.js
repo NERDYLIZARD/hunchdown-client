@@ -4,11 +4,11 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { BoxPage } from './BoxPage';
+import { BoxPreview } from './preview/BoxPreview';
 /* eslint-disable import/no-named-as-default */
 import BoxEditorModal from './BoxEditorModal';
 import InfiniteScroll from 'react-infinite-scroller';
 import Grid from '../common/Grid';
-import { BoxPreview } from './preview/BoxPreview';
 
 
 describe('<BoxPage />', () => {
@@ -16,8 +16,6 @@ describe('<BoxPage />', () => {
   jest.spyOn(BoxPage.prototype, 'componentDidMount');
   jest.spyOn(BoxPage.prototype, 'componentWillUnmount');
   jest.spyOn(BoxPage.prototype, 'createBox');
-  jest.spyOn(BoxPage.prototype, 'editBox');
-  jest.spyOn(BoxPage.prototype, 'deleteBox');
 
   let props;
   let mountedBoxPage;
@@ -141,11 +139,10 @@ describe('<BoxPage />', () => {
       const renderProp = grid.props().render;
       expect(typeof grid.props().render).toBe('function');
       expect(renderProp(box)).toEqual(
-        <BoxPreview
-          box={box}
-          onBodyClick={boxPage.instance().navigateToBoxDetail}
-          onDelete={boxPage.instance().deleteBox}
-          onEdit={boxPage.instance().editBox}/>);
+        <BoxPreview box={box}>
+          <BoxPreview.Header onDelete={boxPage.instance().deleteBox} onEdit={boxPage.instance().editBox}/>
+          <BoxPreview.Body onClick={boxPage.instance().navigateToBoxDetail}/>
+        </BoxPreview>);
     });
   });
 

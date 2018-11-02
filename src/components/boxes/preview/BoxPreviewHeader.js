@@ -3,21 +3,22 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import CustomPropTypes from '../../../utils/custom-proptypes';
 
 export const BoxPreviewHeader = ({box, onEdit, onDelete}) => {
   return (
     <div className="box-preview__header card-header clearfix">
       <div className="box-preview__header__actions pull-right">
-        <a className="box-preview__header__edit-button" href="#" onClick={() => onEdit(box)}><i className="fa fa-edit"></i></a>
-        <a className="box-preview__header__delete-button" href="#" onClick={() => onDelete(box)}><i className="fa fa-trash"></i></a>
+        <a className="box-preview__header__edit-button" href="#" onClick={() => onEdit(box)}><i
+          className="fa fa-edit"/></a>
+        <a className="box-preview__header__delete-button" href="#" onClick={() => onDelete(box)}><i
+          className="fa fa-trash"/></a>
       </div>
     </div>
   );
 };
 
 BoxPreviewHeader.propTypes = {
-  box: CustomPropTypes.box.isRequired,
+  box: PropTypes.object.isRequired,
   onEdit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
 };

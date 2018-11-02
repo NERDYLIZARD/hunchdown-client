@@ -1,5 +1,5 @@
 {
   "port": "3002",
-  "delay": 100,
-  "routes": "src/api/routes.json"
+  "delay": 250,
+  "routes": "src/utils/api/routes.json"
 }

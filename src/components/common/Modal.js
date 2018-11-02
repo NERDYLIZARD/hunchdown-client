@@ -21,7 +21,7 @@ const Modal = ({modalType, modalProps}) => {
 };
 
 Modal.propTypes = {
-  modalType: PropTypes.object.isRequired,
+  modalType: PropTypes.object,
   modalProps: PropTypes.object,
 };
 

@@ -3,22 +3,37 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import CustomPropTypes from '../../../utils/custom-proptypes';
+import CustomPropTypes from '../../../constants/custom-proptypes';
 import { BoxPreviewHeader } from './BoxPreviewHeader';
 import { BoxPreviewBody } from './BoxPreviewBody';
+import withValidation from '../../HOC/withContextConsumerValidation';
+import withContextConsumer from '../../HOC/withContextConsumer';
 
-export const BoxPreview = ({box, onBodyClick, onEdit, onDelete}) => {
-  return (
-    <div className="box-preview card">
-      <BoxPreviewHeader box={box} onEdit={onEdit} onDelete={onDelete}/>
-      <BoxPreviewBody box={box} onClick={onBodyClick}/>
-    </div>
-  );
-};
+const BoxPreviewContext = React.createContext();
+const BoxPreviewContextConsumer = withValidation(BoxPreviewContext.Consumer);
+
+export class BoxPreview extends React.Component
+{
+  static Header = withContextConsumer(BoxPreviewHeader, BoxPreviewContextConsumer);
+  static Body = withContextConsumer(BoxPreviewBody, BoxPreviewContextConsumer);
+
+  // prevent unintentional re-rendering of Context's consumer.
+  state = {
+    box: this.props.box
+  };
+
+  render () {
+    return (
+      <BoxPreviewContext.Provider value={this.state}>
+        <div className="box-preview card">
+          {this.props.children}
+        </div>
+      </BoxPreviewContext.Provider>
+    );
+  }
+}
 
 BoxPreview.propTypes = {
   box: CustomPropTypes.box.isRequired,
-  onBodyClick: PropTypes.func.isRequired,
-  onEdit: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
 };

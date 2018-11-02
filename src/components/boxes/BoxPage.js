@@ -73,20 +73,16 @@ export class BoxPage extends React.Component
 
             <InfiniteScroll
               loadMore={() => this.props.loadBoxes(true)}
-              loader={<div className="box-page__boxes-loading my-4">
-                <Spinner/>
-              </div>}
+              loader={<div className="box-page__boxes-loading my-4"><Spinner/></div>}
               hasMore={!!this.props.nextPageUrl}>
               <Grid
                 className="box-list"
                 items={boxes}
-                render={(box) =>
-                  <BoxPreview
-                    box={box}
-                    onDelete={this.deleteBox}
-                    onEdit={this.editBox}
-                    onBodyClick={this.navigateToBoxDetail}
-                  />
+                render={box =>
+                  <BoxPreview box={box}>
+                    <BoxPreview.Header onDelete={this.deleteBox} onEdit={this.editBox}/>
+                    <BoxPreview.Body onClick={this.navigateToBoxDetail}/>
+                  </BoxPreview>
                 }/>
             </InfiniteScroll>
 

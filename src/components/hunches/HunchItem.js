@@ -3,15 +3,15 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import CustomPropTypes from '../../utils/custom-proptypes';
+import CustomPropTypes from '../../constants/custom-proptypes';
 
 const HunchItem = ({ hunch, onEdit, onDelete }) => {
   return (
     <div className="hunch-item hunch card">
       <div className="card-header hunch-header clearfix">
         <div className="hunch-actions pull-right">
-          <a className="hunch-edit-button" href="#" onClick={e => onEdit(e, hunch)}><i className="fa fa-edit"></i></a>
-          <a className="hunch-delete-button" href="#" onClick={e => onDelete(e, hunch)}><i className="fa fa-trash"></i></a>
+          <a className="hunch-edit-button" href="#" onClick={e => onEdit(e, hunch)}><i className="fa fa-edit"/></a>
+          <a className="hunch-delete-button" href="#" onClick={e => onDelete(e, hunch)}><i className="fa fa-trash"/></a>
         </div>
       </div>
       <div className="hunch-body card-body">

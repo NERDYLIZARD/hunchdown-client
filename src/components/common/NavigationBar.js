@@ -1,12 +1,11 @@
 /**
  * Created on 18-May-18.
  */
-/* eslint-disable import/no-named-as-default */
 import React from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
+/* eslint-disable import/no-named-as-default */
 import Navbar from 'react-bootstrap/lib/Navbar';
 import Nav from 'react-bootstrap/lib/Nav';
-
 
 class NavigationBar extends React.Component
 {
