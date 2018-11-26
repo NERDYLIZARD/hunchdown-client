@@ -39,16 +39,14 @@ describe('<HunchItem />', () => {
 
   it('calls `onEdit()` when edit link is clicked', () => {
     const editButton = renderHunchItem().find('.hunch-edit-button');
-    const e = {preventDefault: jest.fn()};
-    editButton.simulate('click', e);
-    expect(props.onEdit).toBeCalledWith(e, props.hunch);
+    editButton.simulate('click');
+    expect(props.onEdit).toBeCalledWith(props.hunch);
   });
 
   it('calls `onDelete()` when `delete` link is clicked', () => {
     const deleteButton = renderHunchItem().find('.hunch-delete-button');
-    const e = {preventDefault: jest.fn()};
-    deleteButton.simulate('click', e);
-    expect(props.onDelete).toBeCalledWith(e, props.hunch);
+    deleteButton.simulate('click');
+    expect(props.onDelete).toBeCalledWith(props.hunch);
   });
 
   it('renders `<p class="hunch-wisdom">` with `hunch.wisdom` as its children', () => {

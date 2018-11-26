@@ -12,12 +12,14 @@ import * as boxSelectors from '../../selectors/boxes';
 import * as modalTypes from '../../constants/modal';
 import { isEmpty } from 'lodash';
 /* eslint-disable import/no-named-as-default */
-import HunchList from './HunchList';
-import HunchEditorModal from './HunchEditorModal';
-import InfiniteScroll from '../common/InfiniteScroll';
+import HunchEditorModal from '../hunches/HunchEditorModal';
+import InfiniteScroll from 'react-infinite-scroller';
+import Spinner from "../common/Spinner";
+import Grid from "../common/Grid";
+import HunchItem from "../hunches/HunchItem";
 
 
-export class HunchPage extends React.Component
+export class BoxDetail extends React.Component
 {
   constructor (props, context) {
     super(props, context);
@@ -49,50 +51,45 @@ export class HunchPage extends React.Component
     this.props.unloadHunches();
   }
 
-  addHunch (e) {
-    e.preventDefault();
+  addHunch () {
     const {box} = this.props;
     const boxId = box && box.id ? box.id : this.props.match.params.id;
     this.props.showModal(modalTypes.HUNCH_SELECTOR_MODAL, {boxId});
   }
 
-  createHunch (e) {
-    e.preventDefault();
+  createHunch () {
     this.props.openHunchEditorModal(selectors.getEditor);
   }
 
-  editHunch (e, hunch) {
-    e.preventDefault();
+  editHunch (hunch) {
     this.props.openHunchEditorModal(selectors.getEditor, hunch);
   }
 
-  deleteHunch (e, hunch) {
-    e.preventDefault();
+  deleteHunch (hunch) {
     this.props.deleteHunch(hunch);
   }
 
   render () {
     const {isFetchingBox, isFetchingHunches, box, hunches} = this.props;
-    const {id: boxId} = this.props.match.params;
 
     return (
-      <div className="hunch-page">
+      <div className="box-detail">
         <div className="container">
-          <div className="hunch-page__header pt-3 pb-3">
-            {isFetchingBox && <div className="hunch-page__box-loading">Loading . . .</div>}
-            {!box && !isFetchingBox && <div className="hunch-page__box-not-found">Box Not Found</div>}
+          <div className="box-detail__header pt-3 pb-3">
+            {isFetchingBox && <div className="box-detail__box-loading my-4"><Spinner/></div>}
+            {!box && !isFetchingBox && <div className="box-detail__box-not-found">Box Not Found</div>}
             {box &&
             <div className="clearfix">
               <div className="float-left">
-                <h2 className="hunch-page__box-title">{box.title}</h2>
+                <h2 className="box-detail__box-title">{box.title}</h2>
               </div>
               <div className="float-right">
                 <button
-                  className="hunch-page__create-hunch-button btn btn-success mr-2"
+                  className="box-detail__create-hunch-button btn btn-success mr-2"
                   onClick={this.createHunch}>New Hunch
                 </button>
                 <button
-                  className="hunch-page__add-hunch-button btn btn-primary"
+                  className="box-detail__add-hunch-button btn btn-primary"
                   onClick={this.addHunch}>Existing Hunch
                 </button>
               </div>
@@ -100,27 +97,31 @@ export class HunchPage extends React.Component
           </div>
 
           {box &&
-          <div className="hunch-page__body">
+          <div className="box-detail__body">
             {!isFetchingHunches && isEmpty(hunches) &&
-            <div className="hunch-page__hunches-not-found">No Hunch in the Box. <strong>Add a Hunch.</strong></div>}
-            <InfiniteScroll args={[boxId, true]} onScroll={this.props.loadHunches}>
-              <HunchList
-                hunches={hunches}
-                onEdit={this.editHunch}
-                onDelete={this.deleteHunch}/>
-              {isFetchingHunches && <div className="hunch-page__hunches-loading">Loading . . .</div>}
+            <div className="box-detail__hunches-not-found">No Hunch in the Box. <strong>Add a Hunch.</strong></div>}
+
+            <InfiniteScroll
+              loadMore={() => this.props.loadHunches(true)}
+              loader={<div className="box-detail__hunches-loading my-4"><Spinner/></div>}
+              hasMore={!!this.props.nextPageUrlForHunches}>
+              <Grid
+                className="hunch-list"
+                items={hunches}
+                render={hunch =>
+                  <HunchItem hunch={hunch} onDelete={this.deleteHunch} onEdit={this.editHunch}/>
+                }/>
             </InfiniteScroll>
 
             <HunchEditorModal/>
 
-          </div>
-          }
+          </div>}
         </div>
       </div>);
   }
 }
 
-HunchPage.propTypes = {
+BoxDetail.propTypes = {
   openHunchEditorModal: PropTypes.func.isRequired,
   loadHunches: PropTypes.func.isRequired,
   unloadHunches: PropTypes.func.isRequired,
@@ -131,16 +132,18 @@ HunchPage.propTypes = {
   isFetchingBox: PropTypes.bool.isRequired,
   box: PropTypes.object,
   isFetchingHunches: PropTypes.bool.isRequired,
+  nextPageUrlForHunches: PropTypes.string,
   hunches: PropTypes.array,
   match: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => {
-  const {isFetching: isFetchingHunches} = selectors.getPagination(state);
+  const {isFetching: isFetchingHunches, nextPageUrl : nextPageUrlForHunches} = selectors.getPagination(state);
   const {isFetching: isFetchingBox} = boxSelectors.getActive(state);
   return {
     isFetchingHunches,
     hunches: selectors.getAll(state),
+    nextPageUrlForHunches,
     isFetchingBox,
     box: boxSelectors.getActiveElement(state)
   }
@@ -154,4 +157,4 @@ export default connect(mapStateToProps, {
   deleteHunch,
   openHunchEditorModal,
   showModal,
-})(HunchPage);
+})(BoxDetail);

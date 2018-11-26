@@ -21,7 +21,7 @@ const Modal = ({modalType, modalProps}) => {
 };
 
 Modal.propTypes = {
-  modalType: PropTypes.object,
+  modalType: PropTypes.string,
   modalProps: PropTypes.object,
 };
 

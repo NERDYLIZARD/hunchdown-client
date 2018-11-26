@@ -32,7 +32,7 @@ data.hunches.map(hunch => hunch['slug'] = slug(hunch.wisdom));
 
 const json = JSON.stringify(data);
 
-fs.writeFile("./src/api/db.json", json, (err) => {
+fs.writeFile("./src/utils/api/db.json", json, (err) => {
   if (err) {
     console.log(chalkError(err)); // eslint-disable-line no-console
   } else {

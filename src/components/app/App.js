@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
 import NavigationBar from '../common/NavigationBar';
 import HomePage from '../pages/HomePage';
-import HunchPage from '../hunches/HunchPage';
+import HunchPage from '../boxes/BoxDetail';
 import NotFoundPage from '../pages/NotFoundPage';
 import BoxPage from '../boxes/BoxPage';
 import Modal from '../common/Modal';
