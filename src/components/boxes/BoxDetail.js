@@ -4,7 +4,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { deleteHunch, loadHunches, unloadHunches, openHunchEditorModal } from '../../actions/hunches';
+import { deleteHunch, loadHunches, openHunchEditorModal, unloadHunches } from '../../actions/hunches';
 import { loadBox, unloadBox } from '../../actions/boxes';
 import { showModal } from '../../actions/modal';
 import * as selectors from '../../selectors/hunches';
@@ -16,12 +16,11 @@ import HunchEditorModal from '../hunches/HunchEditorModal';
 import InfiniteScroll from 'react-infinite-scroller';
 import Spinner from "../common/Spinner";
 import Grid from "../common/Grid";
-import HunchItem from "../hunches/HunchItem";
+import { HunchPreview } from "../hunches/preview/HunchPreview";
 
 
-export class BoxDetail extends React.Component
-{
-  constructor (props, context) {
+export class BoxDetail extends React.Component {
+  constructor(props, context) {
     super(props, context);
 
     this.loadData = this.loadData.bind(this);
@@ -32,44 +31,44 @@ export class BoxDetail extends React.Component
     this.editHunch = this.editHunch.bind(this);
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.loadData();
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.unloadData();
   }
 
-  loadData () {
+  loadData() {
     const boxId = this.props.match.params.id;
     this.props.loadBox(boxId);
     this.props.loadHunches(boxId, false, 12);
   }
 
-  unloadData () {
+  unloadData() {
     this.props.unloadBox();
     this.props.unloadHunches();
   }
 
-  addHunch () {
+  addHunch() {
     const {box} = this.props;
     const boxId = box && box.id ? box.id : this.props.match.params.id;
     this.props.showModal(modalTypes.HUNCH_SELECTOR_MODAL, {boxId});
   }
 
-  createHunch () {
+  createHunch() {
     this.props.openHunchEditorModal(selectors.getEditor);
   }
 
-  editHunch (hunch) {
+  editHunch(hunch) {
     this.props.openHunchEditorModal(selectors.getEditor, hunch);
   }
 
-  deleteHunch (hunch) {
+  deleteHunch(hunch) {
     this.props.deleteHunch(hunch);
   }
 
-  render () {
+  render() {
     const {isFetchingBox, isFetchingHunches, box, hunches} = this.props;
 
     return (
@@ -109,7 +108,10 @@ export class BoxDetail extends React.Component
                 className="hunch-list"
                 items={hunches}
                 render={hunch =>
-                  <HunchItem hunch={hunch} onDelete={this.deleteHunch} onEdit={this.editHunch}/>
+                  <HunchPreview hunch={hunch}>
+                    <HunchPreview.Header onDelete={this.deleteHunch} onEdit={this.editHunch}/>
+                    <HunchPreview.Body/>
+                  </HunchPreview>
                 }/>
             </InfiniteScroll>
 
@@ -138,7 +140,7 @@ BoxDetail.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  const {isFetching: isFetchingHunches, nextPageUrl : nextPageUrlForHunches} = selectors.getPagination(state);
+  const {isFetching: isFetchingHunches, nextPageUrl: nextPageUrlForHunches} = selectors.getPagination(state);
   const {isFetching: isFetchingBox} = boxSelectors.getActive(state);
   return {
     isFetchingHunches,

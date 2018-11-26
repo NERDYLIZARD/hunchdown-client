@@ -10,7 +10,7 @@ import { BoxDetail } from './BoxDetail';
 import HunchEditorModal from '../hunches/HunchEditorModal';
 import InfiniteScroll from 'react-infinite-scroller';
 import Grid from "../common/Grid";
-import HunchItem from "../hunches/HunchItem";
+import { HunchPreview } from "../hunches/preview/HunchPreview";
 
 
 describe('<BoxDetail />', () => {
@@ -203,15 +203,15 @@ describe('<BoxDetail />', () => {
         expect(grid.props().className).toBe('hunch-list');
       });
 
-      it('has `render` prop callback that returns `<BoxPreview/>`', () => {
+      it('has `render` prop callback that returns `<HunchPreview/>`', () => {
         const hunch = {id: 'id#1'};
         const renderProp = grid.props().render;
         expect(typeof grid.props().render).toBe('function');
         expect(renderProp(hunch)).toEqual(
-          <HunchItem
-            hunch={hunch}
-            onDelete={boxDetail.instance().deleteHunch}
-            onEdit={boxDetail.instance().editHunch}/>
+          <HunchPreview hunch={hunch}>
+            <HunchPreview.Header onDelete={boxDetail.instance().deleteHunch} onEdit={boxDetail.instance().editHunch}/>
+            <HunchPreview.Body/>
+          </HunchPreview>
         );
       });
     });
