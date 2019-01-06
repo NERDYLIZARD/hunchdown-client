@@ -8,6 +8,7 @@ import HunchPage from '../boxes/BoxDetail';
 import NotFoundPage from '../pages/NotFoundPage';
 import BoxPage from '../boxes/BoxPage';
 import Modal from '../common/Modal';
+import BoxSelectionForm from "../editor/BoxSelectionForm";
 
 // This is a class-based component because the current
 // version of hot reloading won't hot reload a stateless
@@ -22,6 +23,7 @@ class App extends React.Component
           <Route exact path="/" component={HomePage}/>
           <Route path="/boxes/:id" component={HunchPage}/>
           <Route path="/boxes" component={BoxPage}/>
+          <Route path="/test" component={BoxSelectionForm}/>
           <Route component={NotFoundPage}/>
         </Switch>
         <Modal/>

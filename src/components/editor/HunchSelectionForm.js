@@ -1,9 +1,9 @@
 /**
  * Created on 11-Oct-18.
  */
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 
 export class HunchSelectionForm extends Component
@@ -14,13 +14,16 @@ export class HunchSelectionForm extends Component
 
   render () {
     return (
-      <div>Hunch Selection</div>
+      <div>
+        <button className="btn" onClick={() => this.props.onBackNavigationClick()}>Back</button>
+        <h2>Hunch Selection</h2>
+      </div>
     );
   }
 }
 
 HunchSelectionForm.propTypes = {
-  // myProp: PropTypes.string.isRequired
+  onBackNavigationClick: PropTypes.func.isRequired
 };
 
 const mapStateToProps = () => ({});
