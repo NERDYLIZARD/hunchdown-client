@@ -10,6 +10,7 @@ import Modal from 'react-bootstrap/lib/Modal';
 import {selectBoxById} from '../../selectors/entities';
 import HunchSelectionForm from './HunchSelectionForm';
 import BoxSelectionForm from './BoxSelectionForm';
+import forOwn from "lodash/forOwn";
 
 export class HunchSelectorModal extends React.Component {
   constructor(props, context) {
@@ -17,61 +18,108 @@ export class HunchSelectorModal extends React.Component {
 
     this.selectBox = this.selectBox.bind(this);
     this.deselectBox = this.deselectBox.bind(this);
+    this.handleBackNavigationClick = this.handleBackNavigationClick.bind(this);
+    this.accumulateSelectedHunches = this.accumulateSelectedHunches.bind(this);
+    this.addHunches = this.addHunches.bind(this);
 
     this.state = {
       selectedBox: null,
-      selectedHunches: null,
+      selectedHunches: {},
     }
   }
 
+  componentDidMount() {}
+
   selectBox(box) {
     this.setState(() => ({
-        selectedBox: box
-      })
-    );
+      selectedBox: box
+    }));
   }
 
   deselectBox() {
     this.setState(() => ({
-        selectedBox: null
-      })
-    );
+      selectedBox: null
+    }));
+  }
+
+  handleBackNavigationClick() {
+    this.hunchSelectionForm.getWrappedInstance().returnSelectedHunches();
+  }
+
+  accumulateSelectedHunches(selectedHunches) {
+    this.setState(state => ({
+      selectedHunches: {
+        ...state.selectedHunches,
+        [state.selectedBox.id]: selectedHunches
+      }
+    }));
+    this.deselectBox();
+  }
+
+  addHunches() {
+    let toBeAddedHunches = [];
+    forOwn(this.state.selectedHunches, (value, key) => {
+      toBeAddedHunches = toBeAddedHunches.concat(value)
+    });
+    // console.log(toBeAddedHunches);
+    // call api.addHunches(toBeAddedHunches)
   }
 
   render() {
-    const {box, hideModal} = this.props;
+    const {beingEditedBox, hideModal} = this.props;
     return (
       <Modal
         show={true}
         onHide={() => hideModal()}
         centered
         size="lg"
-        id="hunch-selector-modal">
+        className="hunch-selector-modal">
+
         <Modal.Header closeButton>
-          <Modal.Title id="hunch-selector-modal-title">{box.title}: Select Hunches</Modal.Title>
+          <Modal.Title className="hunch-selector-modal__title">
+            {this.state.selectedBox &&
+            <button className="hunch-selector-modal__back-navigation btn"
+                    onClick={this.handleBackNavigationClick}>Back</button>}
+            <h1>{beingEditedBox.title}: Select Hunches</h1>
+          </Modal.Title>
         </Modal.Header>
+
         <Modal.Body>
           {
             this.state.selectedBox ?
-              <HunchSelectionForm onBackNavigationClick={this.deselectBox}/> :
-              <BoxSelectionForm onBoxSelected={this.selectBox}/>
+
+              <HunchSelectionForm
+                ref={f => this.hunchSelectionForm = f}
+                box={this.state.selectedBox}
+                omittedHunches={beingEditedBox.hunches}
+                selectedHunches={this.state.selectedHunches[this.state.selectedBox.id]}
+                onReturnSelectedHunches={selectedHunches => this.accumulateSelectedHunches(selectedHunches)}/> :
+
+              <BoxSelectionForm
+                omitBox={beingEditedBox}
+                selectedBoxes={this.state.selectedHunches}
+                onBoxSelected={this.selectBox}/>
           }
         </Modal.Body>
+
+        {!this.state.selectedBox &&
         <Modal.Footer>
-        </Modal.Footer>
+          <button className="btn">Cancel</button>
+          <button className="btn btn-success" onClick={this.addHunches}>Add Hunches</button>
+        </Modal.Footer>}
       </Modal>
     );
   }
 }
 
 HunchSelectorModal.propTypes = {
-  box: PropTypes.object.isRequired,
+  beingEditedBox: PropTypes.object.isRequired,
   hideModal: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    box: selectBoxById(state, ownProps.boxId)
+    beingEditedBox: selectBoxById(state, ownProps.boxId)
   }
 };
 

@@ -13,21 +13,20 @@ import {BoxPreview} from "../boxes/preview/BoxPreview";
 import {loadBoxes} from "../../actions/boxes";
 
 
-export class BoxSelectionForm extends Component
-{
-  constructor (props, context) {
+export class BoxSelectionForm extends Component {
+  constructor(props, context) {
     super(props, context);
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.props.loadBoxes(12, false);
   }
 
-  render () {
-    const {boxes, isFetchingBoxes} = this.props;
+  render() {
+    const {boxes, isFetchingBoxes, selectedBoxes} = this.props;
 
     return (
-      <div className="box-page">
+      <div className="box-selection-form scrollable">
         <div className="container">
 
           <div className="box-page__header clearfix pt-3 pb-3">
@@ -50,6 +49,10 @@ export class BoxSelectionForm extends Component
                 render={box =>
                   <BoxPreview box={box}>
                     <BoxPreview.Body onClick={box => this.props.onBoxSelected(box)}/>
+                    {selectedBoxes &&
+                    selectedBoxes[box.id] &&
+                    selectedBoxes[box.id].length > 0 &&
+                    <p className="text-center">{selectedBoxes[box.id].length} Selected</p>}
                   </BoxPreview>
                 }/>
             </InfiniteScroll>
@@ -63,6 +66,7 @@ export class BoxSelectionForm extends Component
 
 BoxSelectionForm.propTypes = {
   boxes: PropTypes.array,
+  selectedBoxes: PropTypes.object,
   isFetchingBoxes: PropTypes.bool.isRequired,
   nextPageUrl: PropTypes.string,
   loadBoxes: PropTypes.func.isRequired,

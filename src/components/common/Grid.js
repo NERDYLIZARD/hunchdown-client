@@ -10,7 +10,7 @@ const Grid = ({items, render, className}) => {
     <div className={classnames('grid', className)}>
       <div className="row">
         {items.map(item =>
-          <div className="grid__item col-sm-12 col-md-6 col-lg-4 col-xl-3" key={item.id}>
+          <div className="grid__item col-sm-12 col-md-6 col-lg-4" key={item.id}>
             {render(item)}
           </div>)}
       </div>
