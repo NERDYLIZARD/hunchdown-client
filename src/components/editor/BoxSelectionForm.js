@@ -41,7 +41,9 @@ export class BoxSelectionForm extends Component {
 
             <InfiniteScroll
               loadMore={() => this.props.loadBoxes(true)}
-              loader={<div className="box-page__boxes-loading my-4"><Spinner/></div>}
+              loader={<div
+                key={0} /*set key to ignore react's unique key warning issue: https://github.com/CassetteRocks/react-infinite-scroller/issues/133*/
+                className="box-page__boxes-loading my-4"><Spinner/></div>}
               hasMore={!!this.props.nextPageUrl}>
               <Grid
                 className="box-list"

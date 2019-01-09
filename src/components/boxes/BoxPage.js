@@ -3,21 +3,20 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { isEmpty } from 'lodash';
-import { deleteBox, loadBoxes, openBoxEditorModal, unloadBoxes } from '../../actions/boxes';
+import {connect} from 'react-redux';
+import {isEmpty} from 'lodash';
+import {deleteBox, loadBoxes, openBoxEditorModal, unloadBoxes} from '../../actions/boxes';
 import * as selectors from '../../selectors/boxes';
 /* eslint-disable import/no-named-as-default */
 import BoxEditorModal from './BoxEditorModal';
 import InfiniteScroll from 'react-infinite-scroller';
 import Grid from '../common/Grid';
-import { BoxPreview } from './preview/BoxPreview';
+import {BoxPreview} from './preview/BoxPreview';
 import Spinner from '../common/Spinner';
 
 
-export class BoxPage extends React.Component
-{
-  constructor (props, context) {
+export class BoxPage extends React.Component {
+  constructor(props, context) {
     super(props, context);
 
     this.createBox = this.createBox.bind(this);
@@ -26,32 +25,32 @@ export class BoxPage extends React.Component
     this.navigateToBoxDetail = this.navigateToBoxDetail.bind(this);
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.props.loadBoxes(12, false);
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.props.unloadBoxes();
   }
 
-  createBox (e) {
+  createBox(e) {
     e.preventDefault();
     this.props.openBoxEditorModal(selectors.getEditor);
   }
 
-  deleteBox (box) {
+  deleteBox(box) {
     this.props.deleteBox(box);
   }
 
-  editBox (box) {
+  editBox(box) {
     this.props.openBoxEditorModal(selectors.getEditor, box);
   }
 
-  navigateToBoxDetail (box) {
+  navigateToBoxDetail(box) {
     this.props.history.push(`/boxes/${box.id}`);
   }
 
-  render () {
+  render() {
     const {boxes, isFetchingBoxes} = this.props;
 
     return (
@@ -73,7 +72,9 @@ export class BoxPage extends React.Component
 
             <InfiniteScroll
               loadMore={() => this.props.loadBoxes(true)}
-              loader={<div className="box-page__boxes-loading my-4"><Spinner/></div>}
+              loader={<div
+                key={0} /*set key to ignore react's unique key warning issue: https://github.com/CassetteRocks/react-infinite-scroller/issues/133*/
+                className="box-page__boxes-loading my-4"><Spinner/></div>}
               hasMore={!!this.props.nextPageUrl}>
               <Grid
                 className="box-list"
